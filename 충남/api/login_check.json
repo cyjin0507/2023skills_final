@@ -1,0 +1,11 @@
+{
+  "result" : "success",
+  "message" : "어서오세요.",
+  "data" : [
+      {
+        "id" : "usera",
+        "name" : "홍길동",
+        "tel" : "010-1234-5678"
+      }
+    ]
+}
