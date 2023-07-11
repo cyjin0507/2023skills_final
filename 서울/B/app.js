@@ -26,7 +26,6 @@ class App {
 
     drawList() {
         $('#list tbody').html('')
-        console.log(this.getData);
 
         this.getData.forEach(x=> {
             $('#list tbody').append(`
@@ -36,9 +35,14 @@ class App {
                     <td>${x.release}</td>
                     <td>${x.price}</td>
                     <td><button class="btn btn-primary">상세보기</button></td>
-                    <td><button class="btn btn-primary">장바구니</button></td>
+                    <td><button class="btn btn-primary basket-btn" data-name="${x.soapName}">장바구니</button></td>
                 </tr>
             `)
+        })
+
+        // event
+        $('.basket-btn').click((e)=> {
+            console.log(e.target.dataset.name);
         })
 
     }
