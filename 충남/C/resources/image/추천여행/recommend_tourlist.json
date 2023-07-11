@@ -1,0 +1,134 @@
+{
+  "result" : "success",
+  "message" : "조회 성공",
+  "data" : [
+      {
+        
+        "idx" : "1",
+        "userid" : "usera",
+        "photoset" : [
+          {
+            "rank" : "1",
+            "image" : "각원사.jpg",
+            "name" : "각원사"
+          },
+          {
+            "rank" : "2",
+            "image" : "아라리오조각광장.jpg",
+            "name" : "아라리오조각광장"
+          },
+          {
+            "rank" : "3",
+            "image" : "천안박물관.jpg",
+            "name" : "천안박물관"
+          },
+          {
+            "rank" : "4",
+            "image" : "홍대용과학관.jpg",
+            "name" : "홍대용과학관"
+          },
+          {
+            "rank" : "5",
+            "image" : "자연누리성.jpg",
+            "name" : "자연누리성"
+          }
+        ]
+      },
+      {
+        
+        "idx" : "2",
+        "userid" : "userb",
+        "photoset" : [
+          {
+            "rank" : "1",
+            "image" : "아라리오조각광장.jpg",
+            "name" : "아라리오조각광장"
+          },
+          {
+            "rank" : "2",
+            "image" : "중앙시장.jpg",
+            "name" : "중앙시장"
+          },
+          {
+            "rank" : "3",
+            "image" : "천안삼거리공원.jpg",
+            "name" : "천안삼거리공원"
+          },
+          {
+            "rank" : "4",
+            "image" : "택학산자연휴양림.jpg",
+            "name" : "택학산자연휴양림"
+          },
+          {
+            "rank" : "5",
+            "image" : "광덕사.jpg",
+            "name" : "광덕사"
+          }
+        ]
+      },
+      {
+        
+        "idx" : "3",
+        "userid" : "userc",
+        "photoset" : [
+          {
+            "rank" : "1",
+            "image" : "천안삼거리공원.jpg",
+            "name" : "천안삼거리공원"
+          },
+          {
+            "rank" : "2",
+            "image" : "아라리오조각광장.jpg",
+            "name" : "아라리오조각광장"
+          },
+          {
+            "rank" : "3",
+            "image" : "택학산자연휴양림.jpg",
+            "name" : "택학산자연휴양림"
+          },
+          {
+            "rank" : "4",
+            "image" : "각원사.jpg",
+            "name" : "각원사"
+          },
+          {
+            "rank" : "5",
+            "image" : "자연누리성.jpg",
+            "name" : "자연누리성"
+          }
+        ]
+      },
+	    {
+        
+        "idx" : "4",
+        "userid" : "userd",
+        "photoset" : [
+          {
+            "rank" : "1",
+            "image" : "아라리오조각광장.jpg",
+            "name" : "아라리오조각광장"
+          },
+          {
+            "rank" : "2",
+            "image" : "중앙시장.jpg",
+            "name" : "중앙시장"
+          },
+          {
+            "rank" : "3",
+            "image" : "각원사.jpg",
+            "name" : "각원사"
+          },
+          {
+            "rank" : "4",
+            "image" : "홍대용과학관.jpg",
+            "name" : "홍대용과학관"
+          },
+          {
+            "rank" : "5",
+            "image" : "천안삼거리공원.jpg",
+            "name" : "천안삼거리공원"
+          }
+        ]
+      }
+    ]
+}
