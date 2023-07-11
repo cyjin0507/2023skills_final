@@ -9,66 +9,42 @@
 </head>
 <body>
     <div class="grid">
-        <div class="box">1</div>
-        <div class="box">2</div>
-        <div class="box">3</div>
-        <div class="box">4</div>
-        <div class="box">5</div>
-        <div class="box">6</div>
-        <div class="box">7</div>
-        <div class="box">8</div>
-        <div class="box">9</div>
-        <div class="box">10</div>
-        <div class="box">11</div>
-        <div class="box">12</div>
-        <div class="box">13</div>
-        <div class="box">14</div>
-        <div class="box">15</div>
-        <div class="box">16</div>
-        <div class="box">17</div>
-        <div class="box">18</div>
+        
     </div>
 
     <style>
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(6, 1fr);
-            width: 720px;
-        }
 
-        .grid > .box {
+        .box {
             width: 150px;
             height: 150px;
-            background-color: green;
-            border: 1px solid red;
+            position: absolute;
             transition: all .5s;
         }
 
-        .grid > .box:nth-child(1) {
-            grid-column-start: 1;
-	        grid-column-end: 3;
-	        grid-row-start: 1;
-	        grid-row-end: 3;
-            width: 300px;
-            height: 300px;
+        .box-inner {
+            width: 100%;
+            height: 100%;
+            position: relative;
         }
 
-        .grid:hover .box:nth-child(8) {
-            grid-column-start:5;
-	        grid-column-end: 7;
-            grid-row-start: 2;
-	        grid-row-end: 4;
-            width: 300px;
-            height: 300px;
+        .box img {
+            width: 100%;
+            height: 100%;
         }
 
-        .grid > .box:nth-child(8) {
-            
+        .delete {
+            position: absolute;
+            top: 0;
+            left: 100%;
+            transform: translateX(-100%);
+            padding: 10px;
+            background-color: white;
         }
 
     </style>
 
     <script src="https://code.jquery.com/jquery-3.7.0.js"
         integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
+    <script src="./script/grid.js"></script>
 </body>
 </html>
