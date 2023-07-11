@@ -1,65 +1,83 @@
+let check = true
+
 class Recommand {
-    constructor() {
-        this.recommandList = ['각원사','광덕사','산사현대시100년관','아라리오조각광장','자연누리성','중앙시장','천안박물관','택학산자연휴양림','홍대용과학관']
-        this.top5List = []
-        this.dragItem = ""
-
-        this.init()
+    constructor(receiveData = []) {
+        if(check) {this.init()}
+        check = false
+        
+        this.receiveData = receiveData
+    }
+    
+    async init() {
+        this.data = await $.getJSON('/api/recommend_tourlist.json')
+        this.drawList()
+        this.addEvent()
+        console.log(this.data.data);
     }
 
-    init() {
-        this.drawRecommandList()
-    }
-
-    drawRecommandList() {
-        $('#recommand-image-area').html('')
-
-        this.recommandList.forEach(x=> {
-            $('#recommand-image-area').append(`
-                <div class="recommand-image" draggable="true" data-name="${x}">
-                    <img src="./resources/image/추천여행/${x}.jpg" alt="" data-name="${x}">
-                    <div data-name="${x}">${x}</div>
+    drawList() {
+        $('#recommand-list').html('')
+        this.data.data.forEach(x=> {
+            $('#recommand-list').append(`
+                <div class="card-news" data-idx="${x.idx}">
+                    <div class="card-image" data-idx="${x.idx}" style="background-image: url('./resources/image/추천여행/${x.photoset[0].name}.jpg');"></div>
+                    <div class="user-id">${x.userid}</div>
+                    <button class="btn btn-primary play-btn" data-idx="${x.idx}">재생</button>
                 </div>
             `)
         })
-        this.addEvent()
     }
 
     addEvent() {
-        $('.recommand-image').on('dragstart', (e)=> {
-            this.dragItem = e.target.dataset.name
+        $('.play-btn').click((e)=> {
+            this.top5Play(e)
         })
+    }
 
-        $('#recommand-dragzone').on("dragover", (e)=> {
-            e.stopPropagation();
-            e.preventDefault();
-          }).on('drop', (e)=> {
-            e.preventDefault();
-            this.recommandList.splice(this.recommandList.indexOf(this.dragItem), 1)
-            this.top5List.push(this.dragItem)
-            this.drawTop5List()
-            this.drawRecommandList()
-            console.log(this.recommandList);
-        })
+    top5Play(e) {
+        const imgList = this.data.data[e.target.dataset.idx-1].photoset
+
+        let i = 0
+        const play = setInterval(()=> {
+            if(i >= 5) {
+                i=0
+                clearInterval(play)
+                $(`.card-image[data-idx=${e.target.dataset.idx}]`).css('background-image', `url('./resources/image/추천여행/${imgList[0].name}.jpg')`)
+            }
+            
+            $(`.card-image[data-idx=${e.target.dataset.idx}]`).css('background-image', `url('./resources/image/추천여행/${imgList[i].name}.jpg')`)
+            i++
+            
+        },1000)
+
 
     }
 
-    drawTop5List() {
-        $('#recommand-dragzone').html('')
-        this.top5List.forEach(x=> {
-            $('#recommand-dragzone').append(`
-                <div class="drop-rank"></div>
-                <img src="./resources/image/추천여행/${x}.jpg" alt="">
-            `)
+    async addData() {
+        this.data = await $.getJSON('/api/recommend_tourlist.json')
+
+        let lastIdx = this.data.data[this.data.data.length - 1].idx
+        this.data.data.push({
+            "idx" : parseInt(lastIdx) + 1,
+            "userid" : 'Guest',
+            "photoset" : this.receiveData
         })
 
-        $('.drop-rank').on('dragover', (e)=> {
-            e.stopPropagation();
-            e.preventDefault();
-        }).on('drop', (e)=> {
-            console.log("sdf");
-        })
+        this.addList(parseInt(lastIdx) + 1)
+    }
+    
+    addList(idx) {
+        $('#recommand-list').append(`
+            <div class="card-news" data-idx="${idx}">
+                <div class="card-image" data-idx="${idx}" style="background-image: url('./resources/image/추천여행/${this.receiveData[0].name}.jpg');"></div>
+                <div class="user-id">Guest</div>
+                <button class="btn btn-primary play-btn" data-idx="${idx}">재생</button>
+            </div>
+        `)
 
+        $('.play-btn').click((e)=> {
+            this.top5Play(e)
+        })
     }
 
 
