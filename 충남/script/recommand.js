@@ -6,13 +6,16 @@ class Recommand {
         check = false
         
         this.receiveData = receiveData
+
+        
     }
     
     async init() {
         this.data = await $.getJSON('/api/recommend_tourlist.json')
         this.drawList()
         this.addEvent()
-        console.log(this.data.data);
+
+        localStorage.removeItem('list')
     }
 
     drawList() {
@@ -35,6 +38,7 @@ class Recommand {
     }
 
     top5Play(e) {
+        console.log(this.data.data);
         const imgList = this.data.data[e.target.dataset.idx-1].photoset
 
         let i = 0
@@ -54,28 +58,40 @@ class Recommand {
     }
 
     async addData() {
-        this.data = await $.getJSON('/api/recommend_tourlist.json')
+        // 머리가 안돌아가서 일단 localStorage로 박음
+        // 이유 : 이 함수 안에서 json을 계속 불러와서 전에 push한 배열이 초기화됨
+        // & 생성자에서 호출하려고 해도 이 함수에선 안불러와짐 (미래에 내가 하겠지..)
 
-        let lastIdx = this.data.data[this.data.data.length - 1].idx
+        const json = await $.getJSON('/api/recommend_tourlist.json')
+        if(localStorage.getItem('list') == undefined) {
+            localStorage.setItem('list', JSON.stringify(json))
+        }
+
+        this.data = JSON.parse(localStorage.getItem('list'))
+
+        this.lastIdx = parseInt($('.card-news').length) + 1
         this.data.data.push({
-            "idx" : parseInt(lastIdx) + 1,
+            "idx" : this.lastIdx,
             "userid" : 'Guest',
             "photoset" : this.receiveData
         })
 
-        this.addList(parseInt(lastIdx) + 1)
+        localStorage.setItem('list', JSON.stringify(this.data))
+
+        this.addList()
     }
     
-    addList(idx) {
+    addList() {
         $('#recommand-list').append(`
-            <div class="card-news" data-idx="${idx}">
-                <div class="card-image" data-idx="${idx}" style="background-image: url('./resources/image/추천여행/${this.receiveData[0].name}.jpg');"></div>
+            <div class="card-news" data-idx="${this.lastIdx}">
+                <div class="card-image" data-idx="${this.lastIdx}" style="background-image: url('./resources/image/추천여행/${this.receiveData[0].name}.jpg');"></div>
                 <div class="user-id">Guest</div>
-                <button class="btn btn-primary play-btn" data-idx="${idx}">재생</button>
+                <button class="btn btn-primary play-btn" data-idx="${this.lastIdx}">재생</button>
             </div>
         `)
 
         $('.play-btn').click((e)=> {
+            console.log(e.target);
             this.top5Play(e)
         })
     }
