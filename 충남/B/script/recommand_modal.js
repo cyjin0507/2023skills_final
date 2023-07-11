@@ -54,23 +54,14 @@ class Modal {
             e.preventDefault();
           }).on('drop', (e)=> {
             e.preventDefault();
-
-            // 순위 변동할 때
-            if(e.target.className == 'drop-rank') {
-                this.top5List.splice(e.target.dataset.idx,0,this.dragItem)
+            if(!this.deleteItemCheck) {
+                this.decideRecommand(e)
+                dropZoneCheck = true
             } else {
-                this.top5List.push(this.dragItem)
+                this.changeRankIn(e)
             }
-
-            if(this.top5List.length > 5) {
-                alert('최대 5곳까지 추천할 수 있습니다.')
-            }
-
-            this.recommandList.splice(this.recommandList.indexOf(this.dragItem), 1)
-            this.drawTop5List()
-            this.drawRecommandList()
-
-            dropZoneCheck = true
+            
+            
         })
 
 
@@ -91,6 +82,33 @@ class Modal {
         $('#modal-open').click(()=> {$('#recommand-modal').fadeIn()})
         $('.close').click(this.close.bind(this))
         $('#recommand-btn').click(this.recommandFinal.bind(this))
+    }
+
+    // 드래그 했을때
+    decideRecommand(e) {
+        if(e.target.className == 'drop-rank') {
+            this.top5List.splice(e.target.dataset.idx,0,this.dragItem)
+        } else {
+            this.top5List.push(this.dragItem)
+        }
+
+        if(this.top5List.length > 5) {
+            alert('최대 5곳까지 추천할 수 있습니다.')
+        }
+
+        this.recommandList.splice(this.recommandList.indexOf(this.dragItem), 1)
+        this.drawTop5List()
+        this.drawRecommandList()
+
+    }
+
+    // 드래그 한것들 중에서 순서변환 (미완)
+    changeRankIn(e) {
+        if(e.target.className == 'drop-rank') {
+            // console.log(this.top5List.indexOf(this.dragItem));
+            this.top5List.splice(this.top5List.indexOf(this.dragItem),1)
+            this.top5List.splice(e.target.dataset.idx,0,this.dragItem)
+        }
     }
 
     recommandFinal() {

@@ -12,6 +12,7 @@ class Recommand {
     
     async init() {
         this.data = await $.getJSON('/api/recommend_tourlist.json')
+        console.log(this.data);
         this.drawList()
         this.addEvent()
 
