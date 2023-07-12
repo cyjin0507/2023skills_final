@@ -123,6 +123,9 @@ class Slide {
 
         let slide = $('.slide-area')
         let length = $('.slide-area').length - 1
+
+        if(length <= 0) {return}
+
         this.animation = setInterval(()=> {
             $(slide[this.slideNum]).animate({
                 left : "-100%"
