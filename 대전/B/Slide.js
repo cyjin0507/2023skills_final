@@ -4,15 +4,19 @@ class Slide {
         this.slideReserveList = []
         // 실제 구동될 슬라이드 리스트
         this.slideList = []
+        this.isSlideMove = false
+
+        // 좌우버튼
+        this.option1 = false
 
         this.init()
     }
 
     init() {
-        this.slideAddEvent()
+        this.addEvent()
     }
 
-    slideAddEvent() {
+    addEvent() {
         $('#slide-img-input').change((e) => {
             this.imgData = e
         })
@@ -23,6 +27,42 @@ class Slide {
             this.slideSelect(e)
         })
 
+        $('#option1-btn').click((e)=> {
+            this.option1 = !this.option1
+            if(this.option1) {
+                $('#slide-move').fadeIn()
+            } else {
+                $('#slide-move').fadeOut()
+            }
+        })
+
+
+        this.movePage()
+
+    }
+
+    movePage() {
+        $('#slide-move').on('mousedown', (e)=> {
+            this.isSlideMove = true
+        })
+
+        $('#slide-move').on('mouseup', (e)=> {
+            this.isSlideMove = false
+        })
+
+        $(' #slide-box').on('mousemove', (e)=> {
+            if(!this.isSlideMove) {return}
+            this.moveX = e.pageX - 95
+            this.moveY = e.pageY - 90
+
+            if(this.moveX < 0 || this.moveY < 0) {return}
+            if(this.moveX > 1080 || this.moveY > 290) {return}
+
+            $('#slide-move').css({
+                "left" : this.moveX,
+                "top" : this.moveY,
+            })
+        })
     }
 
     slideSelect(e) {
@@ -30,11 +70,76 @@ class Slide {
         let idx = e.target.dataset.idx
 
         if(!this.slideList.find(x=>x==idx)) {
-            $(`#slide-img-list > div[data-idx=${idx}]`).css('background-color', '#aaa')
+            $(`#slide-img-list > div[data-idx=${idx}]`).css('border', '1px solid green')
             this.slideList.push(idx)
         } else {
-            $(`#slide-img-list > div[data-idx=${idx}]`).css('background-color', 'white')
+            $(`#slide-img-list > div[data-idx=${idx}]`).css('border', '1px solid white')
+            this.slideList.forEach((x,i)=> {
+                if(x==idx) {
+                    this.slideList.splice(i,1)
+                }
+            })
         }
+
+        this.slideDraw()
+    }
+
+    slideDraw() {
+        $('#slide-box').html('')
+        this.slideList.forEach(x=> {
+            let data = this.slideReserveList[x-1]
+            $('#slide-box').append(`
+                <div class="slide-area">
+                    <div>
+                        <img src="${data.image}" alt="">
+                        <div class="slide-txt">
+                            <h3>${data.title}</h3>
+                            <h5>${data.subTitle}</h5>
+                        </div>
+                    </div>
+                </div>
+            `)
+        })
+
+        this.carousel()
+    }
+
+    carousel() {
+        clearInterval(this.animation)
+
+        this.slideLength = $('.slide-area').length
+        let loc = 0
+
+        for(let i=0; i<this.slideLength; i++) {
+            loc = i * 100
+            $($('.slide-area')[i]).css('left', `${loc}%`)
+        }
+
+        this.slideNum = 0
+        this.slidePlay()
+    }
+
+    slidePlay() {
+
+        let slide = $('.slide-area')
+        let length = $('.slide-area').length - 1
+        this.animation = setInterval(()=> {
+            $(slide[this.slideNum]).animate({
+                left : "-100%"
+            }, 1000, function() {
+                $(this).css({left : "100%"})
+            })
+        
+            this.slideNum++
+        
+            if(this.slideNum > length) this.slideNum = 0
+        
+            $(slide[this.slideNum]).animate({
+                left : "0%"
+            },1000)
+
+        }, 3000)
+
     }
     
 
