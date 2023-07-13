@@ -38,9 +38,9 @@ class Slide {
 
 
         this.movePage()
-
     }
-
+ 
+    // 좌우버튼 이벤트
     movePage() {
         $('#slide-move').on('mousedown', (e)=> {
             this.isSlideMove = true
@@ -52,6 +52,7 @@ class Slide {
 
         $(' #slide-box').on('mousemove', (e)=> {
             if(!this.isSlideMove) {return}
+            e.preventDefault()
             this.moveX = e.pageX - 95
             this.moveY = e.pageY - 90
 
@@ -63,6 +64,14 @@ class Slide {
                 "top" : this.moveY,
             })
         })
+
+        $('#left-btn').click(()=> {
+            this.slideMoveClick("left")
+        })
+        $('#right-btn').click(()=> {
+            this.slideMoveClick("right")
+        })
+
     }
 
     slideSelect(e) {
@@ -85,10 +94,10 @@ class Slide {
     }
 
     slideDraw() {
-        $('#slide-box').html('')
+        $('#slide-play-box').html('')
         this.slideList.forEach(x=> {
             let data = this.slideReserveList[x-1]
-            $('#slide-box').append(`
+            $('#slide-play-box').append(`
                 <div class="slide-area">
                     <div>
                         <img src="${data.image}" alt="">
@@ -105,7 +114,7 @@ class Slide {
     }
 
     carousel() {
-        clearInterval(this.animation)
+        clearInterval(this.slideInterval)
 
         this.slideLength = $('.slide-area').length
         let loc = 0
@@ -115,34 +124,50 @@ class Slide {
             $($('.slide-area')[i]).css('left', `${loc}%`)
         }
 
-        this.slideNum = 0
-        this.slidePlay()
+        this.index = 0
+
+        if(this.slideLength <= 1) {return}
+        
+        this.slideInterval = setInterval(this.slideCarouselPlay.bind(this), 3000)
     }
 
-    slidePlay() {
+    slideCarouselPlay(
+        current = this.index,
+        next = this.index + 1 < this.slideLength ? this.index + 1 : 0
+    ) {
+        const currentSlide = $('.slide-area')[current]
+        // 애니메이션
+        animation(currentSlide, 1, 'left', '-100%', ()=> {
+            animation(currentSlide, 0, 'left', '100%')
+        })
 
-        let slide = $('.slide-area')
-        let length = $('.slide-area').length - 1
+        this.index = next
+        const nextSlide = $('.slide-area')[next]
+        // 애니메이션
+       animation(nextSlide, 1, 'left', '0%')
 
-        if(length <= 0) {return}
+    }
 
-        this.animation = setInterval(()=> {
-            $(slide[this.slideNum]).animate({
-                left : "-100%"
-            }, 1000, function() {
-                $(this).css({left : "100%"})
-            })
-        
-            this.slideNum++
-        
-            if(this.slideNum > length) this.slideNum = 0
-        
-            $(slide[this.slideNum]).animate({
-                left : "0%"
-            },1000)
+    slideMoveClick(type) {
+        let current = 0
+        clearInterval(this.slideInterval)
 
-        }, 3000)
+        if(type == "left") {
+            // 슬라이드 다음게 나옴 (오->왼)
+            current = this.index + 1 < this.slideLength ? this.index + 1 : 0
+            animation($('.slide-area')[this.index], 1, 'left', '-100%')
+            $('.slide-area').css('left', '100%')
+            animation($('.slide-area')[current], 1, 'left', '0%')
+        } else if(type == "right") {
+            // 슬라이드 이전게 나옴 (왼->오)
+            current = this.index - 1 > 0 ? this.index - 1 : this.slideLength - 1
+            animation($('.slide-area')[this.index], 1, 'left', '100%')
+            $('.slide-area').css('left', '-100%')
+            animation($('.slide-area')[current], 1, 'left', '0%')
+        }
 
+        this.index = current
+        this.slideInterval = setInterval(this.slideCarouselPlay.bind(this), 3000)
     }
     
 

@@ -30,3 +30,9 @@ function getImageFiles(e) {
 
 let url = ""
 
+function animation(item, animationTime, style, value, callback) {
+  $(item).animate({
+      [style] : value
+  }, animationTime*1000)
+  setTimeout(callback, animationTime*1000)
+}

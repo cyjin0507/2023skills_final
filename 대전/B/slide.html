@@ -12,9 +12,12 @@
     <div class="container">
         <h3 class="mt-5">슬라이드</h3>
         <div id="slide-box">
+            <div id="slide-play-box">
+                
+            </div>
             <div id="slide-move">
-                <button class="btn btn-primary"><</button>
-                <button class="btn btn-primary">></button>
+                <button class="btn btn-primary" id="left-btn"><</button>
+                <button class="btn btn-primary" id="right-btn">></button>
             </div>
 
         </div>
@@ -64,6 +67,12 @@
             position: relative;
             height: 350px;
             border: 1px solid red;
+        }
+
+        #slide-play-box {
+            position: absolute;
+            height: 350px;
+            width: 100%;
         }
 
         #slide-move {
