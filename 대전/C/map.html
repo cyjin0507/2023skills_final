@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.7.0.js" integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
+    <title>Document</title>
+</head>
+<body>
+
+    <form action="" enctype="multipart/form-data"></form>
+
+    <canvas id="canvas" width="500" height="500"></canvas>
+
+    <script>
+        const img = new Image()
+        img.src = './map.png'
+
+        const canvas = document.querySelector('#canvas')
+        const ctx = canvas.getContext('2d')
+
+        const mark = new Image()
+        mark.src = './asset.png'
+        
+        mark.onload = () => {
+            $('canvas').on('mousemove', (e)=> {
+                ctx.clearRect(0,0,500,500)
+                ctx.drawImage(img, 0,0,500,500)
+                ctx.drawImage(mark, e.pageX - 30,e.pageY - 40,30, 40)
+            })
+        }
+
+    </script>
+
+    <style>
+        #canvas {
+            width: 500px;
+            height: 500px;
+            border: 1px solid red;
+        }
+    </style>
+    
+</body>
+</html>

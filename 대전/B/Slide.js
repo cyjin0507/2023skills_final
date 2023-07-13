@@ -4,10 +4,16 @@ class Slide {
         this.slideReserveList = []
         // 실제 구동될 슬라이드 리스트
         this.slideList = []
+
         this.isSlideMove = false
+        this.isPagerMove = false
 
         // 좌우버튼
         this.option1 = false
+        // 페이져
+        this.option2 = false
+        // 무한슬라이드
+        this.option3 = false
 
         this.init()
     }
@@ -36,8 +42,51 @@ class Slide {
             }
         })
 
+        $('#option2-btn').click((e)=> {
+            this.option2 = !this.option2
+            if(this.option2) {
+                $('#slide-pager').fadeIn()
+            } else {
+                $('#slide-pager').fadeOut()
+            }
+        })
+
+        $('#option3-btn').click((e)=> {
+            this.option3 = !this.option3
+            clearInterval(this.slideInterval)
+            this.slideInterval = setInterval(this.slideCarouselPlay.bind(this), 3000)
+        })
+
 
         this.movePage()
+        this.pager()
+    }
+
+    // 페이져 이벤트
+    pager() {
+
+        $('#slide-pager').on('mousedown', (e)=> {
+            this.isPagerMove = true
+        })
+
+        $('#slide-pager').on('mouseup', (e)=> {
+            this.isPagerMove = false
+        })
+
+        $(' #slide-box').on('mousemove', (e)=> {
+            if(!this.isPagerMove) {return}
+            e.preventDefault()
+            this.pagerX = e.pageX - 95
+            this.pagerY = e.pageY - 90
+
+            if(this.pagerX < 0 || this.pagerY < 0) {return}
+            if(this.pagerX > 1080 || this.pagerY > 290) {return}
+
+            $('#slide-pager').css({
+                "left" : this.pagerX,
+                "top" : this.pagerY,
+            })
+        })
     }
  
     // 좌우버튼 이벤트
@@ -50,7 +99,7 @@ class Slide {
             this.isSlideMove = false
         })
 
-        $(' #slide-box').on('mousemove', (e)=> {
+        $('#slide-box').on('mousemove', (e)=> {
             if(!this.isSlideMove) {return}
             e.preventDefault()
             this.moveX = e.pageX - 95
@@ -109,14 +158,34 @@ class Slide {
                 </div>
             `)
         })
-
+        this.slideLength = $('.slide-area').length
+        this.pagerSet()
         this.carousel()
+    }
+
+    pagerSet() {
+        $('#slide-pager').html('')
+
+        for(let i=1; i<=this.slideLength; i++) {
+            $('#slide-pager').append(`
+                <button class="btn btn-primary" data-idx=${i}>${i}</button>
+            `)
+        }
+
+        $('#slide-pager > button').click((e)=> {
+            clearInterval(this.slideInterval)
+            // 나중에 여기 수정
+            animation($('.slide-area')[this.index], 1, 'left', '-100%')
+            animation($('.slide-area')[e.target.dataset.idx - 1], 1, 'left', '0%')
+            this.index = e.target.dataset.idx - 1
+            this.slideInterval = setInterval(this.slideCarouselPlay.bind(this), 3000)        
+        })
+
     }
 
     carousel() {
         clearInterval(this.slideInterval)
 
-        this.slideLength = $('.slide-area').length
         let loc = 0
 
         for(let i=0; i<this.slideLength; i++) {
@@ -135,6 +204,8 @@ class Slide {
         current = this.index,
         next = this.index + 1 < this.slideLength ? this.index + 1 : 0
     ) {
+        if(!this.option3 && this.index == this.slideLength-1) {return}
+
         const currentSlide = $('.slide-area')[current]
         // 애니메이션
         animation(currentSlide, 1, 'left', '-100%', ()=> {
@@ -149,6 +220,8 @@ class Slide {
     }
 
     slideMoveClick(type) {
+        if(this.slideLength <= 1) {return}
+
         let current = 0
         clearInterval(this.slideInterval)
 

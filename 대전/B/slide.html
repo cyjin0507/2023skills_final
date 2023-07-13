@@ -19,7 +19,9 @@
                 <button class="btn btn-primary" id="left-btn"><</button>
                 <button class="btn btn-primary" id="right-btn">></button>
             </div>
+            <div id="slide-pager">
 
+            </div>
         </div>
 
         <button class="btn btn-primary mt-5">관리자</button>
@@ -38,8 +40,8 @@
 
 
             <button class="btn btn-primary mt-3" id="option1-btn">좌우버튼</button>
-            <button class="btn btn-primary mt-3">pager 적용</button>
-            <button class="btn btn-primary mt-3">무한슬라이드 적용</button>
+            <button class="btn btn-primary mt-3" id="option2-btn">pager 적용</button>
+            <button class="btn btn-primary mt-3" id="option3-btn">무한슬라이드 적용</button>
             
 
         </div>
@@ -76,7 +78,18 @@
         }
 
         #slide-move {
-            width: 105px;
+            width: fit-content;
+            background-color: #ccc;
+            position: absolute;
+            padding: 10px;
+            top: 0;
+            left: 0;
+            z-index: 10;
+            display: none;
+        }
+
+        #slide-pager {
+            width: fit-content;
             background-color: #ccc;
             position: absolute;
             padding: 10px;
