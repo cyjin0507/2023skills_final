@@ -5,8 +5,7 @@ class List {
 
     async init() {
         this.data = await $.getJSON('/json/history.json')
-        this.data = this.data.data
-        this.list = this.data
+        this.data = this.list = this.data.data
 
         this.value = ""
         
@@ -33,7 +32,7 @@ class List {
         this.list.forEach(x=> {
             $('tbody').append(`
                 <tr>
-                    <td><img src="./img/${x.image}" alt=""></td>
+                    <td><img src="./img/${x.image}" data-name="${x.name}"></td>
                     <td>${this.highlight(x.name)}</td>
                     <td>${x.address}</td>
                     <td>${x.category}</td>
