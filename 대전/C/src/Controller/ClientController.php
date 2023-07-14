@@ -35,6 +35,7 @@ class ClientController {
 
         $reserv = DB::fetchAll("SELECT * FROM reservation where ridx=?", [$idx]);
         foreach($reserv as $key=>$value) {
+            // 다시
             if($reserv[$key]->start <= $start && $reserv[$key]->end >= $end) {
                 back("이미 예약됨");
             }
@@ -48,6 +49,20 @@ class ClientController {
             back("예약완료");
         }
 
+    }
+
+    public function commentDelete($idx) {
+        $data = DB::execute("DELETE FROM comment where idx=?", [$idx]);
+        if($data) {
+            back("댓글 삭제 완료");
+        }
+    }
+
+    public function reviewDelete($idx) {
+        $data = DB::execute("DELETE FROM review where idx=?", [$idx]);
+        if($data) {
+            redirect("리뷰 삭제 완료", '/review');
+        }
     }
 
 }

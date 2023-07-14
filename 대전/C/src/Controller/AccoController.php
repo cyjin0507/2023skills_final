@@ -126,10 +126,22 @@ class AccoController {
 
     // 나중에 수정해야함!!!!!!
     public function roomDelete($idx) {
+        $check = DB::fetch("SELECT * FROM reservation where ridx=? and start<=? and end>=?",
+        [$idx, date("Y-m-d", time()), date("Y-m-d", time())]);
+
+        if($check) {
+            back("이미 예약이 된 객실입니다.");
+        }
+
         $data = DB::execute("DELETE FROM `room` WHERE idx=?", [$idx]);
         if($data) {
             back("객실이 삭제되었습니다.");
         }
+    }
+
+    public function reservation() {
+        $list = DB::fetchAll("select DISTINCT r.start, r.end, u.id, u.name, u.tel from acco a, reservation r, room b, users u where a.idx = b.aidx and r.ridx and b.idx and u.idx = b.uidx and r.uidx=?", [$_SESSION['user']->idx]);
+        view('reservation', ['list'=>$list]);
     }
 
 }

@@ -15,7 +15,7 @@
     if(isset($_SESSION['user'])) {
         ?>
         <a href="/logout" class="mt-5">로그아웃</a>
-        <a href="#" class="mt-5">마이페이지</a>
+        <a href="/mypage/1" class="mt-5">마이페이지</a>
         <?php
     } else {
         ?>
@@ -25,7 +25,9 @@
     }
     ?>
 
-    <a href="/acco/register">숙박업소등록</a>
-    <a href="/room/register">객실등록</a>
-    <a href="/room">객실목록</a>
-    <a href="/acco/all/all">숙박업소</a>
+    <a class="btn btn-primary" href="/acco/register">숙박업소등록</a>
+    <a class="btn btn-primary" href="/room/register">객실등록</a>
+    <a class="btn btn-primary" href="/room">객실목록</a>
+    <a class="btn btn-primary" href="/acco/all/all">숙박업소</a>
+    <a class="btn btn-primary" href="/review">숙박업소 리뷰</a>
+    <a class="btn btn-primary" href="/reservation/list">예약목록</a>

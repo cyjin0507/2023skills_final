@@ -53,7 +53,7 @@
               </div>
             <div class="modal-footer">
                 <button type="submit" class="btn btn-primary">예약하기</button>
-                <button type="button" class="btn btn-secondary">닫기</button>
+                <button type="button" class="btn btn-secondary close">닫기</button>
             </div>
         </form>
     </div>
@@ -64,6 +64,10 @@
     $('.detail-btn').click((e)=> {
         $('#idx').val(e.target.dataset.idx)
         $('.modal').fadeIn()
+    })
+
+    $('.close').click(()=> {
+        $('.modal').fadeOut()
     })
 
 </script>

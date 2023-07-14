@@ -28,3 +28,19 @@ Route::get('/room/delete/{idx}', 'AccoController@roomDelete');
 Route::get('/acco/{category}/{search}', 'ClientController@acco');
 Route::get('/room/detail/{idx}', 'ClientController@room');
 Route::post('/room/reservation/process', 'ClientController@reservation');
+
+// 
+Route::get('/review', 'MypageController@review');
+Route::get('/review/detail/{idx}', 'MypageController@reviewDetail');
+Route::post('/review/comment/add/process', 'MypageController@commentAdd');
+
+Route::get('/reservation/list', 'AccoController@reservation');
+
+Route::get('/mypage/{page}', 'MypageController@mypage');
+Route::post('/review/add/process', 'MypageController@reviewAddProcess');
+Route::get('/reservation/cancel/{idx}', 'MypageController@reservationCancel');
+
+Route::post('/user/info/modify', 'MypageController@userInfoModify');
+
+Route::get('/comment/delete/{idx}', 'ClientController@commentDelete');
+Route::get('/review/delete/{idx}', 'ClientController@reviewDelete');
