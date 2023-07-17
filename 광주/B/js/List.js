@@ -29,16 +29,18 @@ class List {
 
     drawList() {
         $('tbody').html('')
-        this.list.forEach(x=> {
+        this.list.forEach((x,i)=> {
             $('tbody').append(`
                 <tr>
-                    <td><img src="./img/${x.image}" data-name="${x.name}"></td>
+                    <td><img src="./img/${x.image}" class="modal-img" data-idx=${i} data-name="${x.name}"></td>
                     <td>${this.highlight(x.name)}</td>
                     <td>${x.address}</td>
                     <td>${x.category}</td>
                 </tr>
             `)
         })
+
+        new Vote()
     }
 
     highlight(name) {

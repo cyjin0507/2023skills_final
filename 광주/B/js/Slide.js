@@ -1,44 +1,73 @@
 class Slide {
     constructor(popular = []) {
-        this.popular = popular
-        this.imgList = ['01.jpg','02.jpg','03.jpg','04.jpg','05.jpg','06.jpg','07.jpg','08.jpg','09.jpg']
+        this.slideArr = []
+        this.popular = popular.slice(0,3)
+
+        this.popular.forEach(x=> {
+            this.slideArr.push(x.idx)
+        })
+
+        clearInterval(this.slidePlay.bind(this))
         this.init()
     }
 
-    init() {
+    async init() {
+        this.data = await $.getJSON('./json/history.json')
+        this.data = this.data.data
         this.randomSet()
     }
 
     randomSet() {
         let rndCnt = 3 - this.popular.length
-        this.slideArr = []
+        
         for(let i=0; i<rndCnt; i++) {
-            let rnd = Math.floor(Math.random() * 9)
+            let rnd = Math.floor(Math.random() * 8) + 1
             if(!this.slideArr.includes(rnd)) {
-                this.slideArr.push(this.imgList[rnd])
+                this.slideArr.push(rnd)
             } else {
                 i = i-1
             }
         }
-
         this.slideDraw()
     }
 
     slideDraw() {
         $('#slide-box').html('')
 
-        this.slideArr.forEach(x=> {
+        this.slideArr.forEach((x,i)=> {
             $('#slide-box').append(`
                 <div class="slide-item">
-                    <img src="./img/${x}" alt="">
+                    <img src="./img/0${parseInt(x)+1}.jpg" alt="">
                     <div class="slide-txt">
-                        <p>sdfsdfsdfds</p>
-                        <p>erhnrelntlrentklretnkler</p>
+                        <p>${this.data[x].name}</p>
+                        <p>${this.popular.length > i ? this.popular[i].score : 0}</p>
                     </div>
                 </div>
             `)
         })
 
+        this.slide = $('.slide-item')
+        this.sno = 0
+        this.eno = this.slide.length - 1
+        
+        setInterval(this.slidePlay.bind(this), 3000)
+
+    }
+
+    slidePlay() {
+        $(this.slide[this.sno]).animate({
+            left : "-100%"
+        }, 1000, function() {
+            $(this).css({left : "100%"})
+        })
+
+        this.sno++
+    
+        if(this.sno > this.eno) this.sno = 0
+    
+        $(this.slide[this.sno]).animate({
+            left : "0%"
+        },1000)
     }
 
 }

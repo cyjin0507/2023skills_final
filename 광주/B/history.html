@@ -14,6 +14,11 @@
             
         </div>
 
+        <h3 class="mt-5">순위보기</h3>
+        <div id="gallery" class="mt-3">
+
+        </div>
+
         <h3 class="mt-5">유관순열사사적지</h3>
         <div class="input-group mt-3">
             <span class="input-group-text">검색</span>
@@ -32,9 +37,78 @@
                 
             </tbody>
     </table>
+
+    
+
+
+    <div class="modal" id="vote-modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">투표하기</h5>
+            </div>
+            <div class="modal-body">
+                <div class="star-input">
+                    <div class="stars">
+                        <div class="star">☆</div>
+                        <div class="star">☆</div>
+                    </div>
+                    <div class="stars">
+                        <div class="star">☆</div>
+                        <div class="star">☆</div>
+                    </div>
+                    <div class="stars">
+                        <div class="star">☆</div>
+                        <div class="star">☆</div>
+                    </div>
+                    <div class="stars">
+                        <div class="star">☆</div>
+                        <div class="star">☆</div>
+                    </div>
+                    <div class="stars">
+                        <div class="star">☆</div>
+                        <div class="star">☆</div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" id="vote-btn">투표하기</button>
+              <button type="button" class="btn btn-secondary close">닫기</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal" id="detail-modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">순위보기</h5>
+            </div>
+            <div class="modal-body">
+                <h5>총 투표인원 : <span class="info1"></span>명</h5>
+                <h5>평균평점 : <span class="info2"></span>점</h5>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary close">닫기</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
 
     <style>
+        #gallery {
+            display: flex;
+            gap: 30px;
+        }
+
+        #gallery > img {
+            width: 120px;
+            height: 120px;
+        }
+
         table img {
             width: 100px;
             height: 100px;
@@ -53,17 +127,17 @@
             width: 100%;
             position: relative;
             height: 350px;
+            overflow: hidden;
         }
 
         .slide-item {
             width: 100%;
             position: absolute;
             height: 100%;
+            left: 100%;
         }
 
         .slide-item:nth-child(1) {left: 0;}
-        .slide-item:nth-child(2) {left: 100%;}
-        .slide-item:nth-child(3) {left: 200%;}
 
         .slide-item > img {
             width: 100%;
@@ -78,9 +152,36 @@
             padding: 20px;
         }
 
+        .star-input {
+            display: flex;
+            width: 200px;
+            margin-left: 0;
+            height: 45px;
+        }
+
+        .stars {
+            position: relative;
+            width: 30px;
+        }
+
+        .star {
+            font-size: 30px;
+            width: 50%;
+            overflow: hidden;
+            position: absolute;
+        }
+
+        .star:nth-child(2) {
+            right: 0;
+            transform: rotateY(180deg);
+        }
+
     </style>
     
     <script src="https://code.jquery.com/jquery-3.7.0.js" integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
+    <script src="./js/Star.js"></script>
+    <script src="./js/Rank.js"></script>
+    <script src="./js/Vote.js"></script>
     <script src="./js/List.js"></script>
     <script src="./js/Slide.js"></script>
 </body>
