@@ -1,0 +1,8 @@
+svg {
+    width: 100%;
+    margin-top: 50px;
+}
+
+.mark, .info, .intro {
+    display: none;
+}
