@@ -104,6 +104,8 @@ class App {
         $('.info').css('display', 'none')
         $('.intro').css('display', 'none')
 
+        console.log(this.distance);
+
         this.distance.forEach(x=> {
             if(cnt < 3) {
                 if(x.type == this.type) {
@@ -112,8 +114,6 @@ class App {
                 }
             }
         })
-
-        console.log(this.distance);
 
         if(cnt < 3) {
             this.distance.forEach(x=> {
