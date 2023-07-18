@@ -1,0 +1,278 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+h1,
+h3 {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.d-grid-4 {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
+
+.d-flex-s {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+}
+
+.d-flex-b {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.d-flex-c {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+header a{
+    margin: 0 20px;
+    font-size: 20px;
+}
+header {
+    margin-bottom: 50px;
+}
+
+/* 리뷰 입력 페이지 */
+.review .d-flex-s input {
+    margin-left: 10px;
+}
+
+textarea {
+    resize: none;
+}
+
+.star {
+    position: relative;
+    font-size: 2rem;
+    color: #ddd;
+}
+
+.star input {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.star span {
+    width: 0;
+    position: absolute;
+    left: 0;
+    color: red;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+/* 리뷰 입력 페이지 */
+/* 게임 페이지 */
+.snake-btn,
+.walnut-btn {
+    margin: auto;
+    margin-bottom: 50px;
+    display: block;
+}
+
+.modal {
+    width: 100%;
+    height: 100vh;
+}
+
+.modal * {
+    color: white;
+}
+
+/* 게임 페이지 */
+
+/* 스네이크 */
+
+#snakeTable {
+    border-collapse: collapse;
+    display: inline-block;
+}
+
+#snakeTable td {
+    border: 1px solid gray;
+    width: 30px;
+    height: 30px;
+}
+
+
+.snake {
+    background-image: url(../game/soondae.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+}
+
+.snake span.south,
+.snake span.north,
+.snake span.west,
+.snake span.east {
+    position: absolute;
+    background-color: white;
+    width: 29px;
+    height: 29px;
+
+}
+
+.snake span.south {
+    bottom: 0;
+    left: 0;
+    animation: snake1 .5s linear forwards;
+}
+
+.snake span.north {
+    top: 0;
+    left: 0;
+    animation: snake2 .5s linear forwards;
+}
+
+.snake span.west {
+    top: 0;
+    right: 0;
+    animation: snake3 .5s linear forwards;
+}
+
+.snake span.east {
+    top: 0;
+    left: 0;
+    animation: snake4 .5s linear forwards;
+}
+
+@keyframes snake1 {
+    0% {
+        height: 29px;
+    }
+
+    100% {
+        height: 0px;
+    }
+}
+
+@keyframes snake2 {
+    0% {
+        height: 0px;
+    }
+
+    100% {
+        height: 29px;
+    }
+}
+
+@keyframes snake3 {
+    0% {
+        width: 0px;
+    }
+
+    100% {
+        width: 29px;
+    }
+}
+
+@keyframes snake4 {
+    0% {
+        width: 29px;
+    }
+
+    100% {
+        width: 0px;
+    }
+}
+
+.food {
+    background-image: url(../game/walnut-cookie.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+
+
+/* 스네이크 */
+
+/* 명물 받아먹기 */
+#game-canvas {
+    border: 1px solid black;
+}
+
+/* 명물 받아먹기 */
+
+
+/* 명소 자세히 보기  */
+.review-btn {
+    position: fixed;
+    right: 10%;
+    top: 100px;
+}
+
+#chart-container {
+    width: 500px;
+    height: 400px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    position: relative;
+}
+
+#chart {
+    width: 100%;
+    height: 100%;
+}
+
+.line {
+    fill: none;
+    stroke: blue;
+    stroke-width: 2px;
+}
+
+.label {
+    fill: black;
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    text-anchor: middle;
+}
+
+.axis-label {
+    fill: black;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    font-weight: bold;
+    text-anchor: middle;
+}
+#x-label {
+    position: absolute;
+    transform: translateX(-50%);
+    left: 50%;
+    bottom: -30px;
+}
+#y-label {
+    position: absolute;
+    transform: translateY(-50%);
+    top: 50%;
+    left: -50px;
+    rotate: 270deg;
+}
+
+.hidden {
+    opacity: 0;
+    position: absolute;
+}
+/* 명소 자세히 보기  */
+
+/* 관리 */
+.highlight { font-weight : bold; color:#FF0000; }
+.btn {
+    white-space: nowrap;
+}
+/* 관리 */
