@@ -1,0 +1,104 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+h1,
+h3 {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.d-grid-4 {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
+
+.d-flex-s {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+}
+
+.d-flex-b {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.d-flex-c {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+header a{
+    margin: 0 20px;
+    font-size: 20px;
+}
+header {
+    margin-bottom: 50px;
+}
+
+.position {
+    position: fixed;
+    right: 50px;
+    top: 50px;
+    z-index: 50;
+}
+
+.position * {
+    display: block;
+}
+.margin {
+    margin: 100px 0;
+}
+
+.active {
+    background-color: black;
+    color: white;
+}
+
+.category-tab a{
+    padding: 20px;
+    border: 1px solid black;
+}
+.card {
+    position: relative;
+}
+/* 품절아이콘 제공 안해줘서 x 아이콘으로 대체 */
+.sold-out {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 3;
+    color: red;
+    font-size: 3rem;
+}
+
+/* 차트 */
+.chart-container {
+    display: flex;
+    align-items: flex-end;
+    height: 300px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin: 20px;
+}
+
+.bar {
+    width: 30px;
+    margin-right: 10px;
+    background-color: blue;
+}
+
+.bar-label {
+    text-align: center;
+    margin-top: 5px;
+}
+
+.bar-top-label {
+    margin-left: -20px;
+    margin-bottom: 200px;
+}
