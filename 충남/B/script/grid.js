@@ -175,7 +175,7 @@ class Grid {
     deletePos(idx) {
         let cnt = 0
         for(let i=0; i<18; i++) {
-            if(i!=idx) {
+            if(i!=idx && $($('.box')[i]).css('display') != 'none') {
                 $($('.box')[i]).css({
                     'left' : loc[cnt].x + "px",
                     'top' : loc[cnt].y + "px",
@@ -202,7 +202,7 @@ class Grid {
         let returnPos = [parseInt(idx)+1, parseInt(idx)+6, parseInt(idx)+7]
         let step = 0
         let cnt = 0
-        
+
         for(let i=0; i<18; i++) {
             if(returnPos.find(j=>j==cnt)) {
                 i--
