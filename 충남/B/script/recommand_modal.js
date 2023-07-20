@@ -44,8 +44,6 @@ class Modal {
     }
 
     addEvent() {
-        // 드롭박스에 드롭되는지 확인
-        let dropZoneCheck = false
 
         this.dropItemCheck()
 
@@ -56,7 +54,6 @@ class Modal {
             e.preventDefault();
             if(!this.deleteItemCheck) {
                 this.decideRecommand(e)
-                dropZoneCheck = true
             } else {
                 this.changeRankIn(e)
             }
@@ -70,8 +67,7 @@ class Modal {
             e.preventDefault();
           }).on("drop", (e)=> {
             if(!this.deleteItemCheck) {return}
-            dropZoneCheck = !dropZoneCheck
-            if(!dropZoneCheck) {return}
+            console.log("test");
             this.top5List.splice(this.top5List.indexOf(this.dragItem), 1)
             this.recommandList.push(this.dragItem)
             this.drawTop5List()

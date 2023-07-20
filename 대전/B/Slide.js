@@ -69,15 +69,17 @@ class Slide {
             this.isPagerMove = true
         })
 
-        $('#slide-pager').on('mouseup', (e)=> {
+        $('body').on('mouseup', (e)=> {
             this.isPagerMove = false
         })
 
-        $(' #slide-box').on('mousemove', (e)=> {
+        let domLoc = document.querySelector('#slide-box').getBoundingClientRect()
+
+        $('#slide-box').on('mousemove', (e)=> {
             if(!this.isPagerMove) {return}
             e.preventDefault()
-            this.pagerX = e.pageX - 95
-            this.pagerY = e.pageY - 90
+            this.pagerX = e.pageX - domLoc.x
+            this.pagerY = e.pageY - domLoc.y
 
             if(this.pagerX < 0 || this.pagerY < 0) {return}
             if(this.pagerX > 1080 || this.pagerY > 290) {return}
@@ -95,18 +97,21 @@ class Slide {
             this.isSlideMove = true
         })
 
-        $('#slide-move').on('mouseup', (e)=> {
+        $('body').on('mouseup', (e)=> {
             this.isSlideMove = false
         })
+
+        let domLoc = document.querySelector('#slide-box').getBoundingClientRect()
 
         $('#slide-box').on('mousemove', (e)=> {
             if(!this.isSlideMove) {return}
             e.preventDefault()
-            this.moveX = e.pageX - 95
-            this.moveY = e.pageY - 90
+
+            this.moveX = Math.abs(e.pageX - domLoc.x)
+            this.moveY = Math.abs(e.pageY - domLoc.y)
 
             if(this.moveX < 0 || this.moveY < 0) {return}
-            if(this.moveX > 1080 || this.moveY > 290) {return}
+            if(this.moveX > 1012 || this.moveY > 290) {return}
 
             $('#slide-move').css({
                 "left" : this.moveX,
@@ -189,7 +194,7 @@ class Slide {
         let loc = 0
 
         for(let i=0; i<this.slideLength; i++) {
-            loc = i * 100
+            loc = i==0 ? 0 : 100
             $($('.slide-area')[i]).css('left', `${loc}%`)
         }
 
