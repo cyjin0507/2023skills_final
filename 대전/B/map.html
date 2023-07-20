@@ -15,11 +15,59 @@
         <img src="./imgs/Asset 6.png" alt="" id="asset" draggable="false">
 
         <button class="btn btn-primary mt-3" id="distance-btn">거리 계산</button>
+        <select name="" id="ride-select" class="mt-3 form-control" style="width: 250px;">
+            <option value="walk">도보</option>
+            <option value="bike">자전거</option>
+            <option value="car">차</option>
+        </select>
+
+        <button class="btn btn-danger mt-3" id="reset-btn">전체삭제버튼</button>
+        <button class="btn btn-primary mt-3" id="save-btn">저장버튼</button>
+        <button class="btn btn-primary mt-3" id="print-btn">출력버튼</button>
+
+        <table class="table mt-5">
+            <thead>
+                <tr>
+                    <th>번호</th>
+                    <th>경로</th>
+                    <th>이동거리</th>
+                    <th>예상이동시간</th>
+                </tr>
+            </thead>
+            <tbody>
+                
+            </tbody>
+        </table>
     </div>
+
+    <div class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Modal title</h5>
+            </div>
+            <div class="modal-body">
+              <img src="" alt="">
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary close">닫기</button>
+            </div>
+          </div>
+        </div>
+      </div>
 
     <script src="./Map.js"></script>
 
     <style>
+        thead {
+            background-color: #333;
+            color: white;
+        }
+
+        th, td {
+            text-align: center;
+        }
+
         canvas {
             width: 700px;
             height: 700px;
