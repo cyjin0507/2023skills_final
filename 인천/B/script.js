@@ -37,40 +37,15 @@ class App {
         this.list.forEach((x,i)=> {
             if(x.name == now.name) {return}
 
-            let bX = x.x
-            let sX = now.x
-
-            if(bX < sX) {
-                let tX = sX
-                sX = bX
-                bX = tX
-            }
-
-            let bY = x.y
-            let sY = now.y
-
-            if(bY < sY) {
-                let tY = sY
-                sY = bY
-                bY = tY
-            }
-
-            let rX = bX - sX
-            let rY = bY - sY
-
-            // 임의로 10를 곱함
-            rX *= 100
-            rY *= 100
-
-            let dis = Math.sqrt(Math.pow(rX,2) + Math.pow(rY,2))
+            let dis = this.haversine(x.y, x.x, now.y, now.x)
 
             distance.push({
                 "name" : x.name,
                 "type" : x.type,
                 "admission" : x.admission,
                 "keyword" : x.keyword,
-                "dis" : Math.round(dis * 100) / 100,
-                "time" : (dis / 40) * 60
+                "dis" : Math.round(dis),
+                "time" : Math.round((dis / 40) * 60)
             })
         })
 
@@ -97,6 +72,23 @@ class App {
         this.mapControl()
     }
 
+    // 하버시안 공식 사용
+    haversine(lat1, lon1, lat2, lon2) {
+        const R = 6371; // 지구 반지름 (단위: km)
+        const dLat = this.deg2rad(lat2 - lat1);
+        const dLon = this.deg2rad(lon2 - lon1);
+        const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                  Math.cos(this.deg2rad(lat1)) * Math.cos(this.deg2rad(lat2)) *
+                  Math.sin(dLon/2) * Math.sin(dLon/2);
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+        const distance = R * c; // 두 지점 간의 거리 (단위: km)
+        return distance;
+    }
+
+    deg2rad(deg) {
+        return deg * (Math.PI/180);
+    }
+
     mapControl() {
         let cnt = 0
 
@@ -115,16 +107,16 @@ class App {
             }
         })
 
-        if(cnt < 3) {
-            this.distance.forEach(x=> {
-                if(cnt < 3) {
-                    if(x.type != this.type) {
-                        this.drawMapInfo(x)
-                        cnt++
-                    }
-                }   
-            })
-        }
+        console.log(cnt);
+
+        this.distance.forEach(x=> {
+            if(cnt < 3) {
+                if(x.type != this.type) {
+                    this.drawMapInfo(x)
+                    cnt++
+                }
+            }   
+        })
 
     }
 
@@ -132,7 +124,7 @@ class App {
         $(`g.mark[data-name="${x.name}"]`).fadeIn()
         $(`g.info[data-name="${x.name}"]`).fadeIn()
         $(`g.info[data-name="${x.name}"] .distance`).html(`거리 : ${x.dis}km`)
-        $(`g.info[data-name="${x.name}"] .time`).html(`예상소요시간 : ${x.time}`)
+        $(`g.info[data-name="${x.name}"] .time`).html(`예상소요시간 : ${x.time}분`)
         $(`g.info[data-name="${x.name}"] .admission`).html(`입장요금 : ${x.admission}원`)
         $(`g.info[data-name="${x.name}"] .keyword`).html(`키워드 : ${JSON.stringify(x.keyword)}`)
     }
