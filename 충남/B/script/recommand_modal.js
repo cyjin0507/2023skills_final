@@ -58,7 +58,6 @@ class Modal {
                 this.changeRankIn(e)
             }
             
-            
         })
 
 
