@@ -28,6 +28,7 @@
     </div>
 
     <a href="/recommand">추천여행 메뉴</a>
+    <a href="/gallery">갤러리</a>
 
     <div class="modal" id="join-modal" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">

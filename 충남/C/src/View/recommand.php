@@ -10,8 +10,8 @@
 
 
       <h3 class="mt-5">관리자</h3>
-      <canvas id="bar" class="mt-3" width="350" height="300"></canvas>
-      <canvas id="pie" class="mt-3" width="500" height="400"></canvas>
+      <canvas id="bar" width="350" height="300"></canvas>
+      <canvas id="pie" width="500" height="400"></canvas>
 
 
 

@@ -17,5 +17,9 @@ class IndexController {
         view('recommand');
     }
 
+    public function gallery() {
+        view('gallery');
+    }
+
 
 }
