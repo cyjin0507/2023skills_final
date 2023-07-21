@@ -2,6 +2,7 @@ class Rank {
     constructor(popular = []) {
         this.popular = popular
         this.drawList()
+        this.drawGraph()
     }
 
     drawList() {
@@ -26,6 +27,15 @@ class Rank {
         $('.info2').html(Math.round(item[0].score / item[0].cnt,2))
     }
 
+    drawGraph() {
+        let score = []
+        let name = []
+        this.popular.forEach(x=> {
+            score.push(x.score)
+            name.push(x.name)
+        })
 
+        new Graph(score, name)
+    }
 
 }

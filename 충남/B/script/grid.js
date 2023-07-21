@@ -124,6 +124,7 @@ class Grid {
         this.init()
         this.basicList()
 
+
         this.deleteCnt = 0
     }
 
@@ -140,7 +141,7 @@ class Grid {
                 <div class="box">
                     <div class="box-inner">
                         <img src="./resources/image/여행갤러리/${x}.jpg" alt="" data-idx=${i}>
-                        <div class="delete" data-idx=${i}>x</div>
+                        <div class="delete" data-idx=${i}>x ${i}</div>
                     </div>
                 </div>
             `)
@@ -193,32 +194,33 @@ class Grid {
 
     // 클릭해서 박스 사이즈 변할 때
     changeSizePos(idx) {
-        console.log(idx)
+        $('.box').css({
+            'width' : '150px',
+            'height' : '150px'
+        })
         $($('.box')[idx]).css({
             'width' : '300px',
             'height' : '300px'
         })
 
-        let returnPos = [parseInt(idx)+1, parseInt(idx)+6, parseInt(idx)+7]
-        let step = 0
-        let cnt = 0
+        let returnPos = [parseInt(idx)+1, parseInt(idx)+5, parseInt(idx)+6]
 
-        for(let i=0; i<18; i++) {
-            if(returnPos.find(j=>j==cnt)) {
-                i--
-                step++
-                cnt++
-                continue
-            } else if(idx!=i) {
-                console.log("dsf");
-                $($('.box')[i]).css({
-                    'left' : loc[cnt+step].x + "px",
-                    'top' : loc[cnt+step].y + "px"
-                })
+        let index = 0
+        img.forEach((x,i)=> {
+            let cnt = 0
+            if(returnPos.includes(i)) {
+                if(index == 1) {
+                    cnt = 2
+                    index += 2
+                } else if(index < 1) {
+                    cnt = 1
+                    index++
+                }
             }
-            
-            cnt++
-        }
+
+            $($('.box')[i]).css('left', loc[i+index].x)
+            $($('.box')[i]).css('top', loc[i+index].y)
+        })
 
     }
 
