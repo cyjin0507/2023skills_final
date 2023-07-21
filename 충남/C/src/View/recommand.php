@@ -10,8 +10,8 @@
 
 
       <h3 class="mt-5">관리자</h3>
-      <img src= "../../graph/stick.php" alt="" class="mt-3">
-
+      <canvas id="bar" class="mt-3" width="350" height="300"></canvas>
+      <canvas id="pie" class="mt-3" width="500" height="400"></canvas>
 
 
 
@@ -40,4 +40,6 @@
 
 
     <script src="/script/recommand_modal.js"></script>
+    <script src="/script/bar.js"></script>
+    <script src="/script/pie.js"></script>
     <script src="/script/recommand.js"></script>

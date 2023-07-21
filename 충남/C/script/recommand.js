@@ -18,8 +18,8 @@ class Recommand {
 
         this.drawList()
         this.addEvent()
-
-        // localStorage.removeItem('list')
+        
+        this.graphControl()
     }
 
     dataSet() {
@@ -99,11 +99,31 @@ class Recommand {
         `)
 
         $('.play-btn').click((e)=> {
-            console.log(e.target);
             this.top5Play(e)
         })
     }
 
+    async graphControl() {
+        const countData = await $.getJSON('/api/stats/count/get')
+        let count = []
+        let countName = []
+        countData.forEach(x=> {
+            count.push(x.count)
+            countName.push(x.name)
+        })
+        
+        new Bar(count, countName)
+
+        const scoreData = await $.getJSON('/api/stats/score/get')
+        let score = []
+        let scoreName = []
+        scoreData.forEach(x=> {
+            score.push(parseInt(x.score))
+            scoreName.push(x.name)
+        })
+        
+        new Pie(score, scoreName)
+    }
 
 }
 

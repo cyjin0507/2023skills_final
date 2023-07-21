@@ -125,7 +125,6 @@ class Grid {
         this.basicList()
 
 
-        this.deleteCnt = 0
     }
 
     init() {
@@ -141,7 +140,7 @@ class Grid {
                 <div class="box">
                     <div class="box-inner">
                         <img src="./resources/image/여행갤러리/${x}.jpg" alt="" data-idx=${i}>
-                        <div class="delete" data-idx=${i}>x ${i}</div>
+                        <div class="delete" data-idx=${i} data-name=${x}>x</div>
                     </div>
                 </div>
             `)
@@ -157,7 +156,7 @@ class Grid {
         })
 
         $('.delete').click((e)=> {
-            this.deletePos(e.target.dataset.idx)
+            this.deletePos(e.target.dataset)
         })
 
     }
@@ -173,7 +172,9 @@ class Grid {
     }
 
     // 클릭해서 이미지 삭제
-    deletePos(idx) {
+    deletePos(dataset) {
+        let idx = dataset.idx
+        let name = dataset.name
         let cnt = 0
         for(let i=0; i<18; i++) {
             if(i!=idx && $($('.box')[i]).css('display') != 'none') {
@@ -189,7 +190,12 @@ class Grid {
             }
             cnt++
         }
-        this.deleteCnt++
+
+        img.splice(img.indexOf(name),1)
+        
+        setTimeout(()=> {
+            this.basicList()
+        },600)
     }
 
     // 클릭해서 박스 사이즈 변할 때

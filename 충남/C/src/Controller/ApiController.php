@@ -124,5 +124,15 @@ class ApiController {
 
         echo json_encode($json, JSON_UNESCAPED_UNICODE);
     }
+
+    public function statsCountGetAPI() {
+        $data = DB::fetchAll("SELECT * FROM `stats` order by count desc LIMIT 0,5;", []);
+        echo json_encode($data, JSON_UNESCAPED_UNICODE);
+    }
+
+    public function statsScoreGetAPI() {
+        $data = DB::fetchAll("SELECT * FROM `stats` order by score desc LIMIT 0,5;", []);
+        echo json_encode($data, JSON_UNESCAPED_UNICODE);
+    }
     
 }

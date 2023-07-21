@@ -13,3 +13,5 @@ Route::post("/api/login", "ApiController@loginAPI");
 Route::get("/recommand", "IndexController@recommand");
 Route::post("/api/recommand/add", "ApiController@recommandAddAPI");
 Route::get("/api/recommand/get", "ApiController@recommandGetAPI");
+Route::get("/api/stats/count/get", "ApiController@statsCountGetAPI");
+Route::get("/api/stats/score/get", "ApiController@statsScoreGetAPI");
