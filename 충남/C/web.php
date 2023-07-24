@@ -16,4 +16,9 @@ Route::get("/api/recommand/get", "ApiController@recommandGetAPI");
 Route::get("/api/stats/count/get", "ApiController@statsCountGetAPI");
 Route::get("/api/stats/score/get", "ApiController@statsScoreGetAPI");
 
+
+// 
 Route::get("/gallery", "IndexController@gallery");
+Route::post("/gallery/image/insert", "ApiController@galleryInsertAPI");
+Route::get("/gallery/get", "ApiController@galleryGetAPI");
+Route::post("/gallery/delete", "ApiController@galleryDeleteAPI");

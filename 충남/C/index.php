@@ -6,7 +6,7 @@ define('__ROOT', dirname(__DIR__) . __DS . 'htdocs');
 define('__SRC', __ROOT . __DS . 'src');
 define('__VIEWS', __SRC . __DS . 'view');
 define('__FONTS', __ROOT . __DS . 'resources' . __DS . 'fonts' . __DS);
-define('__GRAPH', __ROOT . __DS . 'graph' . __DS);
+define('__IMAGES', __ROOT . __DS . 'resources' . __DS . 'image' . __DS . 'gallery' . __DS);
 
 function myLoader($name)
 {

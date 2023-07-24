@@ -134,5 +134,40 @@ class ApiController {
         $data = DB::fetchAll("SELECT * FROM `stats` order by score desc LIMIT 0,5;", []);
         echo json_encode($data, JSON_UNESCAPED_UNICODE);
     }
+
+    public function galleryInsertAPI() {
+        $images = $_FILES['upload_file'];
+        $fileName = $images['name'];
+        $tmpName = $images['tmp_name'];
+
+        if(count($fileName) <= 0) {
+            return;
+        }
+
+        for($i=0; $i<count($fileName); $i++) {
+            $rnd = rand() . $fileName[$i];
+            move_uploaded_file($tmpName[$i], __IMAGES . $rnd);
+            DB::execute("INSERT INTO `gallery`(`name`, `file`) VALUES (?,?)",
+            [$fileName[$i], $rnd]);
+        }
+
+    }
+
+    public function galleryGetAPI() {
+        $data = DB::fetchAll("SELECT * FROM gallery");
+        echo json_encode($data);
+    }
+
+    public function galleryDeleteAPI() {
+        $jsonData = json_decode(file_get_contents('php://input'), true, 512, JSON_THROW_ON_ERROR);
+
+        $data = DB::execute("DELETE FROM gallery where idx=?", [$jsonData['idx']]);
+
+        if($data) {
+            echo "success";
+        } else {
+            echo "false";
+        }
+    }
     
 }

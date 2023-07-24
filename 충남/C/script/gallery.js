@@ -122,15 +122,18 @@ class Grid {
     constructor() {
         // 기본적으로 그려줌
         this.init()
-        this.basicList()
 
 
     }
 
-    init() {
-        this.imgs = img
+    async init() {
+        const response = await $.getJSON('/gallery/get')
+
+
+        this.imgs = response
         this.loc = this.loc
         this.deleteImgs = []
+        this.basicList()
     }
 
     basicList() {
@@ -139,8 +142,8 @@ class Grid {
             $('.grid').append(`
                 <div class="box">
                     <div class="box-inner">
-                        <img src="/resources/image/여행갤러리/${x}.jpg" alt="" data-idx=${i}>
-                        <div class="delete" data-idx=${i} data-name=${x}>x</div>
+                        <img src="/resources/image/gallery/${x.file}" alt="" data-idx=${i}>
+                        <div class="delete" data-idx=${i} data-index=${x.idx} data-name=${x.file}>x</div>
                     </div>
                 </div>
             `)
@@ -164,7 +167,7 @@ class Grid {
     }
 
     setPos() {
-        for(let i=0; i<18; i++) {
+        for(let i=0; i<this.imgs.length; i++) {
             $($('.box')[i]).css({
                 'left' : loc[i].x + "px",
                 'top' : loc[i].y + "px"
@@ -174,11 +177,10 @@ class Grid {
     }
 
     // 클릭해서 이미지 삭제
-    deletePos(dataset) {
+    async deletePos(dataset) {
         let idx = dataset.idx
-        let name = dataset.name
         let cnt = 0
-        for(let i=0; i<18; i++) {
+        for(let i=0; i<this.imgs.length; i++) {
             if(i!=idx && $($('.box')[i]).css('display') != 'none') {
                 $($('.box')[i]).css({
                     'left' : loc[cnt].x + "px",
@@ -193,10 +195,16 @@ class Grid {
             cnt++
         }
 
-        img.splice(img.indexOf(name),1)
-        
+        const response = await $.ajax({
+            url : "/gallery/delete",
+            type : "POST",
+            data : JSON.stringify({
+                "idx" : dataset.index
+            })
+        })
+
         setTimeout(()=> {
-            this.basicList()
+            this.init()
         },600)
     }
 
