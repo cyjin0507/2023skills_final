@@ -1,0 +1,793 @@
+/* 초기설정입니다. */
+* {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    box-sizing: border-box;
+    list-style: none;
+}
+
+textarea {
+    resize: none;
+}
+
+input[type="radio"], input[type="checkbox"]{
+    display: none;
+}
+
+label, button, i {
+    cursor: pointer;
+}
+
+.container {
+    max-width: 1440px;
+}
+
+section {
+    padding: 120px 0;
+}
+
+a {
+    color: #000;
+    text-decoration: none !important;
+}
+
+a:hover {
+    color: #000;
+}
+
+.btn1 {
+    width: 195px;
+    height: 45px;
+    border-bottom-right-radius: 120px;
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+    line-height: 29px;
+    z-index: 1;
+}
+
+.btn1::after {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to right, #2a5cbf, #0f044c);
+    position: absolute;
+    right: 0%;
+    top: 0;
+    content: "";
+    z-index: -1;
+    transition: .5s;
+}
+
+.btn1:hover {
+    border: 2px solid #0f044c;
+    color: #0f044c;
+}
+
+.btn1:hover::after {
+    right: -100%;
+}
+
+.btn2 {
+    width: 100%;
+    height: 45px;
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+    line-height: 29px;
+    z-index: 1;
+    transition: .5s;
+}
+
+.btn2::after {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to right, #2a5cbf, #0f044c);
+    position: absolute;
+    right: 0%;
+    top: 0;
+    content: "";
+    z-index: -1;
+    transition: .5s;
+}
+
+.btn2:hover {
+    border: 2px solid #0f044c;
+    color: #0f044c;
+}
+
+.btn2:hover::after {
+    right: -100%;
+}
+
+.btn3 {
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.btn3::after {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to right, #2a5cbf, #0f044c);
+    position: absolute;
+    right: 0%;
+    top: 0;
+    content: "";
+    z-index: -1;
+    transition: .5s;
+}
+
+.btn3:hover {
+    color: #0f044c;
+}
+
+.btn3:hover::after {
+    right: -100%;
+}
+
+.btn4 {
+    background-color: #0f044c;
+    color: #fff;
+}
+
+.mt35 {
+    margin-top: 35px;
+}
+
+.option {
+    color: #888;
+    font-size: 15px;
+}
+/* 햄버거 메뉴 입니다 */
+
+.ham {
+    width: 100%;
+    height: 100vh;
+    z-index: 100;
+    display: none;
+}
+
+.ham a {
+    color: #fff;
+    display: block;
+}
+
+.ham .lab {
+    width: 50px;
+    height: 50px;
+    background-color: #000;
+    color: #fff;
+    font-size: 30px;
+    top: 80px;
+    right: 0;
+}
+
+.ham .log {
+    top: 0;
+    right: -100%;
+    transition: .3s;
+}
+
+.ham .back {
+    width: 60%;
+    height: 100vh;
+}
+
+.ham .con {
+    width: 40%;
+    height: 100vh;
+    background-color: #0f044c;
+    color: #fff;
+    padding: 30px;
+}
+
+.ham .logo {
+    width: 210px;
+    height: 70px;
+    background-image: url(../제공이미지/logo2.png);
+    background-position: center;
+    background-size: cover;
+    margin: 0 auto;
+}
+
+#ham:checked ~ .ham .log {
+    right: 0;
+}
+
+/* 헤더부분 입니다 */
+
+header {
+    height: 100px;
+    background-color: #fff;
+}
+
+header .aa {
+    padding: 0 10px;
+    margin: 50px 10px 0;
+    line-height: 47px;
+    font-size: 25px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+header .aa:hover {
+    border-bottom: 3px solid #2a5cbf;
+}
+
+header a {
+    padding: 0 10px;
+    margin: 50px 10px 0;
+    line-height: 47px;
+    font-size: 25px;
+    font-weight: bold;
+}
+
+header a:hover {
+    border-bottom: 3px solid #2a5cbf;
+}
+
+header .logo {
+    width: 300px;
+    height: 100px;
+    background-image: url(../제공이미지/logo.png);
+    margin: 0;
+    padding: 0;
+}
+
+header .logo:hover {
+    border: none;
+}
+
+header .box {
+    top: 0px;
+    visibility: hidden;
+}
+
+header .box2 {
+    left: 160px;
+}
+
+header .box3 {
+    left: 310px;
+}
+
+header .box4 {
+    left: 455px;
+}
+
+header .box:hover { top: 100px; visibility: visible;}
+
+header .navi > .navi1:hover ~ .box1 { top: 100px; visibility: visible;} 
+header .navi > .navi2:hover ~ .box2 { top: 100px; visibility: visible;} 
+header .navi > .navi3:hover ~ .box3 { top: 100px; visibility: visible;} 
+header .navi > .navi4:hover ~ .box4 { top: 100px; visibility: visible;} 
+
+/* 비주얼 부분 입니다 */
+
+.visual .ddi {
+    width: 5px;
+    height: 240px;
+    background-color: #000;
+}
+
+.visual .tit {
+    width: 600px;
+    height: 200px;
+    background-image: url(../제공이미지/visual_tit.png);
+    margin-top: 80px;
+}
+
+.visual .box {
+    width: 720px;
+    height: 720px;
+}
+
+.visual .vis_img {
+    width: 100%;
+    height: 100%;
+    background-image: url(../제공이미지/visual.png);
+}
+
+.visual .slide {
+    width: 400%;
+    height: 100%;
+    z-index: -1;
+    padding: 0;
+    animation: slide 13s infinite;
+}
+
+@keyframes slide {
+    0% { left: 0;}
+    20% { left: 0;}
+    33.333% { left: -100%;}
+    53.333% { left: -100%;}
+    66.666% { left: -200%;}
+    86.666% { left: -200%;}
+    100% { left: -300%;}
+}
+
+.visual li {
+    width: 720px;
+    height: 720px;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.visual li:nth-child(1) {
+    background-image: url(../제공이미지/image24.jpg);
+}
+
+.visual li:nth-child(2) {
+    background-image: url(../제공이미지/image19.jpg);
+}
+
+.visual li:nth-child(3) {
+    background-image: url(../제공이미지/image14.png);
+}
+
+.visual li:nth-child(4) {
+    background-image: url(../제공이미지/image24.jpg);
+}
+
+#play:checked ~ .col .box .slide { animation-play-state: running;}
+#play:checked ~ .col .pause { display: block;}
+#play:checked ~ .col .play { display: none;}
+#pause:checked ~ .col .box .slide { animation-play-state: paused;}
+#pause:checked ~ .col .pause { display: none;}
+#pause:checked ~ .col .play { display: block;}
+
+.vid {
+    font-size: 25px;
+    color: #0f044c;
+    margin-top: 50px;
+    margin-left: 20px;
+}
+
+/* 컨텐츠1입니다 */
+
+.con1 .tit {
+    width: 600px;
+    height: 160px;
+    background-image: url(../제공이미지/tit1.png);
+}
+
+.con1 .box {
+    height: 700px;
+}
+
+@property --a {
+    syntax: '<percentage>';
+    initial-value: 20%;
+    inherits: false;
+}
+
+@property --b {
+    syntax: '<percentage>';
+    initial-value: 40%;
+    inherits: false;
+}
+
+@property --c {
+    syntax: '<percentage>';
+    initial-value: 100%;
+    inherits: false;
+}
+
+.con1 .gr {
+    width: 600px;
+    height: 600px;
+    margin: 50px;
+}
+
+.con1 .gr p {
+    position: absolute;
+    bottom: 0;
+}
+
+.con1 .gr1 {
+    border-radius: 50%;
+    background: conic-gradient(#0f044c var(--a), blue 0 var(--b), #2a5cbf 0 var(--c), #fff 0);
+}
+
+.con1 .gr2 div {
+    width: 50px;
+    height: 0;
+    margin: 0 30px;
+    transition: .3s;
+    position: absolute;
+    bottom: 0;
+}
+
+.con1 .gr2 div:nth-child(1) {
+    background-color: #0f044c;
+    height: var(--a);
+    left: 150px;
+}
+
+.con1 .gr2 div:nth-child(2) {
+    background-color: blue;
+    height: var(--b);
+    left: 250px;
+}
+
+.con1 .gr2 div:nth-child(3) {
+    background-color: #2a5cbf;
+    height: var(--c);
+    left: 350px;
+}
+
+#gr1:checked ~ .col-12 .gr1 { display: block; animation: per 1s linear;}
+#gr1:checked ~ .col-12 .gr2 { display: none;}
+#gr1:checked ~ .col-12 .gr2 div { display: none;}
+#gr1:checked ~ .col-12 .pop .pop1 { display: block;}
+#gr1:checked ~ .col-12 .pop .pop2 { display: none;}
+#gr2:checked ~ .col-12 .gr1 { display: none;}
+#gr2:checked ~ .col-12 .gr2 { display: block;}
+#gr2:checked ~ .col-12 .gr2 div { display: block;}
+#gr2:checked ~ .col-12 .gr2 div:nth-child(1) { animation: per 1s linear;}
+#gr2:checked ~ .col-12 .gr2 div:nth-child(2) { animation: per 1s linear;}
+#gr2:checked ~ .col-12 .gr2 div:nth-child(3) { animation: per 1s linear;}
+#gr2:checked ~ .col-12 .pop .pop1 { display: none;}
+#gr2:checked ~ .col-12 .pop .pop2 { display: block;}
+
+@keyframes per {
+    0% { --a: 0%; --b: 0%; --c: 0%;}
+    20% { --a: 20%;}
+    40% { --b: 40%;}
+    100% { --c: 100%;}
+}
+
+.cor {
+    width: 20px;
+    height: 20px;
+}
+
+.cor1 {
+    background-color: #0f044c;
+}
+
+.cor2 {
+    background-color: blue;
+}
+
+.cor3 {
+    background-color: #2a5cbf;
+}
+
+.con1 .pop {
+    width: 400px;
+    height: 20px;
+    margin-top: 280px;
+}
+
+.con1 .popp {
+    margin: 0 9px;
+}
+
+/* con2입니다 */
+
+.con2 .tit {
+    width: 600px;
+    height: 130px;
+    background-image: url(../제공이미지/tit2.png);
+}
+
+.con2 .box {
+    width: 100%;
+    height: 250px;
+    border: 2px solid #0f044c;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+.con2 .box .btn2 {
+    bottom: 10px;
+}
+
+.con2 .box p {
+    margin: 0;
+}
+
+.con2 .box p:nth-child(1) {
+    color: #2a5cbf;
+    font-size: 25px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.con2 .box p:nth-child(2) {
+    margin-bottom: 10px;
+}
+
+.con2 .row .col-6 {
+    margin: 0 15px;
+}
+
+.con2 .col-6 .btn2 {
+    width: calc(100% - 20px);
+}
+
+#not1:checked ~ .nott1 .col-6 .box { display: block;}
+#not1:checked ~ .nott2 .col-6 .box { display: none;}
+#not1:checked ~ .nott3 .col-6 .box { display: none;}
+#not2:checked ~ .nott1 .col-6 .box { display: none;}
+#not2:checked ~ .nott2 .col-6 .box { display: block;}
+#not2:checked ~ .nott3 .col-6 .box { display: none;}
+#not3:checked ~ .nott1 .col-6 .box { display: none;}
+#not3:checked ~ .nott2 .col-6 .box { display: none;}
+#not3:checked ~ .nott3 .col-6 .box { display: block;}
+
+/* footer입니다 */
+footer {
+    height: 152px;
+    background-color: #0f044c;
+    color: #fff;
+}
+
+footer a {
+    color: #fff;
+}
+
+footer a:hover {
+    color: #fff;
+}
+
+footer .hi {
+    height: 50px;
+    line-height: 50px;
+    font-size: 20px;
+}
+
+footer .hi a {
+    margin: 0 15px;
+}
+
+footer i {
+    transition: .3s;
+}
+
+footer i:hover {
+    transform: rotate(360deg);
+}
+
+footer .ddi {
+    width: 100%;
+    height: 2px;
+    background-color: #fff;
+}
+
+footer .bo p {
+    margin: 0;
+}
+
+footer .logo {
+    width: 210px;
+    height: 70px;
+    margin-top: 15px;
+    background-position: center;
+    background-size: cover;
+    background-image: url(../제공이미지/logo2.png);
+}
+
+/* sub입니다 */
+
+.sub1 .tit {
+    width: 600px;
+    height: 160px;
+    background-image: url(../제공이미지/tit3.png);
+}
+
+.sub1 .box {
+    height: 500px;
+    border: 2px solid #0f044c;
+    border-top-right-radius: 150px;
+    padding: 15px;
+    margin: 50px 0;
+    overflow: hidden;
+    transition: .3s;
+}
+
+.sub1 .box:hover {
+    color: #fff;
+    background-position: center;
+    background-size: cover;
+    background: linear-gradient(to right, rgba(0, 0, 0, .6), rgba(0, 0, 0, .6)), url(../제공이미지/image7.png);
+}
+
+.sub1 .box:hover p:nth-child(2) {
+    color: #fff;
+}
+
+.sub1 .box:hover .btn2 {
+    color: #fff;
+}
+
+.sub1 .box:hover .btn2:hover {
+    border: 2px solid #fff;
+}
+
+.sub1 .box .btn2 {
+    width: calc(100% - 30px);
+    bottom: 15px;
+}
+
+.sub1 .box p {
+    margin: 0;
+}
+
+.sub1 .box p:nth-child(1) {
+    font-size: 40px;
+    font-weight: bold;
+    color: #2a5cbf;
+}
+
+.sub1 .box p:nth-child(2){
+    color: #0f044c;
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 30px;
+}
+
+.sub1 .card .card-img-top {
+    height: 300px;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.sub1 .card1 .card-img-top {
+    background-image: url(../독립기념관/image1.jpg);
+}
+
+.sub1 .card2 .card-img-top {
+    background-image: url(../독립기념관/image2.jpg);
+}
+
+.sub1 .card3 .card-img-top {
+    background-image: url(../독립기념관/image3.jpg);
+}
+
+.sub1 .card .card-body {
+    height: 270px;
+}
+
+.sub1 .card .btn2 {
+    width: calc(100% - 2rem);
+    bottom: 1rem;
+}
+
+.sub1 .card p {
+    margin: 0;
+}
+
+.sub1 .card p:nth-child(1) {
+    color: #2a5cbf;
+    font-size: 25px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.sub1 .card p:nth-child(2) {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+#inde1:checked ~ .ind1 {display: flex;}
+#inde1:checked ~ .ind2 {display: none;}
+#inde1:checked ~ .row label:nth-child(1) { background-color: #fff; border: 2px solid #0f044c; color: #0f044c;}
+#inde1:checked ~ .row label:nth-child(1):after { display: none;}
+
+#inde2:checked ~ .ind2 {display: flex;}
+#inde2:checked ~ .ind1 {display: none;}
+#inde2:checked ~ .row label:nth-child(2) { background-color: #fff; border: 2px solid #0f044c; color: #0f044c;}
+#inde2:checked ~ .row label:nth-child(2):after { display: none;}
+
+.con3 .tit {
+    width: 600px;
+    height: 160px;
+    background-image: url(../제공이미지/tit4.png);
+}
+
+.cal .dat {
+    font-size: 25px;
+    margin: 0;
+}
+
+thead {
+    background-color: #0f044c;
+    color: #fff;
+}
+
+.cal tbody td {
+    height: 100px;
+}
+
+.cal tbody .box {
+    bottom: 0px;
+}
+
+.cal tbody .box .spe {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #0f044c;
+    margin-top: 8px;
+    margin-right: 5px;
+}
+
+.adm .d-flex p {
+    line-height: 40px;
+    margin: 0;
+}
+
+.adm .btn-group {
+    width: 200px;
+    margin: 0 auto;
+}
+
+.info .d-flex p {
+    line-height: 40px;
+    margin: 0;
+}
+
+.info tbody td {
+    cursor: pointer;
+    line-height: 50px;
+}
+
+.info img {
+    width: 50px;
+    height: 50px;
+    margin: 0 auto;
+}
+
+.info td:nth-child(1) { width: 10%;}
+.info td:nth-child(2) { width: 20%;}
+.info td:nth-child(3) { width: 40%;}
+.info td:nth-child(4) { width: 15%;}
+.info td:nth-child(5) { width: 15%;}
+
+.man td:nth-child(1) { width: 50%; }
+.man td:nth-child(2) { width: 20%; }
+.man td:nth-child(3) { width: 20%; }
+.man td:nth-child(4) { width: 10%; text-align: center; }
+
+.man tbody td {
+    line-height: 38px;
+}
+
+.adm_res td:nth-child(1) { width: 20%;}
+.adm_res td:nth-child(2) { width: 20%;}
+.adm_res td:nth-child(3) { width: 20%;}
+.adm_res td:nth-child(4) { width: 20%;}
+.adm_res td:nth-child(5) { width: 20%; text-align: center;}
+.adm_res tbody td {
+    line-height: 38px;
+}
+
+.reser table tbody {
+    line-height: 38px;
+}
+
+.reser td:nth-child(5) { width: 10%; text-align: center;}
+
+@media (max-width: 760px){
+    .ham { display: block;}
+    
+    header { display: none;}
+
+    .visual { padding: 0 0 50px 0;}
+    .visual .ddi { display: none;}
+
+    .con1 .pop { margin-top: 0;}
+
+    .con2 .row .col-6 { margin: 5px 0 0 0;}
+
+    footer .hi a { font-size: 15px; margin: 0 5px;}
+    footer .bo p { font-size: 15px;}
+}
+
