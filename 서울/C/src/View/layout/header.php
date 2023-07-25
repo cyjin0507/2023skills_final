@@ -25,6 +25,8 @@
         <?php
     }
     ?>
+    <a href="/reserve.php">캠핑장 예약</a>
+    <a href="/mypage">나의 예약현황</a>
 
     
 

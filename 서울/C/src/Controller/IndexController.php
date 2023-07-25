@@ -50,9 +50,8 @@ class IndexController {
         redirect('로그아웃 되었습니다.', '/');
     }
 
-    public function test() {
-        echo "sdf";
-        // view('index');
+    public function reserve() {
+        view('reserve');
     }
 
 

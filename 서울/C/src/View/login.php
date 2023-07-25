@@ -8,5 +8,5 @@
         <span class="input-group-text">비밀번호</span>
         <input type="password" class="form-control" name="pw">
     </div>
-    <button class="btn btn-primary">로그인</button>
+    <button class="btn btn-primary mt-3">로그인</button>
 </form>

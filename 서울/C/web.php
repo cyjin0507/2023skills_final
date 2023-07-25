@@ -12,4 +12,15 @@ Route::post("/login/process", "IndexController@loginProcess");
 Route::get("/logout", "IndexController@logout");
 
 
-Route::get('/a.php', "IndexController@test");
+// reserve
+Route::get('/reserve.php', "IndexController@reserve");
+Route::get('/reserv/info/{date}/{cidx}/{term}', "ReservController@info");
+
+Route::post("/reserv/process", "ReservController@reserveProcess");
+
+Route::get('/reserv/get', "ReservController@reserveGet");
+Route::get('/reserv/get/{date}', "ReservController@reserveDateGet");
+
+// mypage
+Route::get('/mypage', "MypageController@mypage");
+Route::get('/reserv/delete/{idx}', "MypageController@reservDelete");

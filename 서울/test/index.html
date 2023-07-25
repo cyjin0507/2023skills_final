@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.7.0.js" integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
+    <title>Document</title>
+</head>
+<body>
+
+    <div class="container">
+        
+        <div id="calender-area">
+            <table class="calendar table mt-5 table-bordered">
+                <thead>
+                    <tr>
+                        <td id="before">&#60;</td>
+                        <td colspan="5">
+                            <span id="calYear"></span>년
+                            <span id="calMonth"></span>월
+                        </td>
+                        <td id="after">&#62;</td>
+                    </tr>
+                    <tr>
+                        <td>일</td>
+                        <td>월</td>
+                        <td>화</td>
+                        <td>수</td>
+                        <td>목</td>
+                        <td>금</td>
+                        <td>토</td>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+    
+            </table>
+            <div id="reserv-modal">
+                <div>
+                    <div>
+                        <div>
+                            <span>사용시작일</span>
+                            <div>2023년 8월 18일</div>
+                        </div>
+                        <div>
+                            <span>시설이름</span>
+                            <select name="" id="" class="form-control" style="width: 200px;"></select>
+                        </div>
+                        <div>
+                            <span>예약기간</span>
+                            <select name="" id="" class="form-control" style="width: 200px;">
+                                <option value="">1박2일</option>
+                                <option value="">2박3일</option>
+                                <option value="">3박4일</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button class="btn btn-warning">예약하기</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- <div id="location">
+            <table>
+
+            </table>
+        </div> -->
+
+    </div>
+
+
+    <style>
+        table {
+            text-align: center;
+            margin: 0;
+        }
+
+        .calendar tbody td {
+            height: 100px;
+            transition: all .3s;
+        }
+
+        #calender-area {
+            position: relative;
+        }
+
+        #reserv-modal {
+            background-color: white;
+            position: absolute;
+            width: calc(100% / 7 * 3);
+            height: 200px;
+            display: none;
+            border: 1px solid skyblue;
+            padding: 10px 50px;
+        }
+
+        #reserv-modal > div {
+            display: flex;
+        }
+
+        #reserv-modal > div > div > div {
+            display: flex;
+            margin-top: 20px;
+        }
+
+        #reserv-modal > div > div > div > span {
+            width: 120px;
+            display: flex;
+            align-items: center;
+        }
+
+        #reserv-modal button {
+            margin-left: 40px;
+            margin-top: 120px;
+            height: 40px;
+        }
+
+    </style>
+    
+    <script src="./calender.js"></script>
+</body>
+</html>
