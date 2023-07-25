@@ -1,0 +1,458 @@
+/* 공통사항 */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
+    list-style: none;
+    color: #333;
+}
+
+.d-flex-c {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.d-flex-s {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+}
+
+.d-flex-b {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.d-flex-e {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.d-grid-4 {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
+
+.d-grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+}
+
+.content {
+    margin: auto;
+    width: 1000px;
+}
+
+.title {
+    text-align: center;
+}
+
+
+/* 공통사항 */
+
+/* 내비게이션 */
+
+.menu {
+    position: fixed;
+    font-size: 60px;
+    right: 15%;
+    top: 3%;
+    display: block;    
+    text-align: center;    
+    z-index: 99998;
+}
+
+#menu:target {
+    transform: translateX(0%);
+    opacity: 1;
+    z-index: 99999;
+    visibility: visible;
+}
+
+input[type="radio"][name="menu"] {
+    opacity: 0;
+    z-index: -1;
+    position: absolute;
+}
+
+#menu {
+    transform: translateX(100%);
+    opacity: 0;
+    position: fixed;
+    transition: .4s;
+    background-color: #333;
+    width: 100%;
+    height: 100%;
+    visibility: hidden;
+}
+
+#menu>label,
+#menu>a {
+    text-decoration: none;
+    color: white;
+    font-size: 50px;
+    position: absolute;
+    right: 16%;
+    top: 40px;
+    z-index: 20;
+}
+
+#menu .d-flex-b {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+
+#menu * {
+    white-space: nowrap;
+    text-decoration: none;
+    color: white;
+}
+
+#menu .d-flex-s * {
+    margin-right: 20px;
+}
+
+#menu ul li {
+    margin-bottom: 13px;
+    font-size: 25px;
+    margin-left: 10px;
+}
+
+#menu .d-flex-b>div {
+    margin: 0 80px;
+}
+
+
+/* 내비게이션 */
+
+/* 명소 */
+#place {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;    
+}
+
+#place img {
+    display: block;
+    margin: 0 auto;
+    height: 900px;    
+    transform: translateX(-55px);
+}
+.place-circle .circle {
+    background-color: #333;
+    position: absolute;    
+    top: 300px;
+    left: 200px;
+    border-radius: 100%;
+    opacity: .9;
+    text-align: center;
+}
+
+.circle:nth-child(1) {
+    width: 300px;
+    height: 300px;
+    top: 100px;
+    font-size: 50px;
+    left: 900px;
+}
+.circle:nth-child(2) {
+    width: 250px;
+    height: 250px;
+    top: 300px;
+    font-size: 40px;
+    left: 600px;
+}
+.circle:nth-child(3) {
+    width: 200px;
+    height: 200px;
+    top: 500px;
+    font-size: 28px;
+    left: 1100px;
+}
+.circle:nth-child(4) {
+    width: 150px;
+    height: 150px;
+    top: 700px;
+    font-size: 20px;
+    left: 600px;
+}
+.circle:nth-child(5) {
+    width: 80px;
+    height: 80px;
+    top: 100px;
+    font-size: 14px;
+    left: 650px;
+}
+.circle:nth-child(5) p {
+    margin-bottom: 10px;
+}
+.place-circle .circle * {
+    color: white;
+}
+
+
+.visual-mouse {
+    position: absolute;
+    font-size: 1.6em;
+    left: 50%;
+    bottom: 10%;
+    text-align: center;
+    transform: translate(-50%, 0);
+}
+
+.visual-mouse>i {
+    display: block;
+
+}
+
+.visual-mouse>.fa-solid {
+    margin-top: 10px;
+    font-size: 1.4rem;
+}
+
+/* 명소 */
+
+/* 배너 */
+#banner {
+    height: 100px;
+    width: 100%;
+    background-color: white;
+}
+
+
+
+.banner-wrap {
+    z-index: 3;
+    background-color: white;
+    border-top: 1px solid lightgray;
+    border-bottom: 1px solid lightgray;
+    width: 100%;
+    display: flex;
+    overflow: hidden;
+    height: 100px;
+    justify-content: space-between;
+    position: absolute;
+    align-items: center;
+}
+
+.banner-wrap img {
+    margin: 0 120px;
+    height: auto;
+    width: 150px;
+    object-fit: cover;
+    transition: transform .2s;
+    transition-timing-function: ease;
+    position: relative;
+}
+
+.banner-wrap div {
+    display: flex;
+    align-items: center;
+    background-color: white;
+    width: 100%;
+    height: 100%;
+    animation: banner 10s infinite;
+}
+
+.banner-wrap img:hover {
+    transform: translateY(-20%);
+}
+
+.banner-wrap img:hover~span {
+    opacity: 1;
+}
+
+@keyframes banner {
+    0% {
+        transform: translate(-0%);
+    }
+
+    20% {
+        transform: translate(-100%);
+    }
+
+    40% {
+        transform: translate(-200%);
+    }
+
+    60% {
+        transform: translate(-300%);
+    }
+
+    80% {
+        transform: translate(-400%);
+    }
+
+    100% {
+        transform: translate(-500%);
+    }
+
+}
+
+/* 배너 */
+
+/* 명물 */
+#food {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    height: 100vh;
+    transform-style: preserve-3d;
+}
+
+#food .d-grid-4 {
+    margin-top: 100px;
+}
+
+.num {
+    position: absolute;
+    font-weight: bold;
+    font-size: 80px;
+    color: #333;    
+    top: -100px;
+    left: 3%;    
+
+    opacity: .2;
+}
+.col {
+    position: relative;
+}
+
+.card-img-top {
+    width: 100%;
+    object-fit: cover;
+    height: 300px;
+    filter: brightness(70%);
+    z-index: 1;
+}
+.card {
+    overflow: hidden;
+    transition: .2s;
+}
+
+.col-box:hover .card {
+    transform: translateY(-20px);
+}
+
+#food .card>i {
+    position: absolute;
+    color: #333;
+    opacity: .05;
+    font-size: 200px;
+    right: -20px;
+    z-index: 1;
+    bottom: 20px;
+}
+
+#food .copy {
+    text-align: center;    
+    opacity: .8;
+    margin-top: 120px;
+    z-index: -2;
+    font-size: 14px;
+}
+
+#food .d-grid-2 p {
+    margin-bottom: 15px;
+}
+
+.main-content {
+    width: 100%;
+    height: 100vh;
+    perspective: 1px;
+    transform-style: preserve-3d;
+    overflow: auto;
+    overflow-x: hidden;
+    position: relative;
+}
+#down-img-1 {
+    position: fixed;
+    top: 20px;
+    left: 200px;
+    height: auto;
+    width: 300px;
+    object-fit: cover;
+    z-index: -1;    
+}
+
+#down-img-2 {
+    position: fixed;
+    top:300px;
+    right: 200px;
+    height: auto;
+    width: 200px;
+    object-fit: cover;
+    z-index: -1; 
+    transform: rotateY(180deg);  
+}
+
+#up-img {
+    position: absolute;
+    bottom: -130%;
+    left: 0;
+    width: 100%;
+    z-index: -1;
+    transform: translateZ(.8px) scale(0.3) translateY(-120%);
+}
+
+/* 명물 */
+
+/* 명소, 명물 페이지*/
+.place {
+    position: relative;
+    overflow: hidden;
+}
+
+.place-item .card-img-top {    
+    object-fit: cover;
+    vertical-align: middle;
+    width: 100%;
+    height: 200px;
+}
+.list-bundle {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-gap: 20px;
+}
+.place .card {
+    transition: .2s;
+}
+.place .card:hover {
+    transform: translateY(-10px);    
+}
+
+/* 명소, 명물 페이지*/
+
+/* 랭킹페이지 */
+#rank .card {
+    margin-top: 50px;
+    text-align: center;
+    font-size: 30px;
+}
+
+/* 랭킹페이지 */
+
+/* 푸터 */
+footer {
+    margin-top: 100px;
+    background-color: #333;
+    height: 200px;
+    padding: 40px 0;
+}
+
+footer * {
+    color: white;
+}
+
+
+/* 푸터 */
