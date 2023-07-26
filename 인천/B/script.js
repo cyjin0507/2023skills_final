@@ -1,6 +1,8 @@
 class App {
     constructor() {
         this.init()
+
+        console.log(this.haversine(127.01222222, 37.30101111, 128.6355584, 35.88682728));
     }
 
     async init() {
@@ -72,7 +74,7 @@ class App {
         this.mapControl()
     }
 
-    // 하버시안 공식 사용
+    // 하버사인 공식 사용
     haversine(lat1, lon1, lat2, lon2) {
         const R = 6371; // 지구 반지름 (단위: km)
         const dLat = this.deg2rad(lat2 - lat1);
