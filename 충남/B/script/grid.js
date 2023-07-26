@@ -104,12 +104,23 @@ class Grid {
         },600)
     }
 
+    locCheck(i) {
+        let type = 0
+        if((i - 5) % 6 == 0) {
+            type = "left";
+        }
+
+        return type
+    }
+
     // 클릭해서 박스 사이즈 변할 때
     changeSizePos(idx) {
         $('.box').css({
             'width' : '150px',
-            'height' : '150px'
+            'height' : '150px',
+            'margin-left' : '0'
         })
+
         $($('.box')[idx]).css({
             'width' : '300px',
             'height' : '300px'
@@ -117,21 +128,39 @@ class Grid {
 
         let returnPos = [parseInt(idx)+1, parseInt(idx)+5, parseInt(idx)+6]
 
+        if(this.locCheck(idx) == "left") {
+            $($('.box')[idx]).css({
+                'margin-left' : '-150px'
+            })
+
+            returnPos = [parseInt(idx)-1, parseInt(idx)+5, parseInt(idx)+6]
+        }
+
+        
+
+
         let index = 0
+        let count = 0
         img.forEach((x,i)=> {
-            let cnt = 0
+            // if(returnPos.includes(i)) {
+            //     if(index == 1) {
+            //         cnt = 2
+            //         index += 2
+            //     } else if(index < 1) {
+            //         cnt = 1
+            //         index++
+            //     }
+            // }
+
             if(returnPos.includes(i)) {
-                if(index == 1) {
-                    cnt = 2
-                    index += 2
-                } else if(index < 1) {
-                    cnt = 1
-                    index++
-                }
+                count++
+                index++
+            } else {
+                $($('.box')[i]).css('left', this.loc(i+index).x)
+                $($('.box')[i]).css('top', this.loc(i+index).y)
             }
 
-            $($('.box')[i]).css('left', this.loc(i+index).x)
-            $($('.box')[i]).css('top', this.loc(i+index).y)
+            
         })
 
     }
