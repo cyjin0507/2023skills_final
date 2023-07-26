@@ -1,102 +1,3 @@
-const loc = [
-    {
-        "x" : 0,
-        "y" : 0,
-    },
-    {
-        "x" : 150,
-        "y" : 0,
-    },
-    {
-        "x" : 300,
-        "y" : 0,
-    },
-    {
-        "x" : 450,
-        "y" : 0,
-    },
-    {
-        "x" : 600,
-        "y" : 0,
-    },
-    {
-        "x" : 750,
-        "y" : 0,
-    },
-    {
-        "x" : 0,
-        "y" : 150,
-    },
-    {
-        "x" : 150,
-        "y" : 150,
-    },
-    {
-        "x" : 300,
-        "y" : 150,
-    },
-    {
-        "x" : 450,
-        "y" : 150,
-    },
-    {
-        "x" : 600,
-        "y" : 150,
-    },
-    {
-        "x" : 750,
-        "y" : 150,
-    },
-    {
-        "x" : 0,
-        "y" : 300,
-    },
-    {
-        "x" : 150,
-        "y" : 300,
-    },
-    {
-        "x" : 300,
-        "y" : 300,
-    },
-    {
-        "x" : 450,
-        "y" : 300,
-    },
-    {
-        "x" : 600,
-        "y" : 300,
-    },
-    {
-        "x" : 750,
-        "y" : 300,
-    },
-    {
-        "x" : 0,
-        "y" : 450,
-    },
-    {
-        "x" : 150,
-        "y" : 450,
-    },
-    {
-        "x" : 300,
-        "y" : 450,
-    },
-    {
-        "x" : 450,
-        "y" : 450,
-    },
-    {
-        "x" : 600,
-        "y" : 450,
-    },
-    {
-        "x" : 750,
-        "y" : 450,
-    },
-]
-
 const img = [
     '광덕산',
     '노은정',
@@ -123,8 +24,6 @@ class Grid {
         // 기본적으로 그려줌
         this.init()
         this.basicList()
-
-
     }
 
     init() {
@@ -162,13 +61,20 @@ class Grid {
     }
 
     setPos() {
-        for(let i=0; i<18; i++) {
+        for(let i=0; i<img.length; i++) {
             $($('.box')[i]).css({
-                'left' : loc[i].x + "px",
-                'top' : loc[i].y + "px"
+                'left' : this.loc(i).x + "px",
+                'top' : this.loc(i).y + "px"
             })
+            this.loc(i)
         }
 
+    }
+
+    loc(i) {
+        let x = 150 * (i % 6)
+        let y = Math.floor(i / 6) * 150
+        return {x,y}
     }
 
     // 클릭해서 이미지 삭제
@@ -176,11 +82,11 @@ class Grid {
         let idx = dataset.idx
         let name = dataset.name
         let cnt = 0
-        for(let i=0; i<18; i++) {
+        for(let i=0; i<img.length; i++) {
             if(i!=idx && $($('.box')[i]).css('display') != 'none') {
                 $($('.box')[i]).css({
-                    'left' : loc[cnt].x + "px",
-                    'top' : loc[cnt].y + "px",
+                    'left' : this.loc(cnt).x + "px",
+                    'top' : this.loc(cnt).y + "px",
                 })
             } else {
                 cnt--
@@ -224,8 +130,8 @@ class Grid {
                 }
             }
 
-            $($('.box')[i]).css('left', loc[i+index].x)
-            $($('.box')[i]).css('top', loc[i+index].y)
+            $($('.box')[i]).css('left', this.loc(i+index).x)
+            $($('.box')[i]).css('top', this.loc(i+index).y)
         })
 
     }
