@@ -10,29 +10,26 @@
 
 <script>
     async function imgAdd(form) {
-        // let check = form.upload_file.value
-        // if(!check) {
-        //     alert('업로드할 파일을 선택하세요.')
-        //     return false
-        // }
 
         let formData = new FormData(form)
         const response = await $.ajax({
             url: '/gallery/image/insert',
             type: 'POST',
-            dataType: 'json',
             enctype: 'multipart/form-data',
             processData	: false,
             contentType	: false,
+            dataType : 'html',
             data		: formData,
             async		: false,
             success		: function(response) {
-                if(response == "failed") {
-                    alert("파일 업로드에 문제가 발생하였습니다."); 
-                    return false;
+                console.log(response);
+                if(response == "warning") {
+                    alert("파일 업로드에 문제가 발생하였습니다.")
+                    return false
                 } else {
-                    alert("파일 업로드가 완료되었습니다.");		
-                    return true;
+                    alert("파일 업로드가 완료되었습니다.")
+                    window.location.reload()	
+                    return true
                 }
             }
         })
@@ -67,6 +64,16 @@
         }
 
         .delete {
+            position: absolute;
+            top: 0;
+            left: 100%;
+            transform: translateX(-100%);
+            padding: 10px;
+            background-color: white;
+        }
+
+        .download {
+            display: none;
             position: absolute;
             top: 0;
             left: 100%;

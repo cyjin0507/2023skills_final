@@ -141,16 +141,42 @@ class ApiController {
         $tmpName = $images['tmp_name'];
 
         if(count($fileName) <= 0) {
-            return;
+            echo "warning";
+            return false;
         }
 
         for($i=0; $i<count($fileName); $i++) {
+            if(substr($fileName[$i], -3) != 'png' && substr($fileName[$i], -3) != 'jpg' && substr($fileName[$i], -3) != 'JPG') {
+                echo "warning";
+                return;
+            }
+
             $rnd = rand() . $fileName[$i];
-            move_uploaded_file($tmpName[$i], __IMAGES . $rnd);
+            move_uploaded_file($tmpName[$i], __NOCROP . $rnd);
+
+            self::cropImage($rnd);
+
             DB::execute("INSERT INTO `gallery`(`name`, `file`) VALUES (?,?)",
             [$fileName[$i], $rnd]);
         }
 
+    }
+
+    public function cropImage($name) {
+        $img = "";
+        if(substr($name, -3) == 'png') {
+            $img = imagecreatefrompng(__NOCROP . $name);
+        } else {
+            $img = imagecreatefromjpeg(__NOCROP . $name);
+        }
+
+   
+        $img2 = imagecrop($img, ['x' => imagesx($img) / 2 - 150, 'y' => imagesy($img) / 2 - 150, 'width' => 300, 'height' => 300]);
+        if($img2 !== FALSE) {
+           imagepng($img2, __IMAGES . $name);
+           imagedestroy($img2);
+        }
+        imagedestroy($img);
     }
 
     public function galleryGetAPI() {
@@ -168,6 +194,15 @@ class ApiController {
         } else {
             echo "false";
         }
+    }
+
+    public function galleryDownload() {
+        $jsonData = json_decode(file_get_contents('php://input'), true, 512, JSON_THROW_ON_ERROR);
+        $idx = $jsonData['idx'];
+
+        $data = DB::fetch("SELECT * FROM gallery where idx=?", [$idx]);
+
+        echo json_encode($data, JSON_UNESCAPED_UNICODE);
     }
     
 }

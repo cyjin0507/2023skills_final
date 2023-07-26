@@ -29,7 +29,6 @@ class Grid {
     init() {
         this.imgs = img
         this.loc = this.loc
-        this.deleteImgs = []
     }
 
     basicList() {
