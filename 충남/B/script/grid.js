@@ -39,7 +39,7 @@ class Grid {
                 <div class="box">
                     <div class="box-inner">
                         <img src="./resources/image/여행갤러리/${x}.jpg" alt="" data-idx=${i}>
-                        <div class="delete" data-idx=${i} data-name=${x}>x ${i}</div>
+                        <div class="delete" data-idx=${i} data-name="${x}">x ${i}</div>
                     </div>
                 </div>
             `)
@@ -51,7 +51,11 @@ class Grid {
 
     addEvent() {
         $('.box img').click((e)=> {
-            this.changeSizePos(e.target.dataset.idx)
+            if($($('.box')[e.target.dataset.idx]).css('width') == '300px') {
+                this.changeSmallSizePos(e.target.dataset.idx)
+            } else {
+                this.changeBigSizePos(e.target.dataset.idx)
+            }
         })
 
         $('.delete').click((e)=> {
@@ -120,7 +124,7 @@ class Grid {
     }
 
     // 클릭해서 박스 사이즈 변할 때
-    changeSizePos(idx) {
+    changeBigSizePos(idx) {
         $('.box').css({
             'width' : '150px',
             'height' : '150px',
@@ -167,18 +171,44 @@ class Grid {
             if(returnPos.includes(count)) {
                 index--
             } else {
-                if(!(this.locCheck(idx) != 0 && index == idx)) {
-                    console.log(index);
-                    $($('.box')[index]).css('left', this.loc(count).x)
-                    $($('.box')[index]).css('top', this.loc(count).y)
-                } else {
+                if(this.locCheck(idx) != 0 && index == idx) {
+                    if(this.locCheck(idx) == "left") {
+                        $($('.box')[index]).css('top', this.loc(count).y - 150)
+                        $($('.box')[index]).css('left', '750px')
+                    } else if(this.locCheck(idx) == "bottom") {
+                        $($('.box')[index]).css('top', (Math.ceil(img.length / 6) -1) * 150)
+                        $($('.box')[index]).css('left', this.loc(count+2).x)
+                    } else if(this.locCheck(idx) == "end") {
+                        $($('.box')[index]).css('top', (Math.ceil(img.length / 6) -1) * 150)
+                        $($('.box')[index]).css('left', '750px')
+                    }
                     count--
+                } else {
+                        $($('.box')[index]).css('left', this.loc(count).x)
+                        $($('.box')[index]).css('top', this.loc(count).y)
                 }
+                
             }
             count++
             index++
         }
 
+    }
+
+    changeSmallSizePos(idx) {
+        $($('.box')[idx]).css({
+            'width' : '150px',
+            'height' : '150px',
+            'margin-left' : '0',
+            'margin-top' : '0',
+        })
+        
+        img.forEach((x, i)=> {
+            $($('.box')[i]).css({
+                'left' : this.loc(i).x + "px",
+                'top' : this.loc(i).y + "px",
+            })
+        })
     }
 
 }
