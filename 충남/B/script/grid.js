@@ -39,7 +39,7 @@ class Grid {
                 <div class="box">
                     <div class="box-inner">
                         <img src="./resources/image/여행갤러리/${x}.jpg" alt="" data-idx=${i}>
-                        <div class="delete" data-idx=${i} data-name=${x}>x</div>
+                        <div class="delete" data-idx=${i} data-name=${x}>x ${i}</div>
                     </div>
                 </div>
             `)
@@ -106,10 +106,16 @@ class Grid {
 
     locCheck(i) {
         let type = 0
-        if((i - 5) % 6 == 0) {
-            type = "left";
+
+        if((i - 5) % 6 == 0 && Math.ceil(img.length / 6) == Math.floor(i / 6) + 1) {
+            type = "end"
+        } else if((i - 5) % 6 == 0) {
+            type = "left"
+        } else if(Math.ceil(img.length / 6) == Math.floor(i / 6) + 1) {
+            type = "bottom"
         }
 
+        
         return type
     }
 
@@ -118,7 +124,8 @@ class Grid {
         $('.box').css({
             'width' : '150px',
             'height' : '150px',
-            'margin-left' : '0'
+            'margin-left' : '0',
+            'margin-top' : '0'
         })
 
         $($('.box')[idx]).css({
@@ -126,42 +133,51 @@ class Grid {
             'height' : '300px'
         })
 
-        let returnPos = [parseInt(idx)+1, parseInt(idx)+5, parseInt(idx)+6]
+        let returnPos = [parseInt(idx)+1, parseInt(idx)+6, parseInt(idx)+7]
 
         if(this.locCheck(idx) == "left") {
             $($('.box')[idx]).css({
                 'margin-left' : '-150px'
             })
 
-            returnPos = [parseInt(idx)-1, parseInt(idx)+5, parseInt(idx)+6]
+            returnPos = [parseInt(idx)-1, parseInt(idx), parseInt(idx)+5, parseInt(idx)+6]
         }
 
-        
+        if(this.locCheck(idx) == "bottom") {
+            $($('.box')[idx]).css({
+                'margin-top' : '-150px'
+            })
 
+            returnPos = [parseInt(idx)-6, parseInt(idx)-5, parseInt(idx), parseInt(idx)+1]
+        }
+
+        if(this.locCheck(idx) == "end") {
+            $($('.box')[idx]).css({
+                'margin-top' : '-150px',
+                'margin-left' : '-150px'
+            })
+
+            returnPos = [parseInt(idx)-7, parseInt(idx)-6, parseInt(idx), parseInt(idx)-1]
+        }
 
         let index = 0
         let count = 0
-        img.forEach((x,i)=> {
-            // if(returnPos.includes(i)) {
-            //     if(index == 1) {
-            //         cnt = 2
-            //         index += 2
-            //     } else if(index < 1) {
-            //         cnt = 1
-            //         index++
-            //     }
-            // }
-
-            if(returnPos.includes(i)) {
-                count++
-                index++
+        
+        while(index < this.imgs.length) {
+            if(returnPos.includes(count)) {
+                index--
             } else {
-                $($('.box')[i]).css('left', this.loc(i+index).x)
-                $($('.box')[i]).css('top', this.loc(i+index).y)
+                if(!(this.locCheck(idx) != 0 && index == idx)) {
+                    console.log(index);
+                    $($('.box')[index]).css('left', this.loc(count).x)
+                    $($('.box')[index]).css('top', this.loc(count).y)
+                } else {
+                    count--
+                }
             }
-
-            
-        })
+            count++
+            index++
+        }
 
     }
 
