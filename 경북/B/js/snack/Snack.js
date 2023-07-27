@@ -5,6 +5,8 @@ class Game {
         if(CHECK) {return}
         CHECK = true
 
+        this.frame = 0
+
         this.posX = 15
         this.posY = 15
 
@@ -139,7 +141,7 @@ class Game {
 
         this.blockLine()
         this.randomItem()
-
+        
         for (let i = 0; i < this.posArr.length; i++) {
             this.ctx.fillStyle = i==0 ? "green" : "red"
             this.ctx.fillRect(this.posArr[i].x, this.posArr[i].y, this.blockWidth, this.blockHeight)
@@ -163,30 +165,7 @@ class Game {
         } else {
             this.crushCheck = false
         }
-
-
-        // this.animation()
     }
-
-    // animation() {
-    //     let moveX = this.posArr[0].x
-    //     let beforeX = this.posArr[1].x
-    //     let moveY = this.posArr[0].y
-    //     let beforeY = this.posArr[1].y
-    //     let count = 0
-    //     let up = this.blockWidth / 300
-
-    //     const interval = setInterval(()=> {
-    //         // let x = moveX - beforeX + count
-    //         let x = beforeX + count
-    //         let y = beforeY + count
-    //         this.ctx.fillRect(x, y, this.blockWidth, this.blockHeight)
-    //         count += up
-    //         if(count == this.blockWidth) {
-    //             clearInterval(interval)
-    //         }
-    //     },10)
-    // }
 
     itemGet() {
         this.itemLoc()
@@ -216,6 +195,9 @@ class Game {
     gameEndFunc() {
         clearInterval(this.gameProcess)
         clearInterval(this.charactorMove)
+
+        $('.modal').fadeIn()
+        $('#modal-score').html(`${this.score}점`)
     }
 
     get pos() {
