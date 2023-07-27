@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <canvas width="500" height="500"></canvas>
+
+    <script>
+        const datas = [
+            {
+                name: "A",
+                value: Math.round(Math.random() * 1000)
+            },
+            {
+                name: "B",
+                value: Math.round(Math.random() * 1000)
+            },
+            {
+                name: "C",
+                value: Math.round(Math.random() * 1000)
+            },
+            {
+                name: "D",
+                value: Math.round(Math.random() * 1000)
+            },
+            {
+                name: "E",
+                value: Math.round(Math.random() * 1000)
+            },
+            {
+                name: "F",
+                value: Math.round(Math.random() * 1000)
+            },
+            {
+                name: "G",
+                value: Math.round(Math.random() * 1000)
+            },
+            {
+                name: "H",
+                value: Math.round(Math.random() * 1000)
+            }
+        ]
+
+        const ceil = (number, unit = 200) => {
+            return Math.ceil(number / unit) * unit
+        }
+
+        const canvas = document.querySelector('canvas')
+        const ctx = canvas.getContext('2d')
+
+        const size = 500
+        const chartSize = 220
+        const center = size / 2
+        const radian = Math.PI * 2 / datas.length
+
+        const maxValue = ceil(Math.max(...datas.map(d => d.value)))
+        const count = maxValue / 200
+
+        const render = () => {
+            ctx.textAlign = 'center'
+            for (let i = 0; i <= count; i++) {
+                ctx.beginPath()
+                for (let j = 0; j <= datas.length; j++) {
+                    const x = (Math.cos(radian * j - Math.PI / 2) * (chartSize / count * i)) + center
+                    const y = (Math.sin(radian * j - Math.PI / 2) * (chartSize / count * i)) + center
+
+                    if (j == 0) {
+                        ctx.moveTo(x, y)
+                        ctx.fillText(200 * i, x, y)
+                    } else {
+                        ctx.lineTo(x, y)
+                    }
+                }
+
+                ctx.stroke()
+                ctx.closePath()
+            }
+
+            ctx.beginPath()
+            ctx.globalAlpha = 0.5
+            for (let i = 0; i <= datas.length; i++) {
+                const value = datas[i]?.value || datas[0].value
+                const x = (Math.cos(radian * i - Math.PI / 2) * value / maxValue * 220 * animateProcess) + center
+                const y = (Math.sin(radian * i - Math.PI / 2) * value / maxValue * 220 * animateProcess) + center
+
+                // ctx.arc(x,y,3,0,Math.PI * 2)
+
+                if (i == 0) {
+                    ctx.moveTo(x, y)
+                } else {
+                    ctx.lineTo(x, y)
+                }
+            }
+            ctx.fill()
+            ctx.globalAlpha = 1
+            ctx.lineWidth = 3
+            ctx.stroke()
+
+            ctx.closePath()
+        }
+
+        let animateProcess = 0
+
+        const renderWithAnimate = () => {
+            if(animateProcess >= 1) return
+
+            animateProcess = Math.min(1, animateProcess + 0.1)
+
+            ctx.clearRect(0,0,size,size)
+            requestAnimationFrame(renderWithAnimate)
+            console.log("sdf");
+            render()
+        }
+        requestAnimationFrame(renderWithAnimate)
+
+
+        render()
+
+    </script>
+</body>
+
+</html>
