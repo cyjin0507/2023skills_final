@@ -16,6 +16,8 @@ class Game {
         this.upDown = 0
         this.create = 1
 
+        this.score = 0
+
         // 아이템 위치
         this.itemLoc()
         // 아이템을 먹었는지 체크 (계속 생성 방지)
@@ -25,14 +27,18 @@ class Game {
         this.gameEnd = false
         this.crushCheck = false
 
-        this.init()
-    }
+        // 일시정지 중인지 확인
+        this.pauseCheck = false
 
-    init() {
         this.canvas = document.querySelector('#canvas')
         this.ctx = this.canvas.getContext('2d')
 
         this.blockWidth = this.canvas.width / 30
+
+        this.init()
+    }
+
+    init() {
         this.blockHeight = this.canvas.height / 30
 
         this.setting()
@@ -40,13 +46,6 @@ class Game {
 
         this.charactorMove = setInterval(this.autoMove.bind(this), 500)
         this.gameProcess = setInterval(this.game.bind(this), 1000 / 15)
-    }
-
-    pause() {
-        $('#pause').fadeOut()
-        $('#play').fadeIn()
-        clearInterval(this.charactorMove)
-        clearInterval(this.gameProcess)
     }
 
     itemLoc() {
@@ -82,6 +81,7 @@ class Game {
     }
 
     setting() {
+        this.posArr = []
         for (let i = 0; i < 5; i++) {
             this.posX = 15
             this.posY = 15 - i
@@ -93,6 +93,8 @@ class Game {
     }
 
     changePos(e) {
+        if(this.pauseCheck) {return}
+
         if (e.keyCode == 38) {
             this.upDown = 1
             this.forward = 1
@@ -204,6 +206,9 @@ class Game {
             { x: this.pos.x, y: this.pos.y }
         )
 
+        this.score++
+        $('#score').html(this.score)
+
         this.posX = stX
         this.posY = stY
     }
@@ -235,6 +240,31 @@ class Game {
 
         this.ctx.stroke();
 
+    }
+
+    pause() {
+        this.pauseCheck = true
+        clearInterval(this.charactorMove)
+        clearInterval(this.gameProcess)
+    }
+
+    play() {
+        this.pauseCheck = false
+        this.charactorMove = setInterval(this.autoMove.bind(this), 500)
+        this.gameProcess = setInterval(this.game.bind(this), 1000 / 15)
+    }
+
+    reset() {
+        clearInterval(this.charactorMove)
+        clearInterval(this.gameProcess)
+
+        this.forward = 0
+        this.upDown = 0
+        this.create = 1
+
+        this.score = 0
+        $('#score').html(this.score)
+        this.init()
     }
 
 }

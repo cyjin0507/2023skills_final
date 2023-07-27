@@ -11,27 +11,49 @@ class App {
 
     addEvent() {
         $('#pause-btn').click(this.pause.bind(this))
+        $('#play-btn').click(this.play.bind(this))
+        $('#reset-btn').click(this.reset.bind(this))
     }
 
     pause() {
+        $('#pause-btn').css('display', 'none')
+        $('#play-btn').css('display', 'inline')
+        clearInterval(this.timer)
         this.game.pause()
     }
 
+    play() {
+        $('#pause-btn').css('display', 'inline')
+        $('#play-btn').css('display', 'none')
+        this.timer = setInterval(this.timerProcess.bind(this),1000)
+        this.game.play()
+    }
+
+    reset() {
+        clearInterval(this.timer)
+        this.leftTime = 179
+        $('#time').html('3분')
+        this.timer = setInterval(this.timerProcess.bind(this),1000)
+        this.game.reset()
+    }
+
     timer() {
-        let leftTime = 179
+        this.leftTime = 179
 
-        const timer = setInterval(()=> {
-            let min = Math.floor(leftTime / 60)
-            let sec = leftTime % 60
+        this.timer = setInterval(this.timerProcess.bind(this),1000)
+    }
 
-            $('#time').html(`${min}분 ${sec}초`)
+    timerProcess() {
+        let min = Math.floor(this.leftTime / 60)
+        let sec = this.leftTime % 60
 
-            leftTime--
-            if(leftTime < 0) {
-                clearInterval(timer)
-                this.game.gameEndFunc()
-            }
-        },1000)
+        $('#time').html(`${min}분 ${sec}초`)
+
+        this.leftTime--
+        if (this.leftTime < 0) {
+            clearInterval(this.timer)
+            this.game.gameEndFunc()
+        }
     }
 
 }
