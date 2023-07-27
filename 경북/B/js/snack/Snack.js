@@ -117,6 +117,10 @@ class Game {
         this.posArr.unshift(
             { x: this.pos.x, y: this.pos.y }
         )
+
+        clearInterval(this.charactorMove)
+
+        this.charactorMove = setInterval(this.autoMove.bind(this), 500)
     }
 
     game() {
