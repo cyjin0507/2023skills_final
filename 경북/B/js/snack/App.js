@@ -4,23 +4,32 @@ class App {
     }
 
     init() {
-        // new Game()
+        this.game = new Game()
         this.timer()
+        this.addEvent()
+    }
+
+    addEvent() {
+        $('#pause-btn').click(this.pause.bind(this))
+    }
+
+    pause() {
+        this.game.pause()
     }
 
     timer() {
-        let min = 0
-        let sec = 1
-        setInterval(()=> {
-            if(min > 0) {
-                $('#time').html(`${min}분 ${sec}초`)
-            } else {
-                $('#time').html(`${sec}초`)
-            }
-            sec++
-            if(sec >= 60) {
-                sec = 0
-                min++
+        let leftTime = 179
+
+        const timer = setInterval(()=> {
+            let min = Math.floor(leftTime / 60)
+            let sec = leftTime % 60
+
+            $('#time').html(`${min}분 ${sec}초`)
+
+            leftTime--
+            if(leftTime < 0) {
+                clearInterval(timer)
+                this.game.gameEndFunc()
             }
         },1000)
     }

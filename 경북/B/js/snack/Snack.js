@@ -42,6 +42,13 @@ class Game {
         this.gameProcess = setInterval(this.game.bind(this), 1000 / 15)
     }
 
+    pause() {
+        $('#pause').fadeOut()
+        $('#play').fadeIn()
+        clearInterval(this.charactorMove)
+        clearInterval(this.gameProcess)
+    }
+
     itemLoc() {
         this.itemPosX = Math.floor(Math.random() * 29) + 1
         this.itemPosY = Math.floor(Math.random() * 29) + 1
@@ -198,7 +205,6 @@ class Game {
     }
 
     gameEndFunc() {
-        console.log("end");
         clearInterval(this.gameProcess)
         clearInterval(this.charactorMove)
     }
