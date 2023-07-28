@@ -1,10 +1,10 @@
 class App {
     constructor() {
-        $('#game-start-btn').click(()=> {
-            this.name = $('#name').val()
-            console.log($('#name').val());
-            this.init()
-        })
+        // $('#game-start-btn').click(()=> {
+        //     this.name = $('#name').val()
+        //     console.log($('#name').val());
+        // })
+        this.init()
     }
 
     init() {

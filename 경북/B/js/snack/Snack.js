@@ -38,7 +38,9 @@ class Game {
 
         this.blockWidth = this.canvas.width / 30
 
+        
         this.init()
+        this.autoMove()
     }
 
     init() {
@@ -47,7 +49,6 @@ class Game {
         this.setting()
         $(document).on('keydown', this.changePos.bind(this))
 
-        this.charactorMove = setInterval(this.autoMove.bind(this), 500)
         // this.gameProcess = setInterval(this.game.bind(this), 1000 / 15)
     }
 
@@ -141,7 +142,6 @@ class Game {
         requestAnimationFrame(this.requestAnimation)
 
 
-
         // 아이템 먹었는지 확인
         if(this.posX == this.itemPosX && this.posY == this.itemPosY) {
             if(this.itemCheck) {return}
@@ -164,31 +164,37 @@ class Game {
     
     requestAnimation = () => {
         if(this.frame >= 1) {
+            this.autoMove()
             return
         }
-        this.frame = Math.min(1, this.frame + 0.01)
+        this.frame = Math.min(1, this.frame + 0.05)
         requestAnimationFrame(this.requestAnimation)
-                // 실제 뱀 움직임
+        // 실제 뱀 움직임
         this.animation()
     }
 
     // this.ctx.fillRect(this.posArr[i].x, before.y + (this.blockHeight * this.frame), this.blockWidth, this.blockHeight)
 
     animation() {
+        // this.ctx.fillStyle = 'red'
+        // this.ctx.fillRect(this.posArr[0, before.y, this.blockWidth, this.blockHeight * this.frame)
+
         for (let i = 0; i < this.posArr.length; i++) {
             this.ctx.fillStyle = i==0 ? "green" : "red"
             let before = this.posArr[i+1] ? this.posArr[i+1] : this.lastPos
 
             if(this.posArr[i].x - before.x == 0) {
-                // if(i==4) {
-                //     this.ctx.fillStyle = 'white'
-                //     this.ctx.fillRect(this.posArr[i].x, before.y, this.blockWidth, this.blockHeight * this.frame)
-                // }
-                if(this.forward==0) {
+                if(i==4) {
+                    this.ctx.globalAlpha = 0
+                    this.ctx.fillRect(this.posArr[i].x, before.y + (this.blockHeight * this.forward), this.blockWidth, this.blockHeight - (this.blockHeight * this.frame))
+                    this.ctx.globalAlpha = 1
+                } else if(this.forward==0) {
                     this.ctx.fillRect(this.posArr[i].x, before.y + (this.blockHeight * this.frame), this.blockWidth, this.blockHeight)
                 } else if(this.forward == 1) {
                     this.ctx.fillRect(this.posArr[i].x, before.y - (this.blockHeight * this.frame), this.blockWidth, this.blockHeight)
                 }
+
+                
             } else if(this.posArr[i].y - before.y == 0) {
                 if(this.forward==2) {
                     this.ctx.fillRect(before.x - (this.blockWidth * this.frame), this.posArr[i].y, this.blockWidth, this.blockHeight)
