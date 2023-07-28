@@ -74,8 +74,6 @@ class Game {
             this.posX++
         }
 
-        this.beforePosArr = this.posArr
-
         this.posArr.pop()
         this.posArr.unshift(
             { x: this.pos.x, y: this.pos.y }
@@ -129,7 +127,7 @@ class Game {
 
     game() {
         // 벽에 박았는지 확인
-        if(this.posX == 31 || this.posX == 0 || this.posY == 31 || this.posY == 0) {
+        if(this.posX >= 31 || this.posX <= 0 || this.posY >= 31 || this.posY <= 0) {
             if(this.gameEnd) {return}
             this.gameEndFunc()
             this.gameEnd = true

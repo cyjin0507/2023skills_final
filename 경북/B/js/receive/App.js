@@ -1,18 +1,16 @@
 class App {
     constructor() {
-        this.init()
+        $('#game-start-btn').click(()=> {
+            this.name = $('#name').val()
+            this.init()
+        })
     }
 
     init() {
+        $('#modal-name').html(this.name)
+
         this.game = new Game()
         this.timer()
-        // this.addEvent()
-    }
-
-    addEvent() {
-        $('#pause-btn').click(this.pause.bind(this))
-        $('#play-btn').click(this.play.bind(this))
-        $('#reset-btn').click(this.reset.bind(this))
     }
 
     timer() {

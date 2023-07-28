@@ -1,9 +1,17 @@
 class App {
     constructor() {
-        this.init()
+        $('#game-start-btn').click(()=> {
+            this.name = $('#name').val()
+            console.log($('#name').val());
+            this.init()
+        })
     }
 
     init() {
+        $('#modal-name').html(this.name)
+
+        $('#start-content').fadeOut()
+        $('#game-content').fadeIn()
         this.game = new Game()
         this.timer()
         this.addEvent()

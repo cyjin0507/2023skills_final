@@ -10,9 +10,18 @@
 <body>
 
     <div class="container">
-        <button class="btn btn-primary mt-5">점수 : <span id="score">0</span>점</button>
-        <button class="btn btn-primary mt-5">남은 시간 : <span id="time">3분</span></button>
-        <canvas class="mt-3" id="canvas" width="700" height="700"></canvas>
+        <div id="start-content">
+            <div class="input-group mt-5">
+                <span class="input-group-text">이름</span>
+                <input type="text" class="form-control" id="name">
+                <button class="btn btn-primary" id="game-start-btn">게임시작</button>
+            </div>
+        </div>
+        <div id="game-content">
+            <button class="btn btn-primary mt-5">점수 : <span id="score">0</span>점</button>
+            <button class="btn btn-primary mt-5">남은 시간 : <span id="time">3분</span></button>
+            <canvas class="mt-3" id="canvas" width="700" height="700"></canvas>
+        </div>
     </div>
 
     <div class="modal">
@@ -23,7 +32,7 @@
                 </div>
                 <div class="modal-body">
                     <h5>천안 명물 받아먹기 게임</h5>
-                    <h5 class="mt-2">사용자 이름 : 홍길동</h5>
+                    <h5 class="mt-2">사용자 이름 : <span id="modal-name"></span></h5>
                     <h5 class="mt-2">점수 : <span id="modal-score"></span></h5>
                 </div>
                 <div class="modal-footer">
@@ -44,6 +53,11 @@
             height: 700px;
             border: 1px solid red;
         }
+
+        #game-content {
+            display: none;
+        }
+
     </style>
 </body>
 </html>
