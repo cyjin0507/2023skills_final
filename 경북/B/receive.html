@@ -10,11 +10,36 @@
 <body>
 
     <div class="container">
-        <canvas class="mt-5" id="canvas" width="700" height="700"></canvas>
+        <button class="btn btn-primary mt-5">점수 : <span id="score">0</span>점</button>
+        <button class="btn btn-primary mt-5">남은 시간 : <span id="time">3분</span></button>
+        <canvas class="mt-3" id="canvas" width="700" height="700"></canvas>
     </div>
-    
+
+    <div class="modal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">게임 종료</h5>
+                </div>
+                <div class="modal-body">
+                    <h5>천안 명물 받아먹기 게임</h5>
+                    <h5 class="mt-2">사용자 이름 : 홍길동</h5>
+                    <h5 class="mt-2">점수 : <span id="modal-score"></span></h5>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary">저장</button>
+                    <button type="button" class="btn btn-secondary">돌아가기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="./js/receive/Game.js"></script>
+    <script src="./js/receive/App.js"></script>
+
     <style>
         #canvas {
+            display: block;
             width: 700px;
             height: 700px;
             border: 1px solid red;
