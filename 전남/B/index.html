@@ -10,7 +10,13 @@
 
 <body>
 
-    <canvas width="500" height="500"></canvas>
+    <canvas width="500" height="500" style="margin: 100px;"></canvas>
+    <div id="modal">sdf</div>
+    <style>
+        #modal {
+            display: none;
+        }
+    </style>
 
     <script>
         const datas = [
@@ -63,6 +69,8 @@
         const maxValue = ceil(Math.max(...datas.map(d => d.value)))
         const count = maxValue / 200
 
+        let pointPaths = []
+
         const render = () => {
             ctx.textAlign = 'center'
             for (let i = 0; i <= count; i++) {
@@ -104,12 +112,27 @@
             ctx.stroke()
 
             ctx.closePath()
+
+            for(let i=0; i<datas.length; i++) {
+                const {value} = datas[i]
+                const x = (Math.cos(radian * i - Math.PI / 2) * value / maxValue * 220 * animateProcess) + center
+                const y = (Math.sin(radian * i - Math.PI / 2) * value / maxValue * 220 * animateProcess) + center
+
+                const path = new Path2D()
+                path.arc(x,y,4,0,Math.PI * 2)
+
+                ctx.fill(path)
+                pointPaths.push(path)
+            }
+
         }
 
         let animateProcess = 0
 
         const renderWithAnimate = () => {
             if(animateProcess >= 1) return
+
+            pointPaths = []
 
             animateProcess = Math.min(1, animateProcess + 0.1)
 
@@ -121,6 +144,19 @@
         requestAnimationFrame(renderWithAnimate)
 
         render()
+
+        canvas.addEventListener('mousemove', ({offsetX, offsetY})=> {
+            for(let i=0; i<pointPaths.length; i++) {
+                const pointPath = pointPaths[i]
+
+                if(ctx.isPointInPath(pointPath, offsetX, offsetY)) {
+                    document.querySelector('#modal').innerHTML = `${datas[i].name}`
+                    document.querySelector('#modal').style.display = 'block'
+                    return
+                }
+            }
+            document.querySelector('#modal').style.display = 'none'
+        })
 
     </script>
 </body>
