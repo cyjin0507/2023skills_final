@@ -2,8 +2,8 @@ class App {
     constructor() {
         $('#game-start-btn').click(()=> {
             this.name = $('#name').val()
-            this.init()
         })
+        this.init()
     }
 
     init() {

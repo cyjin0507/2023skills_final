@@ -1,10 +1,6 @@
 class Game {
     constructor() {
         this.itemList = ['car', 'grape', 'knife', 'pan', 'walnut-cookie']
-        this.itemImgList = []
-
-        this.playItemList = []
-
         this.score = 0
         this.crushCheck = false
         this.end = false
@@ -22,81 +18,64 @@ class Game {
 
         this.charactorControl()
 
-        this.itemSetting()
-
-    }
-
-    itemSetting() {
-        for(let i=0; i<this.itemList.length; i++) {
-            const itemImg = new Image()
-            itemImg.src = `./resources/imgs/game/${this.itemList[i]}.png`
-            this.itemImgList.push(itemImg)
-        }
         this.itemControl()
     }
 
     itemControl() {
-        let idx = new Date()
-
+        this.itemImg = new Image()
         let itemRnd = Math.floor(Math.random() * this.itemList.length)
+        this.itemImg.src = `./resources/imgs/game/${this.itemList[itemRnd]}.png`
 
-        // if(this.itemList[itemRnd] == "car" || this.itemList[itemRnd] == "knife" ||
-        // this.itemList[itemRnd] == "pan") {
-        //     this.itemCheck = false
-        // } else {
-        //     this.itemCheck = true
-        // }
+        if(this.itemList[itemRnd] == "car" || this.itemList[itemRnd] == "knife" ||
+        this.itemList[itemRnd] == "pan") {
+            this.itemCheck = false
+        } else {
+            this.itemCheck = true
+        }
+        
+        this.itemX = Math.floor(Math.random() * (this.canvas.width - this.itemImg.width))
+        this.animationY = 0
 
-        this.playItemList.push({
-            idx : idx,
-            image : this.itemImgList[itemRnd],
-            itemX : Math.floor(Math.random() * (this.canvas.width - this.itemImgList[itemRnd].width)),
-            itemY : 0,
-            animationY : 0
-        })
-
-        // this.itemImg.onload = () => {
-        requestAnimationFrame(this.animation(idx))
-        // }
+        this.itemImg.onload = () => {
+        requestAnimationFrame(this.animation)
+        }
     }
 
-    animation = (idx) => {
-        let item = this.playItemList.filter(x=>x.idx==idx)[0]
+    animation = () => {
         if(this.end) {return}
-        if(item.animationY >= 1) {
+        if(this.animationY >= 1) {
+            this.itemControl()
             return
         }
-        item.animationY = Math.min(1, item.animationY + 0.01)
-        console.log(idx, requestAnimationFrame);
-        requestAnimationFrame(this.animation(idx))
-        this.itemMove(idx)
+        this.animationY = Math.min(1, this.animationY + 0.01)
+        requestAnimationFrame(this.animation)
+        this.itemMove()
     }
 
-    itemMove(idx) {
-        // this.crush()
-        let item = this.playItemList.filter(x=>x.idx==idx)[0]
+    itemMove() {
+        this.crush()
 
-        item.itemY = (this.canvas.height - item.image.height / 8) * item.animationY
+        this.itemY = (this.canvas.height - this.itemImg.height / 8) * this.animationY
         this.ctx.clearRect(0,0,this.canvas.width,this.canvas.height)
         this.charactorDraw()
-        this.ctx.drawImage(item.image, item.itemX, item.itemY, item.image.width/8, item.image.height/8)
+        this.ctx.drawImage(this.itemImg, this.itemX, this.itemY, this.itemImg.width/8, this.itemImg.height/8)
     }
 
     crush() {
-        // let itemLeft = this.itemX
-        // let itemRight = this.itemX + this.itemImgList[itemRnd].width - 10
-        // let charactorLeft = this.charactorPosX
-        // let charactorRight = this.charactorPosX + this.charactorWidth
+        let itemLeft = this.itemX
+        let itemRight = this.itemX + this.itemImg.width - 10
+        let charactorLeft = this.charactorPosX
+        let charactorRight = this.charactorPosX + this.charactorWidth
 
-        // if(((itemLeft >= charactorLeft && itemLeft <= charactorRight) ||
-        // itemRight >= charactorLeft && itemRight <= charactorRight) &&
-        // (this.itemY >= this.charactorPosY)) {
-        //     if(this.crushCheck) return
-        //     this.crushCheck = true
-        //     this.crushFunc()
-        // } else {
-        //     this.crushCheck = false
-        // }
+        if(((itemLeft >= charactorLeft && itemLeft <= charactorRight) ||
+        itemRight >= charactorLeft && itemRight <= charactorRight) &&
+        (this.itemY >= this.charactorPosY)) {
+            if(this.crushCheck) return
+            this.crushCheck = true
+            this.crushFunc()
+        } else {
+            this.crushCheck = false
+        }
 
     }
 
