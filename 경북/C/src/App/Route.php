@@ -1,38 +1,38 @@
 <?php
 
-
 namespace src\App;
 
+class Route
+{
+    private static $actions = array();
 
-class Route {
-    private static $GET = [];
-    private static $POST = [];
+    public static function init()
+    {
+        $path = explode('?', $_SERVER['REQUEST_URI'])[0];
 
-    public static function get($url, $actions) {
-        self::$GET[] = [$url, $actions];
-    }
-    public static function post($url, $actions) {
-        self::$POST[] = [$url, $actions];
-    }
+        foreach (self::$actions as $request) {
+            $url = preg_replace('/\//', '\\/', $request[0]);
+            $url = preg_replace('/\{([^{}]+)\}/', '([^\/]+)', $url);
+            $url = '/^' . $url . '$/';
 
-    public static function init() {
-        $url = explode("?", $_SERVER['REQUEST_URI'])[0];
-        $actions = self::${$_SERVER['REQUEST_METHOD']};
-
-        foreach($actions as $action) {
-            $path = preg_replace("/\//", "\\/", $action[0]) ;
-            $path = preg_replace("/\{([^\/]+)\}/", "([^\/]+)", $path);
-            $path = "/^" . $path . "$/";
-            if(preg_match($path, $url, $result)) {
+            if (preg_match($url, $path, $result)) {
                 unset($result[0]);
-                $do = explode("@", $action[1]);
-                $cont = "src\\Controller\\" . $do[0];
-                $ins = new $cont();
-                $ins->{$do[1]}(...$result);
+
+                $action = explode('@', $request[1]);
+                $controller = 'src\\Controller\\' . $action[0];
+                $controller = new $controller();
+                $controller->{$action[1]}(...$result);
+
                 return;
             }
         }
+    }
 
-        echo "404";
+    public static function __callStatic($method, $args)
+    {
+        $req = strtolower($_SERVER['REQUEST_METHOD']);
+        if ($req === $method) {
+            array_push(self::$actions, $args);
+        }
     }
 }

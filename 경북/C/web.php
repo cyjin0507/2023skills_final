@@ -2,37 +2,22 @@
 
 use src\App\Route;
 
-// 이동
-Route::get("/", "ViewController@index");
-Route::get("/game", "ViewController@game");
-Route::get("/review", "ViewController@review");
-Route::get("/login", "ViewController@login");
-Route::get("/place", "ViewController@place");
-Route::get("/snake", "ViewController@snake");
-Route::get("/walnut", "ViewController@walnut");
+Route::get("/", "IndexController@Index");
+
+Route::get("/login", "IndexController@login");
+Route::get("/logout", "IndexController@logout");
+Route::post("/login/process", "IndexController@loginProcess");
 
 
-//로그인
-Route::post("/login", "UserController@login");
-Route::get("/logout", "UserController@logout");
+Route::get('/place', "ClientController@place");
 
-// json -> DB
-Route::get("/setDB", "ViewController@setDB");
+Route::post('/review/add', "ClientController@reviewAdd");
+Route::get('/place/get/data', "ClientController@placeGetData");
+Route::get('/review/get/data', "ClientController@reviewGetData");
+Route::get('/review/score/count/{idx}', "ClientController@reviewScoreCount");
+Route::get('/review/count/{idx}', "ClientController@reviewCount");
 
-//천안의 명소
-Route::get("/getPlace", "PlaceController@place");
-Route::post("/review", "PlaceController@reviewInsert");
-Route::get("/detail", "PlaceController@detail");
+Route::get('/place/dataset', "ClientController@placeData");
 
-//관광 게임하기
-Route::get("/getGame", "GameController@game");
-Route::post("/game", "GameController@gameInsert");
-
-
-//관리자
-Route::get("/manageGame", "ManageController@manageGame");
-Route::get("/getGameManage", "ManageController@game");
-Route::get("/manageReview", "ManageController@manageReview");
-Route::get("/getReviewManage", "ManageController@review");
-Route::post("/update", "ManageController@update");
-Route::get("/delete", "ManageController@delete");
+// 
+Route::get('/game/snack', "GameController@snack");
