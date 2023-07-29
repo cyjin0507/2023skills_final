@@ -75,12 +75,12 @@ class Game {
         } else if (this.forward == 3) {
             this.posX++
         }
-    
+
         this.lastPos = this.posArr[this.posArr.length-1]
 
         this.posArr.pop()
         this.posArr.unshift(
-            { x: this.pos.x, y: this.pos.y }
+            { x: this.pos.x, y: this.pos.y, forward: this.forward }
         )
 
         this.game()
@@ -93,7 +93,7 @@ class Game {
             this.posX = 15
             this.posY = 15 - i
             this.posArr.push(
-                { x: this.pos.x, y: this.pos.y }
+                { x: this.pos.x, y: this.pos.y, forward: 0 }
             )
         }
         this.posY = 15
@@ -120,7 +120,7 @@ class Game {
 
         clearInterval(this.charactorMove)
 
-        this.charactorMove = setInterval(this.autoMove.bind(this), 500)
+        // this.charactorMove = setInterval(this.autoMove.bind(this), 500)
     }
 
     game() {
@@ -176,18 +176,18 @@ class Game {
     // this.ctx.fillRect(this.posArr[i].x, before.y + (this.blockHeight * this.frame), this.blockWidth, this.blockHeight)
 
     animation() {
-        // this.ctx.fillStyle = 'red'
-        // this.ctx.fillRect(this.posArr[0, before.y, this.blockWidth, this.blockHeight * this.frame)
-
         for (let i = 0; i < this.posArr.length; i++) {
             this.ctx.fillStyle = i==0 ? "green" : "red"
             let before = this.posArr[i+1] ? this.posArr[i+1] : this.lastPos
 
             if(this.posArr[i].x - before.x == 0) {
+                console.log(this.posArr[i].forward);
                 if(i==4) {
-                    this.ctx.globalAlpha = 0
-                    this.ctx.fillRect(this.posArr[i].x, before.y + (this.blockHeight * this.forward), this.blockWidth, this.blockHeight - (this.blockHeight * this.frame))
-                    this.ctx.globalAlpha = 1
+                    this.ctx.fillStyle = 'white'
+                    this.ctx.fillRect(this.posArr[i].x, before.y, this.blockWidth, this.blockHeight)
+                    this.ctx.strokeRect(this.posArr[i].x, before.y, this.blockWidth, this.blockHeight)
+                    this.ctx.fillStyle = 'red'
+                    this.ctx.fillRect(this.posArr[i].x, before.y + (this.blockHeight * this.frame), this.blockWidth, this.blockHeight)
                 } else if(this.forward==0) {
                     this.ctx.fillRect(this.posArr[i].x, before.y + (this.blockHeight * this.frame), this.blockWidth, this.blockHeight)
                 } else if(this.forward == 1) {
@@ -246,7 +246,7 @@ class Game {
     }
 
     blockLine() {
-
+        this.ctx.strokeStyle = '#aaa'
         this.ctx.beginPath();
         for (let i = 0; i < 30; i++) {
             this.ctx.moveTo(this.blockWidth * i, 0);

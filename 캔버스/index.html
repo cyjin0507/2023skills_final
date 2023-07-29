@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>    
+        let users = [
+            {id: 11, name:"Add1", age:23, group:"editor"},
+            {id: 47, name:"Add2", age:28, group:"editor"},
+            {id: 85, name:"Add3", age:23, group:"admin"},
+            {id: 97, name:"Add4", age:34, group:"admin"},
+            {id: 100, name:"Add5", age:34, group:"admin"}
+        ]
+
+
+        // let groupByAge = users.reduce((result, user)=> (
+        //     {...result, [user.age] : (result[user.age]||0)+1}), {})
+        // console.log(groupByAge);
+
+        // let data = [... new Set(users.map(x=>x.group))]
+        // console.log(data);
+
+        let cities = {
+            Seoul : "대한민국",
+            Busan : "대한민국",
+            Berlin : "독일",
+            Paris: "프랑스",
+            Lyon: "프랑스"
+        };
+
+        let arr = {}
+        for(let i=0; i<5; i++) {
+            if(arr[Object.values(cities)[i]] == undefined) {
+                arr[Object.values(cities)[i]] = [Object.keys(cities)[i]]
+            } else {
+                arr[Object.values(cities)[i]].push(Object.keys(cities)[i])
+            }
+        }
+        console.log(arr);
+
+        let data2 = Object.keys(cities).reduce(
+            (r,x)=> (r[cities[x]] = [...(r[cities[x]] || []), x], r),
+            {}
+        )
+
+        console.log(data2);
+
+    </script>
+</body>
+</html>

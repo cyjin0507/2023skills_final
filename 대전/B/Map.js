@@ -10,7 +10,6 @@ class Map {
     }
 
     init() {
-
         this.locArr = []
         this.alpha = ['A','B','C','D','E','F','G','H','I','J']
 
@@ -194,7 +193,7 @@ class Map {
 
         arr.forEach((x,i)=> {
             let dis = ""
-        
+
             x.x.forEach((k,j)=> {
                 let long = 0
                 if(j!=0) {

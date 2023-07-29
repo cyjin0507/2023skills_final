@@ -1,0 +1,16 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    width: 100%;
+    margin: 0 auto;
+    display: flex;
+    justify-self: center;
+}
+
+#gameCanvas {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
