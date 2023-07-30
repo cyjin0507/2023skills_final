@@ -11,7 +11,7 @@ export default class Player {
         this.count = 0
         this.forward = 'down'
 
-        this.loc = this.y
+        this.loc = "y"
         this.plus = 1
         this.changeCheck = false
 
@@ -42,22 +42,28 @@ export default class Player {
 
     update(d) {
         let speed = 35
-        this.y += d * speed
+        if(this.loc == "x") {
+            this.x += d * speed * this.plus
+        } else if(this.loc == "y") {
+            this.y += d * speed * this.plus
+        }
 
         if(this.count == this.index) {
-            if(this.changeCheck) {return}
+            if(!this.changeCheck) {
+                console.log(this.count, this.index);
+
+                if(this.forward == 'left') {this.loc = "x"; this.plus=-1;}
+                else if(this.forward == 'right') {this.loc = "x"; this.plus=1;}
+                else if(this.forward == 'down') {this.loc = "y"; this.plus=1;}
+                else if(this.forward == 'down') {this.loc = "y"; this.plus=1;}
+            }
             this.changeCheck = true
-
-            if(this.forward == 'left') {this.loc = this.x; this.plus=-1;}
-            else if(this.forward == 'right') {this.loc = this.x; this.plus=1;}
-            else if(this.forward == 'down') {this.loc = this.y; this.plus=1;}
-            else if(this.forward == 'down') {this.loc = this.y; this.plus=1;}
-
         } else {
             this.changeCheck = false
         }
 
-        if(Math.round(this.y) % 20 == 0) {
+        if(Math.floor(this.y) % 20 == 0) {
+            // console.log(this.index, this.count);
             this.count++
         }
 
