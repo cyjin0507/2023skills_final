@@ -16,11 +16,13 @@ export default class Map {
         this.startX = 0
         this.startY = 0
 
+        this.space = false
+
         // 처음에는 json 불러오지 않기
         this.firstDataCheck = false
 
         this.mark = new Mark(this.ctx)
-        // this.ping = new Ping(this.ctx)
+        this.ping = new Ping(this.ctx)
         this.init()
     }
 
@@ -37,6 +39,7 @@ export default class Map {
         this.ctx.canvas.addEventListener('mouseleave', (e) => this.mouseup(e));
 
         this.ctx.canvas.addEventListener('mousewheel', (e) => this.mousewheel(e));
+
     }
 
     render(size = this.currentPhase) {
@@ -59,13 +62,15 @@ export default class Map {
         
         if(this.firstDataCheck) {
             this.mark.draw(this.currentPhase, this.startX, this.startY)
+            this.ping.savePing(this.currentPhase, this.startX, this.startY)
         }
         this.firstDataCheck = true
+
     }
 
     mousedown(e) {
         this.isDragging = true
-        // this.ping.mousedown(e)
+        this.ping.mousedown(e)
     }
 
     mousemove(e) {
@@ -80,12 +85,13 @@ export default class Map {
         if((this.PHASE_SIZE[this.currentPhase] - 800) < Math.abs(this.cameraPos.y)) this.cameraPos.y = (this.PHASE_SIZE[this.currentPhase] * -1) + 800
 
         this.render()
-        // this.ping.mousemove(e)
+        this.ping.mousemove(e)
     }
 
     mouseup(e) {
         this.isDragging = false
-        // this.ping.mouseup(e)
+        this.render()
+        this.ping.mouseup(e)
     }
 
     mousewheel(e) {

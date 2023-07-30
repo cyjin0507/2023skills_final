@@ -49,8 +49,8 @@ export default class Mark {
     }
 
     render() {
-        this.ctx.beginPath()
         this.markList.forEach(x=> {
+            this.ctx.beginPath()
             this.ctx.fillStyle = 'blue'
             this.ctx.arc(x.percent.lat, x.percent.long,4,0,Math.PI*2)
             this.ctx.fillText(x.data.name, x.percent.lat + 10, x.percent.long + 5)
@@ -60,24 +60,29 @@ export default class Mark {
     }
 
     addEvent() {
-        this.ctx.canvas.addEventListener('mousemove', this.markToggle)
+        this.ctx.canvas.addEventListener('click', this.markToggle)
     }
 
     markToggle = (e) => {
         let mx = e.offsetX
         let my = e.offsetY
 
-        this.markList.forEach(x=> {
-            let lat = Math.round(x.percent.lat) + this.startX
-            let long = Math.round(x.percent.long) - this.startY
-            console.log(lat, mx);
-            if((lat >= mx && lat + 4 <= mx) &&
-                (long >= my && long + 4 <= my)) {
-                    console.log("test");
+        this.markList.forEach((x,i)=> {
+            let lat = Math.round(x.percent.lat)
+            let long = Math.round(x.percent.long)
+            if((lat-4 <= mx && lat + 4 >= mx) &&
+                (long-4 <= my && long + 4 >= my)) {
+                    this.drawButton()
                 }
         })
 
     }
+
+    drawButton() {
+        this.ctx.fillRect(150, 150, 60, 30)
+    }
+
+
 
 
 }
