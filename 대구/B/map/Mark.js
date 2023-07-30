@@ -11,6 +11,10 @@ export default class Mark {
 
         this.init()
 
+        this.startX = 0
+        this.startY = 0
+
+        this.addEvent()
 
     }
 
@@ -38,6 +42,9 @@ export default class Mark {
             })
         })
 
+        this.startX = startX
+        this.startY = startY
+
         this.render()
     }
 
@@ -52,6 +59,25 @@ export default class Mark {
         })
     }
 
+    addEvent() {
+        this.ctx.canvas.addEventListener('mousemove', this.markToggle)
+    }
+
+    markToggle = (e) => {
+        let mx = e.offsetX
+        let my = e.offsetY
+
+        this.markList.forEach(x=> {
+            let lat = Math.round(x.percent.lat) + this.startX
+            let long = Math.round(x.percent.long) - this.startY
+            console.log(lat, mx);
+            if((lat >= mx && lat + 4 <= mx) &&
+                (long >= my && long + 4 <= my)) {
+                    console.log("test");
+                }
+        })
+
+    }
 
 
 }
