@@ -1,42 +1,65 @@
 export default class Player {
-    constructor(ctx, x, y, width, height) {
+    constructor(ctx, x, y, width, height, index) {
         this.ctx = ctx
         this.x = x * ctx.canvas.width / 30
         this.y = y * ctx.canvas.width / 30
         this.width = width
         this.height = height
+        this.index = index
 
-        this.moveXY = "y"
-        this.upDown = 1
+        this.keyCheck = false
+        this.count = 0
+        this.forward = 'down'
 
-        this.forward = ""
+        this.loc = this.y
+        this.plus = 1
+        this.changeCheck = false
+
+        document.addEventListener('keydown', this.keydownEvent)
+        document.addEventListener('keyup', this.keyupEvent)
 
         this.render()
+    }
+
+    keydownEvent = (e) => {
+        if(this.keyCheck) {return}
+        this.keyCheck = true
+
+        if(e.keyCode == 39) {this.forward = 'right'}
+        else if(e.keyCode == 37) {this.forward = 'left'}
+        else if(e.keyCode == 38) {this.forward = 'up'}
+        else if(e.keyCode == 40) {this.forward = 'down'}
+        this.count = 0
+    }
+
+    keyupEvent = (e) => {
+        this.keyCheck = false
     }
 
     render() {
         this.ctx.fillRect(this.x, this.y, this.width, this.height)
     }
 
-    update(d, i, forwardList) {
+    update(d) {
         let speed = 35
-        if(this.moveXY == "y") {
-            this.y += d * speed * this.upDown
-        } else if(this.moveXY == "x") {
-            this.x += d * speed * this.upDown
+        this.y += d * speed
+
+        if(this.count == this.index) {
+            if(this.changeCheck) {return}
+            this.changeCheck = true
+
+            if(this.forward == 'left') {this.loc = this.x; this.plus=-1;}
+            else if(this.forward == 'right') {this.loc = this.x; this.plus=1;}
+            else if(this.forward == 'down') {this.loc = this.y; this.plus=1;}
+            else if(this.forward == 'down') {this.loc = this.y; this.plus=1;}
+
+        } else {
+            this.changeCheck = false
         }
 
-        if((Math.round(this.y) % 20 == 0 && this.moveXY == "y")
-        || (Math.round(this.x) % 20 == 0 && this.moveXY == "x")) {
-            if(forwardList[i] == "left") {this.moveXY = "x"; this.upDown = 1;}
-            if(forwardList[i] == "right") {this.moveXY = "x"; this.upDown = -1;}
-            if(forwardList[i] == "up") {this.moveXY = "y"; this.upDown = -1;}
-            if(forwardList[i] == "down") {this.moveXY = "y"; this.upDown = 1;}
+        if(Math.round(this.y) % 20 == 0) {
+            this.count++
         }
-
-    }
-
-    changePos(forward, i) {
 
     }
 

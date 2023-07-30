@@ -9,41 +9,15 @@ class App {
         this.blockWidth = this.canvas.width / 30
         this.blockHeight = this.canvas.height / 30
 
-        this.keyCheck = false
-        document.addEventListener('keydown', this.keydownHandle)
-        document.addEventListener('keyup', this.keyupHandle)
-
         this.playerList = []
-        this.forwardList = []
-        this.forward = "down"
 
         for(let i=0; i<5; i++) {
-            this.player = new Player(this.ctx, 14, 15 - i, this.blockWidth, this.blockHeight)
+            this.player = new Player(this.ctx, 14, 15 - i, this.blockWidth, this.blockHeight, i)
             this.playerList.push(this.player)
-            this.forwardList.push("down")
         }
 
         this.before = performance.now()
         requestAnimationFrame(this.frame)
-    }
-
-    keydownHandle = (e) => {
-        if(this.keyCheck) {return}
-        this.keyCheck = true
-        if(e.keyCode == 39) {this.forward = "left"}
-        else if(e.keyCode == 37) {this.forward = "right"}
-        else if(e.keyCode == 38) {this.forward = "up"}
-        else if(e.keyCode == 40) {this.forward = "down"}
-
-        this.forwardList.pop()
-        this.forwardList.unshift(this.forward)
-
-        console.log(this.forwardList);
-
-    }
-
-    keyupHandle = (e) => {
-        this.keyCheck = false
     }
 
     frame = now => {
@@ -64,7 +38,7 @@ class App {
     }
 
     update = delta => {
-        this.playerList.forEach((x,i)=> x.update(delta,i,this.forwardList))
+        this.playerList.forEach((x)=> x.update(delta))
     }
 
 }
