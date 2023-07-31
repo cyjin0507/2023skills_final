@@ -3,7 +3,6 @@ export default class SideBar {
         this.btn = $('#btn-zone > button')
         this.sideList = []
         this.addEvent()
-
     }
 
     addEvent() {
