@@ -40,13 +40,14 @@ export default class Chart extends Popup {
     }
 
     changeCategory(e) {
-        if(this.category.length<=3) {
-            // this.document.alert("카테고리는 3개이상이여야함")
-        }
-
         let index = this.category.indexOf(e.target.dataset.category)
         
         if(e.target.className.includes('active')) {
+            if(this.category.length<=3) {
+                this.thisWindow.alert("카테고리는 3개이상이여야함")
+                return
+            }
+
             this.category.splice(index, 1)
             $(e.target).removeClass('active')
         } else {

@@ -1,8 +1,6 @@
 export default class SideBar {
     constructor() {
         this.btn = $('#btn-zone > button')
-
-
         this.sideList = []
         this.addEvent()
 
@@ -14,12 +12,13 @@ export default class SideBar {
     }
 
     slideBarAdd(jsonData){
+        $('#btn-zone').css('display', 'none')
+
         let json = JSON.parse(jsonData)
 
         if(!this.sideList.find(x=>x.name==json.name)) {
             this.sideList.push(json)
             this.slideBarDraw()
-
         }
     }
 

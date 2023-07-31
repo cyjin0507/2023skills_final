@@ -54,6 +54,7 @@ export default class Map {
 
         // 추가된 명소만 보기
         $('#only-view-btn').click(this.targetMark.bind(this))
+        $('#only-cancel-btn').click(this.targetCancelMark.bind(this))
         // 명소 슬라이딩
         $('#side-bar tbody').click(this.placeSliding.bind(this))
         
@@ -167,7 +168,16 @@ export default class Map {
 
     targetMark() {
         this.data = this.sideBar.val()
+        $('#only-cancel-btn').css('display', 'inline')
+        $('#only-view-btn').css('display', 'none')
         this.render()
+    }
+
+    targetCancelMark() {
+        this.data = this.sData['data']
+        this.render()
+        $('#only-cancel-btn').css('display', 'none')
+        $('#only-view-btn').css('display', 'inline')
     }
 
     placeSliding(e) {
