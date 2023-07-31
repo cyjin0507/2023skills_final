@@ -78,7 +78,24 @@ export default class Ping {
     }
 
     savePing(size, startX, startY) {
-        
+        console.log(startX, startY);
+        this.pos.forEach((x,i)=> {
+            this.ctx.arc(x.x+startX,x.y+startY,10,0,Math.PI*2)
+            this.ctx.fill()
+            this.ctx.closePath()
+        })
+
+        this.ctx.beginPath()
+        this.pos.forEach((x,i)=> {
+            if(i==0) {
+                this.ctx.moveTo(x.x+startX,x.y+startY)
+            } else {
+                this.ctx.lineTo(x.x+startX,x.y+startY)
+            }
+
+            this.ctx.stroke()
+        })
+        this.ctx.closePath()
     }
 
     close() {

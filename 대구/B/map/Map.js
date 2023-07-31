@@ -21,9 +21,6 @@ export default class Map {
 
         this.space = false
 
-        // 처음에는 json 불러오지 않기
-        this.firstDataCheck = false
-
         this.ping = new Ping(this.ctx)
         this.sideBar = new SideBar()
 
@@ -48,7 +45,8 @@ export default class Map {
 
         this.ctx.canvas.addEventListener('mousewheel', (e) => this.mousewheel(e));
 
-        document.addEventListener('keydown', (e) => this.keyControl(e))
+        document.addEventListener('keydown', (e) => this.keydownControl(e))
+        document.addEventListener('keyup', (e) => this.keyupControl(e))
 
         // 추가된 명소만 보기
         $('#only-view-btn').click(this.targetMark.bind(this))
@@ -59,9 +57,18 @@ export default class Map {
 
     }
     
-    keyControl(e) {
+    keydownControl(e) {
         if(e.keyCode == 27) {
             this.ping.close()
+        } 
+        if(e.keyCode==32) {
+            this.space = true
+        }
+    }
+
+    keyupControl(e) {
+        if(e.keyCode==32) {
+            this.space = false
         }
     }
 
@@ -84,17 +91,20 @@ export default class Map {
             }
         })
         this.mark.draw(this.currentPhase, this.startX, this.startY, this.data)
-        this.firstDataCheck = true
-
+        this.ping.savePing(this.currentPhase, this.startX, this.startY)
     }
 
     mousedown(e) {
         this.isDragging = true
-        this.ping.mousedown(e)
+        if(!this.space) {
+            this.ping.mousedown(e)
+        }
     }
 
     mousemove(e) {
-        this.ping.mousemove(e)
+        if(!this.space) {
+            this.ping.mousemove(e)
+        }
         if(!this.isDragging) {return}
         if(this.ping.val()) {return}
 
@@ -111,7 +121,9 @@ export default class Map {
 
     mouseup(e) {
         this.isDragging = false
-        this.ping.mouseup(e)
+        if(!this.space) {
+            this.ping.mouseup(e)
+        }
     }
 
     mousewheel(e) {
