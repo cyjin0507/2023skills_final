@@ -19,6 +19,7 @@ export default class RectTool extends Tool {
     }
 
     drawScreen(e) {
+        console.log("draw");
         const {ctx, btx} = this
         ctx.clearRect(0,0,ctx.canvas.width, ctx.canvas.height)
         ctx.drawImage(btx.canvas, 0, 0)
@@ -28,6 +29,7 @@ export default class RectTool extends Tool {
     }
 
     downHandle(e) {
+        console.log("down");
         const {ctx, btx} = this
         btx.clearRect(0,0,btx.canvas.width, btx.canvas.height)
         btx.drawImage(ctx.canvas, 0, 0)

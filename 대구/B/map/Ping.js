@@ -7,66 +7,88 @@ export default class Ping {
         this.canvasCopy.height = this.ctx.canvas.height
         this.btx = this.canvasCopy.getContext('2d')
 
+        this.dragging = false
+        this.check = 0
+
         this.startX = 0
         this.startY = 0
         this.endX = 0
         this.endY = 0
 
+        this.pos = []
+
     }
 
     mousedown(e) {
-        this.startX = this.endX = e.offsetX
-        this.startY = this.endY = e.offsetY
-        this.btx.drawImage(this.ctx.canvas,0,0)
+        this.dragging = true
+        this.pos.push({
+            x: e.offsetX,
+            y: e.offsetY
+        })
+        this.startX = e.offsetX
+        this.startY = e.offsetY
+
+        this.btx.clearRect(0,0,800,800)
+        this.btx.drawImage(this.ctx.canvas, 0,0)
+        this.ctx.setLineDash([5,10])
+
+    }
+
+    click(e) {
+        console.log("click");
+        if(this.check != 0) {
+            this.mouseup(e)
+        }
+
+        this.ctx.canvas.addEventListener('mousemove', (e)=>this.mousemove(e))
+
+        this.check++
+        this.mousedown(e)
+
     }
     
     mouseup(e) {
-        this.savePing()
-        
+        this.ctx.setLineDash([])
+
+        this.draw()
     }
 
     mousemove(e) {
-        this.endX = e.offsetX
-        this.endY = e.offsetY
+        if(!this.dragging) {return}
+
+        this.nowX = e.offsetX
+        this.nowY = e.offsetY
 
         this.draw()
     }
 
     draw() {
-        this.btx.beginPath()
-
-        // 시작지점 원
-        this.btx.arc(this.startX, this.startY, 5, 0, Math.PI*2)
-        this.btx.fill()
-
-        this.btx.setLineDash([5,10])
-        this.btx.moveTo(this.startX, this.startY)
-        this.btx.lineTo(this.endX, this.endY)
-
-        this.btx.stroke()
-        
+        this.ctx.clearRect(0,0,800,800)
         this.ctx.drawImage(this.btx.canvas,0,0)
 
-        this.btx.closePath()
-        this.btx.clearRect(0,0,800,800)
+        this.ctx.arc(this.startX,this.startY,10,0,Math.PI*2)
+        this.ctx.fill()
+
+        this.ctx.beginPath()
+        this.ctx.moveTo(this.startX, this.startY)
+        this.ctx.lineTo(this.nowX, this.nowY)
+        this.ctx.stroke()
+        this.ctx.closePath()
     }
 
     savePing(size, startX, startY) {
-        this.ctx.beginPath()
-        this.ctx.moveTo(this.startX + startX, this.startY + startY)
-        this.ctx.lineTo(this.endX + startX, this.endY + startY)
-        this.ctx.stroke()
-        this.ctx.closePath()
+        
+    }
 
-        this.ctx.beginPath()
-        this.ctx.arc(this.startX + startX, this.startY + startY, 5, 0, Math.PI*2)
-        this.ctx.fill()
-        this.ctx.closePath()
+    close() {
+        this.dragging = false
 
-        this.ctx.beginPath()
-        this.ctx.arc(this.endX + startX, this.endY + startY, 5, 0, Math.PI*2)
-        this.ctx.fill()
-        this.ctx.closePath()
+        let lastPos = this.pos[this.pos.length-1]
+        this.btx.fillStyle = 'blue'
+        this.btx.arc(lastPos.x, lastPos.y, 10, 0, Math.PI*2)
+        this.btx.fill()
+        this.ctx.drawImage(this.btx.canvas, 0, 0)
+        this.btx.clearRect(0,0,800,800)
     }
 
 

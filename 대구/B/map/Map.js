@@ -25,6 +25,8 @@ export default class Map {
         this.ping = new Ping(this.ctx)
         this.sideBar = new SideBar()
 
+        this.moving = false
+
         this.init()
     }
     
@@ -47,6 +49,8 @@ export default class Map {
 
         this.ctx.canvas.addEventListener('mousewheel', (e) => this.mousewheel(e));
 
+        document.addEventListener('keydown', (e) => this.keyControl(e))
+
         // 추가된 명소만 보기
         $('#only-view-btn').click(this.targetMark.bind(this))
         // 명소 슬라이딩
@@ -54,10 +58,15 @@ export default class Map {
         
 
     }
+    
+    keyControl(e) {
+        if(e.keyCode == 27) {
+            this.ping.close()
+        }
+    }
 
     render(size = this.currentPhase) {
         if(size==0) {this.cameraPos.x=0; this.cameraPos.y=0;}
-
         this.currentPhase = size
         this.ctx.clearRect(0,0,800,800)
         phaseImages[size].forEach((obj, idx)=> {
@@ -85,11 +94,11 @@ export default class Map {
 
     mousedown(e) {
         this.isDragging = true
-        this.ping.mousedown(e)
     }
 
     mousemove(e) {
         if(!this.isDragging) {return}
+        this.moving = true
 
         this.cameraPos.x += e.movementX
         this.cameraPos.y += e.movementY
@@ -100,13 +109,17 @@ export default class Map {
         if((this.PHASE_SIZE[this.currentPhase] - 800) < Math.abs(this.cameraPos.y)) this.cameraPos.y = (this.PHASE_SIZE[this.currentPhase] * -1) + 800
 
         this.render()
-        this.ping.mousemove(e)
     }
 
     mouseup(e) {
+        console.log(this.moving);
+        if(!this.moving) {
+            console.log("sdd");
+            this.ctx.canvas.addEventListener('click', (e) => this.ping.click(e));
+        }
         this.isDragging = false
+        this.moving = false
         // this.render()
-        this.ping.mouseup(e)
     }
 
     mousewheel(e) {
