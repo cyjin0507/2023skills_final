@@ -1,4 +1,5 @@
 import Map from "./Map.js"
+import Chart from "./chart/Chart.js"
 
 class App {
     constructor() {
@@ -10,8 +11,16 @@ class App {
 
         this.mouseDown = false
 
-        this.map = new Map(this.ctx)
+        this.init()
 
+
+    }
+
+    async init() {
+        this.data = await $.getJSON('/json/attraction.json')
+        this.map = new Map(this.ctx, this.data)
+
+        this.chart = new Chart()
         this.addEvent()
     }
 
@@ -22,6 +31,10 @@ class App {
             this.map.render(e.target.dataset.distance)
         })
 
+        $('#open-btn').click(()=> {
+            let sendData = this.map.val()
+            this.chart.open(sendData)
+        })
 
     }
    

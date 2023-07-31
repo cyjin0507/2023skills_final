@@ -4,8 +4,10 @@ import Ping from "./Ping.js"
 import SideBar from "./SideBar.js"
 
 export default class Map {
-    constructor(ctx) {
+    constructor(ctx, data) {
         this.ctx = ctx
+        this.sData = data
+
         this.currentPhase = 0
         this.PHASE_SIZE = [800, 1600, 3200]
         this.isDragging = false
@@ -30,8 +32,7 @@ export default class Map {
         this.init()
     }
     
-    async init() {
-        this.sData = await $.getJSON('/json/attraction.json')
+    init() {
         this.data = this.sData['data']
 
         this.mark = new Mark(this.ctx)
@@ -83,10 +84,6 @@ export default class Map {
                 this.startY = dy
             }
         })
-        
-        if(this.firstDataCheck) {
-            this.ping.savePing(this.currentPhase, this.startX, this.startY)
-        }
         this.mark.draw(this.currentPhase, this.startX, this.startY, this.data)
         this.firstDataCheck = true
 
@@ -112,11 +109,6 @@ export default class Map {
     }
 
     mouseup(e) {
-        console.log(this.moving);
-        if(!this.moving) {
-            console.log("sdd");
-            this.ctx.canvas.addEventListener('click', (e) => this.ping.click(e));
-        }
         this.isDragging = false
         this.moving = false
         // this.render()
@@ -206,6 +198,10 @@ export default class Map {
         this.cameraPos.y = this.beforeY + (this.moveY * this.frame)
         this.render()
         requestAnimationFrame(this.focus)
+    }
+
+    val() {
+        return this.sideBar.val()
     }
 
 }

@@ -1,22 +1,25 @@
 export default class SideBar {
     constructor() {
-        this.sideList = []
-
         this.btn = $('#btn-zone > button')
+
+
+        this.sideList = []
         this.addEvent()
+
     }
 
     addEvent() {
-        this.btn.click(this.slideBarAdd.bind(this))
+        this.btn.click((e)=> this.slideBarAdd(e.target.dataset.json))
         $('#side-bar tbody').click(this.removeList.bind(this))
     }
 
-    slideBarAdd(e){
-        let json = JSON.parse(e.target.dataset.json)
+    slideBarAdd(jsonData){
+        let json = JSON.parse(jsonData)
 
         if(!this.sideList.find(x=>x.name==json.name)) {
             this.sideList.push(json)
             this.slideBarDraw()
+
         }
     }
 
@@ -37,6 +40,13 @@ export default class SideBar {
     removeList(e) {
         if(e.target.className != 'btn btn-danger') {return}
         let index = this.sideList.indexOf(this.sideList.find(x=>x.name==e.target.dataset.name))
+
+        this.sideList.splice(index,1)
+        this.slideBarDraw()
+    }
+
+    remove(json) {
+        let index = this.sideList.indexOf(json)
 
         this.sideList.splice(index,1)
         this.slideBarDraw()
