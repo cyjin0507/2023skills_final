@@ -9,8 +9,6 @@ export default class Mark {
 
         this.markList = []
 
-        this.init()
-
         this.startX = 0
         this.startY = 0
 
@@ -18,27 +16,22 @@ export default class Mark {
 
     }
 
-    async init() {
-        this.data = await $.getJSON('/json/attraction.json')
-        this.draw(0,0,0)
-    }
-
-    async draw(size, startX, startY) {
+    async draw(size, startX, startY, data) {
         size = size==0 ? 1 : (size==1 ? 2 : 4)
 
         this.markList = []
-        this.data['data'].forEach(x=> {
+        data.forEach(x=> {
             let minLat = this.minLat * 10000
             let maxLat = this.maxLat * 10000
             let maxLong = this.maxLong * 10000
             let minLong = this.minLong * 10000
-            
+
             let percentLong = (800 - ((x.latitude * 10000 - minLat) / (maxLat - minLat)) * 800) * size
             let percentLat = (((x.longitude * 10000 - minLong) / (maxLong - minLong)) * 800) * size
 
             this.markList.push({
                 data : x,
-                percent : {lat: percentLat+startX, long: percentLong+startY}
+                percent : {lat: percentLat+startX, long: percentLong+startY},
             })
         })
 
@@ -72,17 +65,24 @@ export default class Mark {
             let long = Math.round(x.percent.long)
             if((lat-4 <= mx && lat + 4 >= mx) &&
                 (long-4 <= my && long + 4 >= my)) {
-                    this.drawButton()
+                    this.drawButton(lat, long, x.data)
+                    return false
                 }
         })
 
     }
 
-    drawButton() {
-        this.ctx.fillRect(150, 150, 60, 30)
+    drawButton(lat, long, data) {
+        $('#btn-zone').css({
+            'left': `${lat}px`,
+            'top': `${long - 40}px`,
+            'display' : 'block'
+        })
+        $('#btn-zone > button').attr('data-json', JSON.stringify(data))
     }
 
-
-
+    val() {
+        return this.markList
+    }
 
 }

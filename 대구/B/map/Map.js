@@ -1,6 +1,7 @@
 import { Data as phaseImages } from "./LoadImage.js"
 import Mark from "./Mark.js"
 import Ping from "./Ping.js"
+import SideBar from "./SideBar.js"
 
 export default class Map {
     constructor(ctx) {
@@ -21,12 +22,18 @@ export default class Map {
         // 처음에는 json 불러오지 않기
         this.firstDataCheck = false
 
-        this.mark = new Mark(this.ctx)
         this.ping = new Ping(this.ctx)
+        this.sideBar = new SideBar()
+
         this.init()
     }
+    
+    async init() {
+        this.sData = await $.getJSON('/json/attraction.json')
+        this.data = this.sData['data']
 
-    init() {
+        this.mark = new Mark(this.ctx)
+
         this.addEvent()
         this.render()
 
@@ -40,9 +47,17 @@ export default class Map {
 
         this.ctx.canvas.addEventListener('mousewheel', (e) => this.mousewheel(e));
 
+        // 추가된 명소만 보기
+        $('#only-view-btn').click(this.targetMark.bind(this))
+        // 명소 슬라이딩
+        $('#side-bar tbody').click(this.placeSliding.bind(this))
+        
+
     }
 
     render(size = this.currentPhase) {
+        if(size==0) {this.cameraPos.x=0; this.cameraPos.y=0;}
+
         this.currentPhase = size
         this.ctx.clearRect(0,0,800,800)
         phaseImages[size].forEach((obj, idx)=> {
@@ -61,9 +76,9 @@ export default class Map {
         })
         
         if(this.firstDataCheck) {
-            this.mark.draw(this.currentPhase, this.startX, this.startY)
             this.ping.savePing(this.currentPhase, this.startX, this.startY)
         }
+        this.mark.draw(this.currentPhase, this.startX, this.startY, this.data)
         this.firstDataCheck = true
 
     }
@@ -90,7 +105,7 @@ export default class Map {
 
     mouseup(e) {
         this.isDragging = false
-        this.render()
+        // this.render()
         this.ping.mouseup(e)
     }
 
@@ -145,14 +160,39 @@ export default class Map {
         this.render()
     }
 
-    // animation = () => {
-    //     if(this.frame >= 1) {
-    //         this.frame = 0
-    //         return
-    //     }
-    //     this.frame = Math.min(1, this.frame + 0.01)
-    //     requestAnimationFrame(this.animation)
-    //     this.render()
-    // }
+    targetMark() {
+        this.data = this.sideBar.val()
+        this.render()
+    }
+
+    placeSliding(e) {
+        if(e.target.className != 'side-name') {return}
+        if(this.currentPhase==0) {return}
+
+        let data = this.mark.val()
+        let name = e.target.dataset.name
+
+        let findData = data.find(x=>x.data.name==name)
+        this.moveX = 400 - findData['percent'].lat
+        this.moveY = 400 - findData['percent'].long
+
+        this.beforeX = this.cameraPos.x
+        this.beforeY = this.cameraPos.y
+
+        requestAnimationFrame(this.focus)
+    }
+
+    focus = () => {
+        if(this.frame >= 1) {
+            this.frame = 0
+            console.log(this.cameraPos.x);
+            return
+        }
+        this.frame = Math.min(1, this.frame+0.1)
+        this.cameraPos.x = this.beforeX + (this.moveX * this.frame)
+        this.cameraPos.y = this.beforeY + (this.moveY * this.frame)
+        this.render()
+        requestAnimationFrame(this.focus)
+    }
 
 }

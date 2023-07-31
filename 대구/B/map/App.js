@@ -21,8 +21,9 @@ class App {
             $(e.target).addClass('active')
             this.map.render(e.target.dataset.distance)
         })
-    }
 
+
+    }
    
 
 }
