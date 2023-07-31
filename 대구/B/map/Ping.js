@@ -8,7 +8,7 @@ export default class Ping {
         this.btx = this.canvasCopy.getContext('2d')
 
         this.dragging = false
-        this.check = 0
+        this.curve = 0
 
         this.startX = 0
         this.startY = 0
@@ -32,24 +32,22 @@ export default class Ping {
         this.btx.drawImage(this.ctx.canvas, 0,0)
         this.ctx.setLineDash([5,10])
 
-    }
-
-    click(e) {
-        console.log("click");
-        if(this.check != 0) {
-            this.mouseup(e)
-        }
-
-        this.ctx.canvas.addEventListener('mousemove', (e)=>this.mousemove(e))
-
-        this.check++
-        this.mousedown(e)
+        this.dragging = true
 
     }
+
     
     mouseup(e) {
+        if(!this.dragging) {return}
+        this.curve++
         this.ctx.setLineDash([])
-
+        if(this.curve % 2 == 0) {
+            console.log("aa");
+            this.ctx.setLineDash([])
+        } else {
+            console.log("bb");
+            this.ctx.setLineDash([5,10])
+        }
         this.draw()
     }
 
@@ -88,7 +86,11 @@ export default class Ping {
         this.btx.arc(lastPos.x, lastPos.y, 10, 0, Math.PI*2)
         this.btx.fill()
         this.ctx.drawImage(this.btx.canvas, 0, 0)
-        this.btx.clearRect(0,0,800,800)
+        // this.btx.clearRect(0,0,800,800)
+    }
+
+    val() {
+        return this.dragging
     }
 
 

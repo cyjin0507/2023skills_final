@@ -27,8 +27,6 @@ export default class Map {
         this.ping = new Ping(this.ctx)
         this.sideBar = new SideBar()
 
-        this.moving = false
-
         this.init()
     }
     
@@ -92,11 +90,13 @@ export default class Map {
 
     mousedown(e) {
         this.isDragging = true
+        // this.ping.mousedown(e)
     }
 
     mousemove(e) {
+        // this.ping.mousemove(e)
         if(!this.isDragging) {return}
-        this.moving = true
+        if(this.ping.val()) {return}
 
         this.cameraPos.x += e.movementX
         this.cameraPos.y += e.movementY
@@ -111,8 +111,7 @@ export default class Map {
 
     mouseup(e) {
         this.isDragging = false
-        this.moving = false
-        // this.render()
+        // this.ping.mouseup(e)
     }
 
     mousewheel(e) {
