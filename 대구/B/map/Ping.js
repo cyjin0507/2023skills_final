@@ -8,7 +8,7 @@ export default class Ping {
         this.btx = this.canvasCopy.getContext('2d')
 
         this.dragging = false
-        this.curve = 0
+        this.curve = false
 
         this.startX = 0
         this.startY = 0
@@ -39,16 +39,19 @@ export default class Ping {
     
     mouseup(e) {
         if(!this.dragging) {return}
-        this.curve++
+        
+        // if(!this.curve) {
+        //     this.ctx.setLineDash([5,10])
+        //     this.curve = true
+        // } else {
+        // }
         this.ctx.setLineDash([])
-        if(this.curve % 2 == 0) {
-            console.log("aa");
-            this.ctx.setLineDash([])
-        } else {
-            console.log("bb");
-            this.ctx.setLineDash([5,10])
-        }
         this.draw()
+        
+        // if(this.curve) {
+        // } else {
+        //     this.ctx.setLineDash([5,10])
+        // }
     }
 
     mousemove(e) {

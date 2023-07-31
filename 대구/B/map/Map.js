@@ -90,11 +90,11 @@ export default class Map {
 
     mousedown(e) {
         this.isDragging = true
-        // this.ping.mousedown(e)
+        this.ping.mousedown(e)
     }
 
     mousemove(e) {
-        // this.ping.mousemove(e)
+        this.ping.mousemove(e)
         if(!this.isDragging) {return}
         if(this.ping.val()) {return}
 
@@ -111,7 +111,7 @@ export default class Map {
 
     mouseup(e) {
         this.isDragging = false
-        // this.ping.mouseup(e)
+        this.ping.mouseup(e)
     }
 
     mousewheel(e) {
