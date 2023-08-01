@@ -125,12 +125,17 @@ export default class Ping {
         // console.log(this.totalDistance(size));
         // console.log(this.recentDistance(size));
 
-        this.ctx.fillStyle = 'red'
-        this.ctx.fillRect(this.nowX+30,this.nowY+30,100,50)
-        this.ctx.fillStyle = 'blue'
+        // this.ctx.fillStyle = 'red'
+        // this.ctx.fillRect(this.nowX+30,this.nowY+30,100,50)
+        // this.ctx.fillStyle = 'blue'
+
+        $('#test').html(`
+            총거리 : ${this.totalDistance()} <br>
+            상대거리 : ${this.recentDistance()}
+        `)
     }
 
-    totalDistance(size) {
+    totalDistance() {
         let minLat = 36.6208
         let maxLat = 36.9842
         let minLong = 36.6208
@@ -141,22 +146,22 @@ export default class Ping {
         let distance = 0
         if(this.pos.length>1) {
             for(let i=0; i<this.pos.length-1; i++) {
-                let widthKM = Math.abs(this.pos[i].x*latToKM - this.pos[i+1].x*latToKM) / size
-                let heightKM = Math.abs(this.pos[i].y*longToKM - this.pos[i+1].y*longToKM) / size
+                let widthKM = Math.abs(this.pos[i].x*latToKM - this.pos[i+1].x*latToKM) / this.size
+                let heightKM = Math.abs(this.pos[i].y*longToKM - this.pos[i+1].y*longToKM) / this.size
                 distance += Math.sqrt(Math.pow(widthKM,2) + Math.pow(heightKM,2))
             }   
         }
 
 
-        let widthKM = Math.abs(this.pos[this.pos.length-1].x*latToKM - this.nowX*latToKM) / size
-        let heightKM = Math.abs(this.pos[this.pos.length-1].y*longToKM - this.nowY*longToKM) / size
+        let widthKM = Math.abs(this.pos[this.pos.length-1].x*latToKM - this.nowX*latToKM) / this.size
+        let heightKM = Math.abs(this.pos[this.pos.length-1].y*longToKM - this.nowY*longToKM) / this.size
         distance += Math.sqrt(Math.pow(widthKM,2) + Math.pow(heightKM,2))
 
         return distance
 
     }
 
-    recentDistance(size) {
+    recentDistance() {
         let minLat = 36.6208
         let maxLat = 36.9842
         let minLong = 36.6208
@@ -164,8 +169,8 @@ export default class Ping {
         let latToKM = (maxLat - minLat) / 0.1 * 11 / this.ctx.canvas.width
         let longToKM = (maxLong - minLong) / 0.1 * 11 / this.ctx.canvas.height
 
-        let widthKM = Math.abs(this.pos[this.pos.length-1].x*latToKM - this.nowX*latToKM) / size
-        let heightKM = Math.abs(this.pos[this.pos.length-1].y*longToKM - this.nowY*longToKM) / size
+        let widthKM = Math.abs(this.pos[this.pos.length-1].x*latToKM - this.nowX*latToKM) / this.size
+        let heightKM = Math.abs(this.pos[this.pos.length-1].y*longToKM - this.nowY*longToKM) / this.size
         let distance = Math.sqrt(Math.pow(widthKM,2) + Math.pow(heightKM,2))
 
         return distance
