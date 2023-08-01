@@ -22,6 +22,7 @@ export default class Map {
         this.space = false
 
         this.ping = new Ping(this.ctx)
+        this.pingCheck = false
         this.sideBar = new SideBar()
 
         this.init()
@@ -53,9 +54,12 @@ export default class Map {
         $('#only-cancel-btn').click(this.targetCancelMark.bind(this))
         // 명소 슬라이딩
         $('#side-bar tbody').click(this.placeSliding.bind(this))
-        
+
+        $('#distance-calc-btn').click(this.pingOn.bind(this))
+        $('#distance-cancel-btn').click(this.pingOff.bind(this))
 
     }
+
     
     keydownControl(e) {
         if(e.keyCode == 27) {
@@ -96,17 +100,16 @@ export default class Map {
 
     mousedown(e) {
         this.isDragging = true
-        if(!this.space) {
+        if(this.pingCheck && !this.space) {
             this.ping.mousedown(e)
         }
     }
 
     mousemove(e) {
-        if(!this.space) {
-            this.ping.mousemove(e)
+        if(this.pingCheck) {
+            this.ping.mousemove(e, this.currentPhase)
         }
         if(!this.isDragging) {return}
-        if(this.ping.val()) {return}
 
         this.cameraPos.x += e.movementX
         this.cameraPos.y += e.movementY
@@ -121,7 +124,7 @@ export default class Map {
 
     mouseup(e) {
         this.isDragging = false
-        if(!this.space) {
+        if(!this.space && this.pingCheck) {
             this.ping.mouseup(e)
         }
     }
@@ -211,7 +214,6 @@ export default class Map {
     focus = () => {
         if(this.frame >= 1) {
             this.frame = 0
-            console.log(this.cameraPos.x);
             return
         }
         this.frame = Math.min(1, this.frame+0.1)
@@ -223,6 +225,20 @@ export default class Map {
 
     val() {
         return this.sideBar.val()
+    }
+
+    pingOn() {
+        this.ping.reset()
+        this.render()
+        this.pingCheck = true
+        $('#distance-calc-btn').css('display', 'none')
+        $('#distance-cancel-btn').css('display', 'inline')
+    }
+
+    pingOff() {
+        this.pingCheck = false
+        $('#distance-calc-btn').css('display', 'inline')
+        $('#distance-cancel-btn').css('display', 'none')
     }
 
 }
