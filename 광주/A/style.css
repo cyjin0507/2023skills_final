@@ -118,6 +118,7 @@ nav {
     margin-top: 30px;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
+    padding: 15px;
 }
 
 .history-content {
@@ -220,4 +221,31 @@ input[type='radio'] {
 }
 #year22:checked ~ #history > .history-content > div > #info22 {
     opacity: 1;
+}
+
+/*  */
+footer {
+    margin-top: 100px;
+    border-top: 1px solid #eaeaea;
+    padding-top: 30px;
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 20px;
+}
+
+footer > div:nth-child(2) {
+    line-height: 2;
+}
+
+#sns {
+    display: flex;
+    gap: 20px;
+}
+
+#sns > i {
+    font-size: 30px;
+}
+
+#copy {
+    margin-top: 20px;
 }
