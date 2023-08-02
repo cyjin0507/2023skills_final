@@ -151,6 +151,73 @@ nav {
     opacity: 0;
 }
 
-.history-content > div:hover .history-info {
+input[type='radio'] {
+    display: none;
+}
+
+#year1:checked ~ #history > .history-content > div > #info1 {
+    opacity: 1;
+}
+#year2:checked ~ #history > .history-content > div > #info2 {
+    opacity: 1;
+}
+#year3:checked ~ #history > .history-content > div > #info3 {
+    opacity: 1;
+}
+#year4:checked ~ #history > .history-content > div > #info4 {
+    opacity: 1;
+}
+#year5:checked ~ #history > .history-content > div > #info5 {
+    opacity: 1;
+}
+#year6:checked ~ #history > .history-content > div > #info6 {
+    opacity: 1;
+}
+#year7:checked ~ #history > .history-content > div > #info7 {
+    opacity: 1;
+}
+#year8:checked ~ #history > .history-content > div > #info8 {
+    opacity: 1;
+}
+#year9:checked ~ #history > .history-content > div > #info9 {
+    opacity: 1;
+}
+#year10:checked ~ #history > .history-content > div > #info10 {
+    opacity: 1;
+}
+#year11:checked ~ #history > .history-content > div > #info11 {
+    opacity: 1;
+}
+#year12:checked ~ #history > .history-content > div > #info12 {
+    opacity: 1;
+}
+#year13:checked ~ #history > .history-content > div > #info13 {
+    opacity: 1;
+}
+#year14:checked ~ #history > .history-content > div > #info14 {
+    opacity: 1;
+}
+#year15:checked ~ #history > .history-content > div > #info15 {
+    opacity: 1;
+}
+#year16:checked ~ #history > .history-content > div > #info16 {
+    opacity: 1;
+}
+#year17:checked ~ #history > .history-content > div > #info17 {
+    opacity: 1;
+}
+#year18:checked ~ #history > .history-content > div > #info18 {
+    opacity: 1;
+}
+#year19:checked ~ #history > .history-content > div > #info19 {
+    opacity: 1;
+}
+#year20:checked ~ #history > .history-content > div > #info20 {
+    opacity: 1;
+}
+#year21:checked ~ #history > .history-content > div > #info21 {
+    opacity: 1;
+}
+#year22:checked ~ #history > .history-content > div > #info22 {
     opacity: 1;
 }
