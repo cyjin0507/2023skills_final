@@ -249,3 +249,72 @@ footer > div:nth-child(2) {
 #copy {
     margin-top: 20px;
 }
+
+/* around */
+
+#around {
+    margin-top: 70px;
+}
+
+#around-content {
+    margin-top: 50px;
+}
+
+.around-item:not(:first-child) {
+    border-top: 1px solid #eaeaea;
+    margin-top: 50px;
+    padding-top: 50px;
+}
+
+.around-info1 {
+    margin-top: 10px;
+    display: flex;
+    gap: 100px;
+}
+
+.around-info1 > div:nth-child(1) {
+    margin-top: 25px;
+    line-height: 1.6;
+}
+
+.around-imgs {
+    display: flex;
+    gap: 30px;
+}
+
+.around-imgs > img {
+    width: 80px;
+    height: 80px;
+    border-radius: 100%;
+    transition: all .5s;
+}
+
+.around-imgs > img:hover {
+    transform: scale(1.2);
+}
+
+.around-info2 {
+    margin-top: 20px;
+    font-size: 13px;
+    width: 70%;
+}
+
+/* map */
+#map {
+    margin-top: 70px;
+}
+
+#map-content {
+    margin-top: 30px;
+    display: flex;
+    gap: 40px;
+}
+
+#map-img > img {
+    width: 600px;
+    height: 380px;
+}
+
+#map-info > div {
+    margin-top: 25px;
+}
