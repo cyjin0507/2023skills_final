@@ -30,6 +30,7 @@ class Vote {
 
     vote() {
         this.score = this.star.val()
+        let comment = $('#comment').val()
 
         if(this.voteList.find(x=> x.name == this.voteName)) {
             // filter 써도 됐던 것 같은데 안됨
@@ -37,6 +38,7 @@ class Vote {
                 if(x.name == this.voteName) {
                     x.cnt++
                     x.score += this.score
+                    x.comment.push(comment)
                 }
             })
             // this.voteList.filter(x=> x.name == this.voteName)[0].cnt++
@@ -47,7 +49,7 @@ class Vote {
                 "idx" : this.index,
                 "name" : this.voteName,
                 "score" : this.score,
-                "comment" : "",
+                "comment" : [comment],
                 "cnt" : 1
             })
         }

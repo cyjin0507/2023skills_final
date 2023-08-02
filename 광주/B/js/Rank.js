@@ -20,11 +20,18 @@ class Rank {
     }
 
     itemDetail(e) {
-        $('#detail-modal').fadeIn()
+        $('#comment-list').html('')
+        let item = this.popular.find(x=>x.name == e.target.dataset.name)
 
-        let item = this.popular.filter(x=>x.name == e.target.dataset.name)
-        $('.info1').html(item[0].cnt)
-        $('.info2').html(Math.round(item[0].score / item[0].cnt,2))
+        item.comment.forEach(x=> {
+            $('#comment-list').append(`
+                <p>${x}</p>
+            `)
+        })
+
+        $('.info1').html(item.cnt)
+        $('.info2').html(Math.round(item.score / item.cnt,2))
+        $('#detail-modal').fadeIn()
     }
 
     drawGraph() {
