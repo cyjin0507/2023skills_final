@@ -25,6 +25,10 @@
             ?>
             <a href="/mypage/admin">Mypage</a>
             <?php
+        } else if($_SESSION['user']->type==0) {
+            ?>
+            <a href="/mypage/user">Mypage</a>
+            <?php
         }
     } else {
         ?>

@@ -22,7 +22,8 @@ class MypageTourController {
         }
         if($idx==3) {
             $busList = DB::fetchAll("SELECT * FROM bus where uidx=? and accept!=0", [$_SESSION['user']->idx]);
-            view('mypage/tourList/reservList', ['busList'=>$busList]);
+            $reservList = DB::fetchAll("SELECT b.number, u.id, u.name, r.accept, r.type, u.phone, r.seat, r.price, r.idx FROM `reservation` r, bus b, users u where r.bidx = b.idx and u.idx = r.uidx and r.accept!=2 and b.uidx=?;", [$_SESSION['user']->idx]);
+            view('mypage/tourList/reservList', ['busList'=>$busList, 'reservList'=>$reservList]);
         }
     }
 
@@ -117,6 +118,13 @@ class MypageTourController {
         $data = DB::execute("UPDATE bus SET accept=1 where idx=?", [$idx]);
         if($data) {
             back("배차 승인 요청되었습니다.");
+        }
+    }
+
+    public function reservAccept($idx, $type) {
+        $data = DB::execute("UPDATE reservation SET accept=? where idx=?", [$type, $idx]);
+        if($data) {
+            back("변경되었습니다.");
         }
     }
 

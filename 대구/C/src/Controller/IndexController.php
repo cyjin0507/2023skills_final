@@ -41,13 +41,18 @@ class IndexController {
     public function joinProcess() {
         extract($_POST);
 
-        $data = DB::execute("INSERT INTO `users`(`id`, `password`, `birth`, `phone`, `type`) VALUES (?,?,?,?,?)",
-        [$id, $pw, $birth, $phone, $type]);
+        $data = DB::execute("INSERT INTO `users`(`id`, `password`, `name`, `birth`, `phone`, `type`) VALUES (?,?,?,?,?,?)",
+        [$id, $pw, $name, $birth, $phone, $type]);
 
         if($data) {
             redirect('회원가입 성공', '/');
         }
 
+    }
+
+    public function mypage() {
+        $reservList = DB::fetchAll("SELECT b.type as bus, b.number, b.image, r.start as startLoc, r.reserv_time, b.start, b.middle, b.end, r.seat, r.accept FROM `reservation` r, bus b, users u where r.bidx = b.idx and u.idx = r.uidx and u.idx=?;", [$_SESSION['user']->idx]);
+        view('mypage/user/mypage', ['list'=>$reservList]);
     }
 
 
