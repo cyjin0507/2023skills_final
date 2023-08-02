@@ -4,6 +4,10 @@
     color: #333;
 }
 
+img {
+    object-fit: cover;
+}
+
 a {
     color: inherit;
     text-decoration: none;
@@ -13,6 +17,10 @@ header {
     display: flex;
     justify-content: space-between;
     padding: 15px 0;
+}
+
+header * {
+    z-index: 9999;
 }
 
 nav {
@@ -32,6 +40,7 @@ nav {
 }
 
 .main-menu > a {
+    transition: all .5s;
     padding: 5px 8px;
 }
 
@@ -40,9 +49,11 @@ nav {
     width: 120px;
     position: absolute;
     border: 1px solid #eaeaea;
+    background-color: white;
 }
 
 .sub-menu > a {
+    transition: all .5s;
     display: block;
     font-size: 13px;
     padding: 5px 8px;
@@ -62,3 +73,84 @@ nav {
 }
 
 /*  */
+
+#visual {
+    width: 100%;
+}
+
+.visual-content {
+    position: relative;
+    height: 300px;
+}
+
+.visual-area {
+    height: 100%;
+    position: relative;
+}
+
+.visual-img {
+    width: 100%;
+    height: 100%;
+    filter: brightness(.5);
+    position: absolute;
+}
+
+.visual-txt {
+    position: absolute;
+    padding: 110px 30px;
+}
+
+.visual-txt > h5 {
+    color: white;
+}
+
+.visual-txt > p {
+    color: white;
+    margin-top: 10px;
+}
+
+/*  */
+#section2 {
+    margin-top: 100px;
+}
+
+#history {
+    margin-top: 30px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+.history-content {
+    border-left: 2px solid #333;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.history-content > div {
+    position: relative;
+    padding-left: 30px;
+}
+
+.history-circle {
+    font-size: 30px;
+    position: absolute;
+    margin-left: -45px;
+}
+
+.history-title {
+    margin-top: 12px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.history-info {
+    margin-top: 6px;
+    font-size: 13px;
+    transition: all .5s;
+    opacity: 0;
+}
+
+.history-content > div:hover .history-info {
+    opacity: 1;
+}
