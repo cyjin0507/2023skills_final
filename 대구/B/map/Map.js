@@ -138,6 +138,7 @@ export default class Map {
     }
 
     mousewheel(e) {
+        if(this.pingCheck) {return}
         if(e.wheelDelta > 0 && this.currentPhase < 2) {
             this.phaseUp(e)
         } else if(e.wheelDelta < 0 && this.currentPhase > 0) {
@@ -239,6 +240,7 @@ export default class Map {
         this.ping.reset()
         this.render()
         this.pingCheck = true
+        $('#toolTip').css('display', 'none')
     }
 
 }

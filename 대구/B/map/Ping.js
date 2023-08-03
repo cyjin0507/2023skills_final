@@ -109,7 +109,7 @@ export default class Ping {
         this.btx.arc((lastPos.x*size)+startX, (lastPos.y*size)+startY, 10, 0, Math.PI*2)
         this.btx.fill()
         this.ctx.drawImage(this.btx.canvas, 0, 0)
-        // this.btx.clearRect(0,0,800,800)
+        this.toolTip(lastPos.x, lastPos.y)
     }
 
     reset() {
@@ -123,18 +123,26 @@ export default class Ping {
         this.pos = []
     }
 
-    toolTip() {
-        // console.log(this.totalDistance(size));
-        // console.log(this.recentDistance(size));
+    toolTip(x=this.nowX, y=this.nowY) {
+        $('#toolTip').css({
+            left : x + 50,
+            top : y + 50,
+            display : 'block'
+        })
 
-        // this.ctx.fillStyle = 'red'
-        // this.ctx.fillRect(this.nowX+30,this.nowY+30,100,50)
-        // this.ctx.fillStyle = 'blue'
-
-        $('#test').html(`
+        if(x!=this.nowX) {
+            this.nowX = x
+            this.nowY = y
+            $('#toolTip').html(`
+                총거리 : ${this.totalDistance()} <br>
+                상대거리 : ${this.totalDistance()}
+            `)
+        } else {
+            $('#toolTip').html(`
             총거리 : ${this.totalDistance()} <br>
             상대거리 : ${this.recentDistance()}
         `)
+        }
     }
 
     totalDistance() {
