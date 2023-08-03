@@ -101,7 +101,7 @@ export default class Map {
     mousedown(e) {
         this.isDragging = true
         if(this.pingCheck && !this.space) {
-            this.ping.mousedown(e)
+            this.ping.mousedown(e, this.startX, this.startY, this.currentPhase)
         }
     }
 

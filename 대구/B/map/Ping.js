@@ -22,12 +22,15 @@ export default class Ping {
 
     }
 
-    mousedown(e) {
+    mousedown(e, startX, startY, size) {
+        size = size==0 ? 1 : (size==1 ? 2 : 4)
+
         this.dragging = true
         this.pos.push({
             x: e.offsetX,
             y: e.offsetY
         })
+
         this.startX = e.offsetX
         this.startY = e.offsetY
 
