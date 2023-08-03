@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        #map {
+            position: relative;
+            width: 800px;
+            height: 850px;
+            background-color: black;
+        }
+
+        #map>img {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%
+        }
+
+        #map>canvas {
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+
+        #map>.tooltip {
+            position: absolute;
+            padding: 5px 10px;
+            background-color: white;
+            border-radius: 4px;
+            box-shadow: 0 0 4px 2px rgba(0, 0, 0, 0.08);
+        }
+
+        #map>.tooltip>.name {
+            margin-top: 5px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        #map>.tooltip>img {
+            width: 200px;
+            height: auto;
+        }
+
+        button {
+            width: 70px;
+            height: 30px;
+            font-size: 12px;
+            background-color: white;
+            border-radius: 4px;
+            border: 1px solid #3c8aff;
+            transition: 0.1s;
+        }
+
+        button:hover {
+            background-color: #3c8aff;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="map">
+        <img src="./image/map.png">
+        <canvas></canvas>
+        <div class="tooltip">
+            <img src="" alt="">
+            <div class="name"></div>
+        </div>
+    </div>
+
+    <div style="margin-top: 20px;">
+        <button id="reset">초기화</button>
+        <button id="undo">되돌리기</button>
+        <button id="download">다운로드</button>
+    </div>
+
+    <script>
+        const datas = [
+            { name: "1경(독립기념관)", image: '/image/img1.jpg', x: 385, y: 482 },
+            { name: "2경(유관순열사 사적지)", image: '/image/img2.jpg', x: 570, y: 505 },
+            { name: "3경(천안 삼거리 공원)", image: '/image/img3.jpg', x: 280, y: 430 },
+            { name: "4경(태조산 왕건길과 청동대좌불)", image: '/image/img4.jpg', x: 355, y: 331 },
+            { name: "5경(아라리오 조각광장)", image: '/image/img5.jpg', x: 275, y: 331 },
+            { name: "6경(성성호수공원)", image: '/image/img6.jpg', x: 260, y: 264 },
+            { name: "7경(광덕산)", image: '/image/img7.jpg', x: 68, y: 658 },
+            { name: "8경(국보 봉선 홍경사 갈기비)", image: '/image/img8.jpg', x: 230, y: 68 },
+        ]
+
+        const WIDTH = 800
+        const HEIGHT = 850
+
+        const tooltipEl = document.querySelector('.tooltip')
+        const canvas = document.querySelector('canvas')
+        const ctx = canvas.getContext('2d')
+
+        canvas.width = WIDTH
+        canvas.height = HEIGHT
+
+        const App = () => {
+            const pathList = datas.map(({ x, y }) => {
+                const path = new Path2D()
+                path.arc(x, y, 10, 0, Math.PI * 2)
+                return path
+            })
+
+            let history = []
+
+            let hoverIdx = -1
+            let selectIdx = -1
+
+            const drawing = ({ offsetX, offsetY } = {}) => {
+                ctx.clearRect(0, 0, WIDTH, HEIGHT)
+
+
+
+
+                hoverIdx = -1
+                tooltipEl.style.display = 'none'
+                canvas.style.cursor = 'default'
+
+                for (let i = 0; i < history.length - 1; i++) {
+                    const { x: prevX, y: prevY } = datas[history[i]]
+                    const { x: nextX, y: nextY } = datas[history[i + 1]]
+
+                    ctx.beginPath()
+                    ctx.strokeStyle = 'red'
+                    ctx.lineWidth = 3
+                    ctx.moveTo(prevX, prevY)
+                    ctx.lineTo(nextX, nextY)
+                    ctx.closePath()
+                    ctx.stroke()
+                }
+
+                if (selectIdx > -1) {
+                    const { x: prevX, y: prevY } = datas[selectIdx]
+                    const findIdx = pathList.findIndex(path => ctx.isPointInPath(path, offsetX, offsetY))
+
+                    ctx.beginPath()
+                    ctx.strokeStyle = 'red'
+                    ctx.lineWidth = 3
+                    ctx.moveTo(prevX, prevY)
+                    if (findIdx > -1) {
+                        ctx.lineTo(datas[findIdx].x, datas[findIdx].y)
+                    } else {
+                        ctx.lineTo(offsetX, offsetY)
+                    }
+                    ctx.stroke()
+                    ctx.closePath()
+                }
+
+                for (const index in pathList) {
+                    const path = pathList[index]
+                    if (ctx.isPointInPath(path, offsetX, offsetY)) {
+                        hoverIdx = index
+                    }
+                    ctx.fillStyle = hoverIdx == index ? 'yellow' : 'red'
+                    ctx.fill(path)
+                }
+
+                for(const index in history) {
+                    const {x,y} = datas[history[index]]
+
+                    ctx.beginPath()
+                    ctx.fillStyle = 'white'
+                    ctx.textAlign = 'center'
+                    ctx.textBaseline = 'middle'
+                    ctx.font = '14px Arial'
+                    ctx.fillText(`${Number(index) + 1}`,x,y)
+                    ctx.closePath()
+                }
+
+                if (hoverIdx > -1) {
+                    const { name, image, x, y } = datas[hoverIdx]
+
+                    tooltipEl.querySelector('img').src = image
+                    tooltipEl.querySelector('.name').innerText = name
+
+                    tooltipEl.style.display = 'block'
+                    tooltipEl.style.left = `${x + 15}px`
+                    tooltipEl.style.top = `${y + 5}px`
+
+                    canvas.style.cursor = 'pointer'
+                }
+
+            }
+
+            const onmousedown = ({ offsetX, offsetY }) => {
+                const findIdx = pathList.findIndex(path => ctx.isPointInPath(path, offsetX, offsetY))
+                selectIdx = findIdx
+
+
+                if (findIdx > -1) {
+                    if (history.length === datas.length) {
+                        alert('설정 끝')
+                    }
+
+                    if (selectIdx != -1 && history.length != 0) {
+                        if (history[history.length - 1] != selectIdx) {
+                            selectIdx = -1
+                            alert("오류")
+                            return
+                        }
+                    }
+                }
+
+            }
+
+            const onMouseup = ({ offsetX, offsetY }) => {
+                const findIdx = pathList.findIndex(path => ctx.isPointInPath(path, offsetX, offsetY))
+                if (history.includes(findIdx)) {
+                    findIdx = -1
+                    alert("오류")
+                    return
+                }
+
+                if (findIdx > -1) {
+                    if (!history.length) {
+                        history.push(selectIdx)
+                    }
+                    history.push(findIdx)
+                }
+
+                if (history.length == datas.length) {
+                    alert("완성")
+                }
+
+                selectIdx = -1
+            }
+
+            const reset = () => {
+                history = []
+                drawing()
+            }
+
+            const undo = () => {
+                history.splice(-1,1)
+                drawing()
+            }
+
+            const downloadImage = () => {
+                const newCanvas = document.createElement('canvas')
+                const newCtx = newCanvas.getContext('2d')
+                const img = document.querySelector('#map > img')
+
+                newCanvas.width = WIDTH
+                newCanvas.height = HEIGHT
+
+                newCtx.beginPath()
+                newCtx.fillStyle = 'black'
+                newCtx.fillRect(0,0,WIDTH,HEIGHT)
+                newCtx.closePath()
+
+                newCtx.drawImage(img,0,0)
+
+                const pathImage = new Image()
+                pathImage.onload = () => {
+                    newCtx.drawImage(pathImage, 0, 0)
+                    const aTag = document.createElement('a')
+                    aTag.href = newCanvas.toDataURL()
+                    aTag.download = 'download.png'
+                    aTag.click()
+                }
+
+                pathImage.src = canvas.toDataURL()
+            }
+
+            drawing()
+
+            canvas.addEventListener('mousemove', drawing)
+            canvas.addEventListener('mousedown', onmousedown)
+            document.addEventListener('mouseup', onMouseup)
+            document.querySelector('#reset').addEventListener('click', reset)
+            document.querySelector('#undo').addEventListener('click', undo)
+            document.querySelector('#download').addEventListener('click', downloadImage)
+        }
+
+        App()
+
+
+    </script>
+
+</body>
+
+</html>

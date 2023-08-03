@@ -56,7 +56,6 @@ export default class Map {
         $('#side-bar tbody').click(this.placeSliding.bind(this))
 
         $('#distance-calc-btn').click(this.pingOn.bind(this))
-        $('#distance-cancel-btn').click(this.pingOff.bind(this))
 
     }
 
@@ -64,6 +63,7 @@ export default class Map {
     keydownControl(e) {
         if(e.keyCode == 27) {
             this.ping.close()
+            this.pingCheck = false
         } 
         if(e.keyCode==32) {
             this.space = true
@@ -101,7 +101,7 @@ export default class Map {
     mousedown(e) {
         this.isDragging = true
         if(this.pingCheck && !this.space) {
-            this.ping.mousedown(e)
+            this.ping.mousedown(e, this.startX, this.startY, this.currentPhase)
         }
     }
 
@@ -231,14 +231,6 @@ export default class Map {
         this.ping.reset()
         this.render()
         this.pingCheck = true
-        $('#distance-calc-btn').css('display', 'none')
-        $('#distance-cancel-btn').css('display', 'inline')
-    }
-
-    pingOff() {
-        this.pingCheck = false
-        $('#distance-calc-btn').css('display', 'inline')
-        $('#distance-cancel-btn').css('display', 'none')
     }
 
 }
