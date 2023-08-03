@@ -1,0 +1,36 @@
+.login-form {
+    position: absolute;
+    width: 200px;
+    right: 10px;
+}
+
+.login-form button {
+    width: 100%;
+}
+
+#current {
+    margin-top: 100px;
+}
+
+#current > div {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+#current img {
+    width: 50px;
+    height: 50px;
+    border-radius: 100%;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+    color: #333;
+}
