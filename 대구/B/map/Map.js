@@ -62,11 +62,15 @@ export default class Map {
     
     keydownControl(e) {
         if(e.keyCode == 27) {
-            this.ping.close()
+            this.ping.close(this.currentPhase, this.startX, this.startY)
             this.pingCheck = false
         } 
         if(e.keyCode==32) {
             this.space = true
+        }
+        if(e.keyCode == 8) {
+            this.ping.undo()
+            this.render()
         }
     }
 
@@ -94,8 +98,8 @@ export default class Map {
                 this.startY = dy
             }
         })
-        this.mark.draw(this.currentPhase, this.startX, this.startY, this.data)
         this.ping.savePing(this.currentPhase, this.startX, this.startY)
+        this.mark.draw(this.currentPhase, this.startX, this.startY, this.data)
     }
 
     mousedown(e) {

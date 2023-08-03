@@ -18,8 +18,6 @@ export default class Ping {
         this.size = 0
 
         this.pos = []
-
-
     }
 
     mousedown(e, startX, startY, size) {
@@ -27,8 +25,8 @@ export default class Ping {
 
         this.dragging = true
         this.pos.push({
-            x: e.offsetX,
-            y: e.offsetY
+            x: (e.offsetX - startX) / size,
+            y: (e.offsetY - startY) / size
         })
 
         this.startX = e.offsetX
@@ -102,12 +100,13 @@ export default class Ping {
         this.ctx.closePath()
     }
 
-    close() {
+    close(size, startX, startY) {
+        size = size==0 ? 1 : (size==1 ? 2 : 4)
         this.dragging = false
 
         let lastPos = this.pos[this.pos.length-1]
         this.btx.fillStyle = 'blue'
-        this.btx.arc(lastPos.x, lastPos.y, 10, 0, Math.PI*2)
+        this.btx.arc((lastPos.x*size)+startX, (lastPos.y*size)+startY, 10, 0, Math.PI*2)
         this.btx.fill()
         this.ctx.drawImage(this.btx.canvas, 0, 0)
         // this.btx.clearRect(0,0,800,800)
@@ -177,6 +176,12 @@ export default class Ping {
         let distance = Math.sqrt(Math.pow(widthKM,2) + Math.pow(heightKM,2))
 
         return distance
+    }
+
+    undo() {
+        if(this.pos.length > 0) {
+            this.pos.pop()
+        }
     }
 
 }
