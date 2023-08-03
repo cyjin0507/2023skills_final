@@ -36,6 +36,9 @@ export default class Map {
         this.addEvent()
         this.render()
 
+        // setInterval(()=> {
+        //     this.render()
+        // },1000)
     }
 
     addEvent() {
@@ -112,6 +115,7 @@ export default class Map {
     mousemove(e) {
         if(this.pingCheck) {
             this.ping.mousemove(e, this.currentPhase)
+            return
         }
         if(!this.isDragging) {return}
 
