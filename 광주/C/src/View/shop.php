@@ -16,7 +16,7 @@
         foreach($data as $key=>$value) {
             ?>
             <tr>
-                <td style="width: 200px;"><?=$data[$key]->product?></td>
+                <td style="width: 200px;"><a href="/product/<?=$data[$key]->idx?>"><?=$data[$key]->product?><?=$data[$key]->quantity <= 0 ? '<span style="color:red">(품절)</span>' : ''?></a></td>
                 <td><?=$data[$key]->price?></td>
                 <td><img src="/img/<?=$data[$key]->img?>.jpg" alt=""></td>
                 <td><?=$data[$key]->shortinfo?></td>
@@ -52,7 +52,7 @@ for($i=0; $i<count($list); $i++) {
             if($category[$key]->category == $list[$i]) {
             ?>
             <tr>
-                <td><?=$category[$key]->product?></td>
+                <td><?=$category[$key]->product?><?=$category[$key]->quantity <= 0 ? '<span style="color:red">(품절)</span>' : ''?></td>
                 <td><?=$category[$key]->price?></td>
             </tr>
             <?php

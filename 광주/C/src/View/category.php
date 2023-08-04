@@ -34,7 +34,7 @@
         foreach($data as $key=>$value) {
             ?>
             <tr>
-                <td><a href="/product/<?=$data[$key]->idx?>"><?=$data[$key]->product?></a></td>
+                <td><a href="/product/<?=$data[$key]->idx?>"><?=$data[$key]->product?><?=$data[$key]->quantity <= 0 ? '<span style="color:red">(품절)</span>' : ''?></a></td>
                 <td><?=$data[$key]->price?></td>
                 <td><img src="/img/<?=$data[$key]->img?>.jpg" alt=""></td>
                 <td><?=$data[$key]->shortinfo?></td>

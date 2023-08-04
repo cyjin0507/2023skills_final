@@ -14,12 +14,14 @@ Route::get('/category/{category}/{sort}', "ClientController@category");
 Route::get('/product/{idx}', "ClientController@product");
 Route::get('/payment', "ClientController@payment");
 Route::post('/payment/process', "ClientController@paymentProcess");
+Route::post('/review/process', "ClientController@reviewProcess");
 
 
 // admin
 Route::get('/admin/order', "AdminController@orderPage");
 Route::get('/admin/graph', "AdminController@graphPage");
 Route::get('/product/decide/{idx}', "AdminController@productDecide");
+Route::get('/test', "AdminController@test");
 
 
 // json parsing

@@ -40,12 +40,24 @@ class ClientController {
 
     public function product($idx) {
         $data = DB::fetch("SELECT * FROM data where idx=?", [$idx]);
-        // $increase = DB::execute("UPDATE data set hit=? where idx=?", [($count->hit)+1, $idx]);
-        // if(isset($_SESSION['user'])) {
-        //     array_push($_SESSION['product'], $count);
-        // }
-
-        view('detail', ['data'=>$data]);
+        $increase = DB::execute("UPDATE data set hit=? where idx=?", [($data->hit)+1, $idx]);
+        if(isset($_SESSION['user'])) {
+            foreach($_SESSION['product'] as $key=>$value) {
+                if($_SESSION['product'][$key]->idx == $idx) {
+                    array_splice($_SESSION['product'], $key, 1);
+                    break;
+                }
+            }
+            if(count($_SESSION['product']) >= 3) {
+                array_pop($_SESSION['product']);
+            }
+            array_unshift($_SESSION['product'], $data);
+            
+        }
+        $review = DB::fetchAll("SELECT * FROM review where didx=?", [$idx]);
+        $reserveHistoryCheck = DB::fetchAll("select * from reserve r, data d where r.product = d.product and r.name = ? and d.idx = ?;", [$_SESSION['user']->name, $idx]);
+        $writeCheck = DB::fetchAll("SELECT * FROM review where didx=? and name=?", [$idx, $_SESSION['user']->name]);
+        view('detail', ['data'=>$data, 'review'=>$review, 'reserveHistoryCheck'=>$reserveHistoryCheck, 'writeCheck'=>$writeCheck]);
     }
 
     public function payment() {
@@ -73,6 +85,18 @@ class ClientController {
 
         if($data && $data2) {
             redirect('결제가 완료되었습니다.', '/');
+        }
+
+    }
+
+    public function reviewProcess() {
+        extract($_POST);
+
+        $data = DB::execute("INSERT INTO `review`(`didx`, `name`, `title`, `content`, `score`) VALUES (?,?,?,?,?)",
+        [$idx, $_SESSION['user']->name, $title,$content,$grade]);
+
+        if($data) {
+            redirect("리뷰 작성이 완성되었습니다.", '/product/' . $idx);
         }
 
     }
