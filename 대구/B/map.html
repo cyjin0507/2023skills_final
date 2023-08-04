@@ -24,8 +24,7 @@
             <button class="btn btn-success mt-3 distance-btn" data-distance="1">3km</button>
             <button class="btn btn-success mt-3 distance-btn" data-distance="2">500m</button>
             <button class="btn btn-primary mt-3" id="distance-calc-btn">거리재기</button>
-            <div id="test">
-                
+            <div id="toolTip">
             </div>
         </div>
 
@@ -94,6 +93,15 @@
 
         #distance-cancel-btn {
             display: none;
+        }
+
+        #toolTip {
+            position: absolute;
+            top: 0;
+            left: 0;
+            background-color: white;
+            padding: 10px;
+            border-radius: 5px;
         }
 
     </style>

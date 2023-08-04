@@ -36,6 +36,9 @@ export default class Map {
         this.addEvent()
         this.render()
 
+        // setInterval(()=> {
+        //     this.render()
+        // },1000)
     }
 
     addEvent() {
@@ -62,11 +65,15 @@ export default class Map {
     
     keydownControl(e) {
         if(e.keyCode == 27) {
-            this.ping.close()
+            this.ping.close(this.currentPhase, this.startX, this.startY)
             this.pingCheck = false
         } 
         if(e.keyCode==32) {
             this.space = true
+        }
+        if(e.keyCode == 8) {
+            this.ping.undo()
+            this.render()
         }
     }
 
@@ -94,8 +101,8 @@ export default class Map {
                 this.startY = dy
             }
         })
-        this.mark.draw(this.currentPhase, this.startX, this.startY, this.data)
         this.ping.savePing(this.currentPhase, this.startX, this.startY)
+        this.mark.draw(this.currentPhase, this.startX, this.startY, this.data)
     }
 
     mousedown(e) {
@@ -108,6 +115,7 @@ export default class Map {
     mousemove(e) {
         if(this.pingCheck) {
             this.ping.mousemove(e, this.currentPhase)
+            return
         }
         if(!this.isDragging) {return}
 
@@ -130,6 +138,7 @@ export default class Map {
     }
 
     mousewheel(e) {
+        if(this.pingCheck) {return}
         if(e.wheelDelta > 0 && this.currentPhase < 2) {
             this.phaseUp(e)
         } else if(e.wheelDelta < 0 && this.currentPhase > 0) {
@@ -231,6 +240,7 @@ export default class Map {
         this.ping.reset()
         this.render()
         this.pingCheck = true
+        $('#toolTip').css('display', 'none')
     }
 
 }
