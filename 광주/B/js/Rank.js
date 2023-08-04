@@ -8,7 +8,7 @@ class Rank {
     drawList() {
         $('#gallery').html('')
 
-        this.popular.forEach((x,i)=> {
+        this.popular.forEach((x,i)=> { 
             if(i>=5) {return}
             $('#gallery').append(`
                 <img data-name="${x.name}" src="./img/0${parseInt(x.idx)+1}.jpg">
