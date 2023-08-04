@@ -44,10 +44,19 @@ class AdminController
     ) AS purchase_counts
     GROUP BY
         age_group", [$start, $end]);
-    
-        $data2 = DB::fetchAll("WITH ranked_data AS ( SELECT m.area AS region, r.product, SUM(r.quantity) AS total_quantity, ROW_NUMBER() OVER(PARTITION BY m.area ORDER BY SUM(r.quantity) DESC) AS rank FROM reserve r JOIN member m ON r.idx = m.idx WHERE m.area IN ('강원도', '경기도', '경상남도', '경상북도', '전라남도', '전라북도', '제주도', '충청남도', '충청북도') AND r.okdate BETWEEN ? AND ? GROUP BY region, r.product ) SELECT region, product, total_quantity FROM ranked_data WHERE rank = 1 ORDER BY region, total_quantity DESC", [$start, $end]);
-    
-        view('admin/graph', ['data'=>$data, 'data2'=>$data2]);
+
+        $data2 = DB::fetchAll("WITH ranked_data AS 
+        ( SELECT m.area AS region, r.product, SUM(r.quantity) 
+        AS total_quantity, ROW_NUMBER() 
+        OVER(PARTITION BY m.area ORDER BY SUM(r.quantity) DESC) AS rank 
+        FROM reserve r JOIN member m ON r.idx = m.idx 
+        WHERE m.area IN ('강원도', '경기도', '경상남도', '경상북도', 
+        '전라남도', '전라북도', '제주도', '충청남도', '충청북도') 
+        AND r.okdate BETWEEN ? AND ? GROUP BY region, r.product ) 
+        SELECT region, product, total_quantity FROM ranked_data 
+        WHERE rank = 1 ORDER BY region, total_quantity DESC", [$start, $end]);
+
+        view('admin/graph', ['data' => $data, 'data2' => $data2]);
     }
 
     public function productDecide($idx)
@@ -57,6 +66,4 @@ class AdminController
             back("구매확정 되었습니다.");
         }
     }
-
-    
 }
