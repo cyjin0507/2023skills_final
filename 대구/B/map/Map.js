@@ -19,7 +19,6 @@ export default class Map {
         this.startX = 0
         this.startY = 0
 
-        this.space = false
 
         this.ping = new Ping(this.ctx)
         this.pingCheck = false
@@ -50,7 +49,6 @@ export default class Map {
         this.ctx.canvas.addEventListener('mousewheel', (e) => this.mousewheel(e));
 
         document.addEventListener('keydown', (e) => this.keydownControl(e))
-        document.addEventListener('keyup', (e) => this.keyupControl(e))
 
         // 추가된 명소만 보기
         $('#only-view-btn').click(this.targetMark.bind(this))
@@ -60,27 +58,6 @@ export default class Map {
 
         $('#distance-calc-btn').click(this.pingOn.bind(this))
 
-    }
-
-    
-    keydownControl(e) {
-        if(e.keyCode == 27) {
-            this.ping.close(this.currentPhase, this.startX, this.startY)
-            this.pingCheck = false
-        } 
-        if(e.keyCode==32) {
-            this.space = true
-        }
-        if(e.keyCode == 8) {
-            this.ping.undo()
-            this.render()
-        }
-    }
-
-    keyupControl(e) {
-        if(e.keyCode==32) {
-            this.space = false
-        }
     }
 
     render(size = this.currentPhase) {
@@ -107,7 +84,7 @@ export default class Map {
 
     mousedown(e) {
         this.isDragging = true
-        if(this.pingCheck && !this.space) {
+        if(this.pingCheck) {
             this.ping.mousedown(e, this.startX, this.startY, this.currentPhase)
         }
     }
@@ -132,7 +109,7 @@ export default class Map {
 
     mouseup(e) {
         this.isDragging = false
-        if(!this.space && this.pingCheck) {
+        if(this.pingCheck) {
             this.ping.mouseup(e)
         }
     }
@@ -187,6 +164,18 @@ export default class Map {
         }
 
         this.render()
+    }
+
+    
+    keydownControl(e) {
+        if(e.keyCode == 27) {
+            this.ping.close(this.currentPhase, this.startX, this.startY)
+            this.pingCheck = false
+        }
+        if(e.keyCode == 8) {
+            this.ping.undo()
+            this.render()
+        }
     }
 
     targetMark() {

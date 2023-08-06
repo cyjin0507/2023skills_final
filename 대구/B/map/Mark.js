@@ -16,7 +16,7 @@ export default class Mark {
 
     }
 
-    async draw(size, startX, startY, data) {
+    draw(size, startX, startY, data) {
         size = size==0 ? 1 : (size==1 ? 2 : 4)
 
         this.markList = []

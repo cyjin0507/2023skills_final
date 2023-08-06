@@ -123,7 +123,7 @@
             ?>
             let discount = 0
             <?php
-            if($_SESSION['user']->level == '브론즈') {
+             if($_SESSION['user']->level == '브론즈') {
                 ?>
                 discount = 5
                 <?php
