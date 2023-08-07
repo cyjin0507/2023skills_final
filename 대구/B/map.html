@@ -49,6 +49,30 @@
 
     </div>
 
+    <div id="modal">
+        <div id="category" class="mt-5">
+            <div data-category="star">별점</div>
+            <div data-category="review">리뷰</div>
+            <div data-category="visitant">방문자</div>
+            <div data-category="returning_visitor">재방문자</div>
+            <div data-category="parking">주차대수</div>
+            <div data-category="managed">관리도</div>
+        </div>
+
+        <div id="list" class="mt-5">
+            <div data-list="독립기념관">독립기념관</div>
+            <div data-list="성성호수공원">성성호수공원</div>
+            <div data-list="아라리오조각광장">아라리오조각광장</div>
+            <div data-list="유관순열사 사적지">유관순열사 사적지</div>
+            <div data-list="태조산왕건길과 청동대좌불">태조산왕건길과 청동대좌불</div>
+            <div data-list="천안삼거리공원">천안삼거리공원</div>
+        </div>
+
+        <canvas id="chart" class="mt-5" width="500" height="500">
+
+        </canvas>
+    </div>
+
     <style>
         .container {
             position: relative;
@@ -102,6 +126,41 @@
             background-color: white;
             padding: 10px;
             border-radius: 5px;
+        }
+
+        #category, #list {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+        }
+
+        #category > div, #list > div {
+            text-align: center;
+            line-height: 40px;
+            border: 1px solid #eee;
+        }
+
+        #modal {
+            display: none;
+            padding: 40px;
+            position: fixed;
+            width: 50%;
+            height: 900px;
+            background-color: white;
+            top: 50%;
+            left: 50%;
+            border: 1px solid #eaeaea;
+            transform: translate(-50%, -50%);
+        }
+
+        #modal canvas {
+            border: 1px solid #eee;
+            display: block;
+            margin: auto;
+        }
+
+        .active {
+            background-color: #333;
+            color: white;
         }
 
     </style>

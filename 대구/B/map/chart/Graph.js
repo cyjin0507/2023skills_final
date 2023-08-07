@@ -1,10 +1,9 @@
 export default class Graph {
-    constructor(document, data, category) {
-        this.document = document
+    constructor(data, category) {
         this.data = data
         this.category = category
 
-        this.canvas = this.document.querySelector('#chart')
+        this.canvas = document.querySelector('#chart')
         this.ctx = this.canvas.getContext('2d')
 
         this.ctx.clearRect(0,0,this.canvas.width, this.canvas.height)

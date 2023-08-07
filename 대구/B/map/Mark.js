@@ -17,6 +17,7 @@ export default class Mark {
     }
 
     draw(size, startX, startY, data) {
+        $('#btn-zone').css('display', 'none')
         size = size==0 ? 1 : (size==1 ? 2 : 4)
 
         this.markList = []

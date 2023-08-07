@@ -8,7 +8,6 @@ export default class Ping {
         this.btx = this.canvasCopy.getContext('2d')
 
         this.dragging = false
-        this.curve = false
 
         this.startX = 0
         this.startY = 0
@@ -34,9 +33,6 @@ export default class Ping {
 
         this.btx.clearRect(0,0,800,800)
         this.btx.drawImage(this.ctx.canvas, 0,0)
-        this.ctx.setLineDash([5,10])
-
-        this.dragging = true
 
     }
 
@@ -44,7 +40,6 @@ export default class Ping {
     mouseup(e) {
         if(!this.dragging) {return}
 
-        this.ctx.setLineDash([])
         this.draw()
     }
 
@@ -114,7 +109,6 @@ export default class Ping {
 
     reset() {
         this.dragging = false
-        this.curve = false
 
         this.startX = 0
         this.startY = 0

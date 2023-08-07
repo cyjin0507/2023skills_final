@@ -12,15 +12,12 @@ class App {
         this.mouseDown = false
 
         this.init()
-
-
     }
 
     async init() {
         this.data = await $.getJSON('/json/attraction.json')
         this.map = new Map(this.ctx, this.data)
 
-        this.chart = new Chart()
         this.addEvent()
     }
 
@@ -33,7 +30,7 @@ class App {
 
         $('#open-btn').click(()=> {
             let sendData = this.map.val()
-            this.chart.open(sendData)
+            this.chart = new Chart(sendData)
         })
 
     }

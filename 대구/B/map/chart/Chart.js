@@ -1,42 +1,42 @@
-import Popup from "./Popup.js"
-import Dom from "./Dom.js";
 import Graph from "./Graph.js";
 import SideBar from "../SideBar.js";
 
-export default class Chart extends Popup {
+export default class Chart{
     constructor(data) {
-        super('chart.html')
+        this.data = data
+        this.init()
     }
 
-    async init(data) {
-        this.dom = new Dom(this.document)
-        this.data = data
+    async init() {
+        $('#modal').fadeIn()
+
         this.category = ["star", "review", "visitant", "returning_visitor", "parking", "managed"]
-        this.graph = new Graph(this.document, this.data, this.category)
+        this.graph = new Graph(this.data, this.category)
 
         this.json = await $.getJSON('/json/attraction.json')
         this.sidebar = new SideBar()
 
         this.categorySet()
         this.listSet()
+        this.addEvent()
 
     }
 
     categorySet() {
         this.category.forEach(x=> {
-            this.dom.dom(`#category > div[data-category="${x}"]`).addClass('active')
+            $(`#category > div[data-category="${x}"]`).addClass('active')
         })
     }
 
     listSet() {
         this.data.forEach(x=> {
-            this.dom.dom(`#list > div[data-list="${x.name}"]`).addClass('active')
+            $(`#list > div[data-list="${x.name}"]`).addClass('active')
         })
     }
 
     addEvent() {
-        this.dom.domAll("#category > div").click(this.changeCategory.bind(this))
-        this.dom.domAll("#list > div").click(this.changeList.bind(this))
+        $("#category > div").click(this.changeCategory.bind(this))
+        $("#list > div").click(this.changeList.bind(this))
     }
 
     changeCategory(e) {
@@ -44,7 +44,7 @@ export default class Chart extends Popup {
         
         if(e.target.className.includes('active')) {
             if(this.category.length<=3) {
-                this.thisWindow.alert("카테고리는 3개이상이여야함")
+                alert("카테고리는 3개이상이여야함")
                 return
             }
 
@@ -55,7 +55,7 @@ export default class Chart extends Popup {
             $(e.target).addClass('active')
         }
 
-        this.graph = new Graph(this.document, this.data, this.category)
+        this.graph = new Graph(this.data, this.category)
     }
 
     changeList(e) {
@@ -71,13 +71,13 @@ export default class Chart extends Popup {
             $(e.target).addClass('active')
             this.sidebar.slideBarAdd(JSON.stringify(findData))
         }
-        this.graph = new Graph(this.document, this.data, this.category)
+        this.graph = new Graph(this.data, this.category)
 
     }
     
     mapClick(json) {
         this.data.push(json)
-        this.graph = new Graph(this.document, this.data, this.category)
+        this.graph = new Graph(this.data, this.category)
     }
 
 
