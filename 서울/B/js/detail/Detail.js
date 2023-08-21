@@ -48,11 +48,7 @@ class Detail extends Popup {
     }
 
     deleteReview(idx) {
-        this.review.forEach((x,i)=> {
-            if(x.idx == idx) {
-                this.review.splice(i,1)
-            }
-        })
+        this.review.splice(this.review.indexOf(this.review.find(x=>x.idx==idx)),1)
 
         this.drawReview()
     }
