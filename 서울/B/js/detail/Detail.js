@@ -8,9 +8,7 @@ class Detail extends Popup {
     }
     
     async init(data) {
-        this.produceName = data.name
-
-        this.cuurent = this.data.filter(x=> x.soapName == this.produceName)
+        this.current = this.data.find(x=> x.soapName == data.name)
 
         this.introduce()
     }
@@ -21,7 +19,7 @@ class Detail extends Popup {
 
     reviewAdd() {
         let val = dom(this.document, '#review-val').val()
-        this.review.push({
+        this.review.unshift({
             "idx" : this.review.length,
             "review" : val
         })
@@ -47,10 +45,6 @@ class Detail extends Popup {
             this.deleteReview(idx)
         })
 
-        domAll(this.document, '.review-detail').click(()=> {
-            new Comment(this).open()
-        })
-
     }
 
     deleteReview(idx) {
@@ -65,11 +59,11 @@ class Detail extends Popup {
 
     introduce() {
         this.document.querySelector('.introduce').innerHTML = `
-            이름 : ${this.cuurent[0].soapName} <br>
-            카테고리 : ${this.cuurent[0].category} <br>
-            제작사 : ${this.cuurent[0].creator} <br>
-            제작일 : ${this.cuurent[0].release} <br>
-            가격 : ${this.cuurent[0].price}
+            이름 : ${this.current.soapName} <br>
+            카테고리 : ${this.current.category} <br>
+            제작사 : ${this.current.creator} <br>
+            제작일 : ${this.current.release} <br>
+            가격 : ${this.current.price}
         `
     }
 
