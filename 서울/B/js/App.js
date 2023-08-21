@@ -5,7 +5,7 @@ class App {
     }
 
     init() {
-        
+        this.scrollIndex = 0
 
         this.addEvent()
     }
@@ -23,7 +23,6 @@ class App {
         this.auto = false
         $('#search-val').focus(()=> {
             this.auto = true
-            $('#auto-list').fadeIn()
         })
 
         $('#search-val').blur(()=> {
@@ -36,6 +35,8 @@ class App {
         $('body').on('keydown', (e)=> {
             this.selectVal(e)
         })
+
+
     }
 
     async category(category) {
@@ -44,12 +45,17 @@ class App {
         $(`.nav-link[data-category='${category}']`).addClass('active')
 
         this.getData = this.getData.data.filter(x=> x.category == category)
+        this.scrollIndex = 0
         this.drawList()
     }
 
     drawList() {
-        $('#list tbody').html('')
-        this.getData.forEach(x=> {
+        $('#list-container').css('height', '340px')
+        if(this.scrollIndex == 0) {
+            $('#list tbody').html('')
+        }
+        let sliceData = this.getData.slice(this.scrollIndex, this.scrollIndex + 4)
+        sliceData.forEach(x=> {
             $('#list tbody').append(`
                 <tr>
                     <td><img src="./img/${x.Image}" alt=""></td>
@@ -73,6 +79,25 @@ class App {
             new Detail(this).open(product)
         })
 
+        let scrollCheck = false
+        $('#list-container').on('scroll', (e)=> {
+            let scrollTop = $('#list-container').scrollTop()
+            let innerHeight = $('#list-container').innerHeight()
+            let scrollHeight = $('#list-container').prop('scrollHeight')
+            if(scrollTop + innerHeight >= scrollHeight) {
+                if(scrollCheck) return
+                scrollCheck = true
+                $('#loading').fadeIn()
+                setTimeout(()=> {
+                    scrollCheck = false
+                    $('#loading').fadeOut()
+                    this.scrollIndex += 4
+                    this.drawList()
+                },1000)
+            }
+        })
+
+        
     }
 
     basketInsert(product) {
@@ -180,6 +205,12 @@ class App {
         let val = $('#search-val').val()
         $('#auto-list').html('')
 
+        if(val != "") {
+            $('#auto-list').fadeIn()
+        } else {
+            $('#auto-list').fadeOut()
+        }
+
         
         let searchData = this.getData.filter(x=> x.soapName.includes(val) == true)
 
@@ -220,6 +251,7 @@ class App {
         
         let val = $(`.auto-list-detail[data-idx=${loc}]`).html().replace("현재 검색어 : ", '')
         $('#search-val').val(val)
+
     }
 
 }

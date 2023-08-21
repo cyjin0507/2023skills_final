@@ -43,20 +43,27 @@
           </div>
 
           <h3 class="mt-5">리스트</h3>
-          <table class="table mt-4" id="list">
-            <thead style="background-color: #333; color:white;">
-                <tr>
-                    <th>대표사진</th>
-                    <th>천연비누이름</th>
-                    <th>제작 일자</th>
-                    <th>금액</th>
-                    <th>상세보기</th>
-                    <th>장바구니 버튼</th>
-                </tr>
-            </thead>
-            <tbody>
-            </tbody>
-          </table>
+          <div id="list-container">
+            <table class="table mt-4" id="list">
+              <thead style="background-color: #333; color:white;">
+                  <tr>
+                      <th>대표사진</th>
+                      <th>천연비누이름</th>
+                      <th>제작 일자</th>
+                      <th>금액</th>
+                      <th>상세보기</th>
+                      <th>장바구니 버튼</th>
+                  </tr>
+              </thead>
+              <tbody>
+              </tbody>
+            </table>
+
+            <div id="loading">
+              로딩중
+            </div>
+
+          </div>
 
           <h3 class="mt-5">장바구니</h3>
           <button class="btn btn-primary">보기</button>
@@ -70,7 +77,6 @@
                 </tr>
             </thead>
             <tbody>
-                
             </tbody>
           </table>
           <div class="btn-success btn mt-5">총금액 : <span id="total">0</span>원<span id="discount"></span></div>
@@ -107,6 +113,24 @@
           border-radius: 5px;
         }
 
+        #list-container {
+          height: 70px;
+          overflow-y: scroll;
+          position: relative;
+        }
+
+        #loading {
+          position: fixed;
+          display: none;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+        }
+
+        #list-container::-webkit-scrollbar {
+          display: none;
+        }
+
     </style>
 
     <script src="./js/util/Util.js"></script>
@@ -115,6 +139,6 @@
     <script src="./js/detail/Comment.js"></script>
     <script src="./js/detail/Detail.js"></script>
     <script src="./js/App.js"></script>
-    
+
 </body>
 </html>

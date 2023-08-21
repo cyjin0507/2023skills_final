@@ -37,7 +37,7 @@ class Purchase extends Popup {
             this.ctx.fillText(x.name, 30, y + i*40)
             this.ctx.fillText(x.count + "개", 190, y + i*40)
             this.ctx.fillText((price * x.count).toLocaleString() + "원", 300, y + i*40)
-            
+
             total += price * x.count
         })
 

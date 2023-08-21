@@ -63,8 +63,6 @@ class Map {
         const clickX = e.pageX - this.canvasLoc.x
         const clickY = e.pageY - this.canvasLoc.y
 
-        console.log(this.locArr)
-
         this.locArr.forEach((x,i)=> {
             if((x.x > clickX - 32 && x.x < clickX) && (x.y > clickY - 45 && x.y < clickY)) {
                 this.locArr.splice(i,1)
@@ -159,14 +157,14 @@ class Map {
     }
 
     calcDistance(loc1, loc2) {
-        let loc1Data = this.locArr.filter(x=> x.alpha==loc1)[0]
-        let loc2Data = this.locArr.filter(x=> x.alpha==loc2)[0]
-        
+        let loc1Data = this.locArr.find(x=> x.alpha==loc1)
+        let loc2Data = this.locArr.find(x=> x.alpha==loc2)
+
         let x = Math.abs(loc1Data.x - loc2Data.x)
         let y = Math.abs(loc1Data.y - loc2Data.y)
 
         let dis = Math.sqrt(Math.pow(x,2) + Math.pow(y,2))
-        return Math.round(dis)
+        return Math.round(dis / 100)
     }
 
     sortDistance(disArr) {
@@ -220,7 +218,7 @@ class Map {
         else if(this.ride == "bike") {speed = 10}
         else if(this.ride == "car") {speed = 60}
 
-        return dis / speed
+        return dis / speed * 60
     }
 
     reset() {
