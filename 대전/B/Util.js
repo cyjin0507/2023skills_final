@@ -1,7 +1,6 @@
 function getImageFiles(e) {
     const uploadFiles = [];
   const files = e.currentTarget.files;
-  const imagePreview = document.querySelector('#slide-img-list');
 
   if ([...files].length > 1) {
     alert('이미지는 1개만 업로드가 가능합니다.');

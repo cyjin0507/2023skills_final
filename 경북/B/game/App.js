@@ -19,7 +19,6 @@ class App {
         this.score = 0
 
         this.init()
-
     }
 
     async init() {
@@ -57,7 +56,7 @@ class App {
         for(let i=0; i<this.itemList.length; i++) {
             if(this.itemList[i].checkCollision(this.player)) {
                 let type = this.itemList[i].img.dataset.type
-                if(type=="grape" || type=="soondae" || type=="walnut-cookie") {
+                if(type.includes("grape") || type.includes("soondae") || type.includes("walnut-cookie")) {
                     this.score++
                 } else {
                     this.score--

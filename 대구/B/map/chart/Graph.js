@@ -25,17 +25,9 @@ export default class Graph {
     }
 
     init() {
-        this.maxValue = 0
+        this.maxValue = 100
 
-        this.data.forEach(x=> {
-            this.category.forEach(j=> {
-                if(this.maxValue < x[j]) {
-                    this.maxValue = x[j]
-                }
-            })
-        })
-
-        this.gap = Math.round(this.maxValue / this.count)
+        this.gap = 20
 
         this.drawOutLine()
 

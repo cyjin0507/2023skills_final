@@ -19,6 +19,7 @@ export default class Map {
         this.startX = 0
         this.startY = 0
 
+        this.spaceKey = false
 
         this.ping = new Ping(this.ctx)
         this.pingCheck = false
@@ -48,13 +49,20 @@ export default class Map {
 
         this.ctx.canvas.addEventListener('mousewheel', (e) => this.mousewheel(e));
 
+        document.addEventListener('dblclick', (e) => {
+            this.ping.undo()
+            this.render()
+        });
+
         document.addEventListener('keydown', (e) => this.keydownControl(e))
+        document.addEventListener('keyup', (e) => this.keyupControl(e))
 
         // 추가된 명소만 보기
         $('#only-view-btn').click(this.targetMark.bind(this))
         $('#only-cancel-btn').click(this.targetCancelMark.bind(this))
         // 명소 슬라이딩
         $('#side-bar tbody').click(this.placeSliding.bind(this))
+        $('#pos-btn').click(this.placeSliding.bind(this))
 
         $('#distance-calc-btn').click(this.pingOn.bind(this))
 
@@ -84,15 +92,18 @@ export default class Map {
 
     mousedown(e) {
         this.isDragging = true
-        if(this.pingCheck) {
-            this.ping.mousedown(e, this.startX, this.startY, this.currentPhase)
+        if(this.pingCheck && !this.spaceKey) {
+            // this.ping.mousedown(e, this.startX, this.startY, this.currentPhase)
+            this.ping.click(e, this.startX, this.startY, this.currentPhase)
         }
     }
 
     mousemove(e) {
-        if(this.pingCheck) {
+        if(this.pingCheck && !this.spaceKey) {
             this.ping.mousemove(e, this.currentPhase)
             return
+        } else if(this.pingCheck) {
+            this.ping.update(this.currentPhase, this.startX, this.startY)
         }
         if(!this.isDragging) {return}
 
@@ -109,9 +120,6 @@ export default class Map {
 
     mouseup(e) {
         this.isDragging = false
-        if(this.pingCheck) {
-            this.ping.mouseup(e)
-        }
     }
 
     mousewheel(e) {
@@ -126,18 +134,18 @@ export default class Map {
     phaseUp(e) {
         const prevPhase = this.currentPhase
         this.currentPhase++
-        this.doZoom(prevPhase, e.offsetX, e.offsetY)
+        this.doZoom(prevPhase)
     }
 
     phaseDown(e) {
         const prevPhase = this.currentPhase
         this.currentPhase--
-        this.doZoom(prevPhase, e.offsetX, e.offsetY)
+        this.doZoom(prevPhase)
     }
 
-    doZoom(prevPhase, x, y) {
-        const norX = (x + Math.abs(this.cameraPos.x)) / this.PHASE_SIZE[prevPhase]
-        const norY = (y + Math.abs(this.cameraPos.y)) / this.PHASE_SIZE[prevPhase]
+    doZoom(prevPhase) {
+        const norX = (this.ctx.canvas.width / 2 + Math.abs(this.cameraPos.x)) / this.PHASE_SIZE[prevPhase]
+        const norY = (this.ctx.canvas.height / 2 + Math.abs(this.cameraPos.y)) / this.PHASE_SIZE[prevPhase]
 
         const newX = norX * this.PHASE_SIZE[this.currentPhase] * -1 + 400
         const newY = norY * this.PHASE_SIZE[this.currentPhase] * -1 + 400
@@ -176,6 +184,16 @@ export default class Map {
             this.ping.undo()
             this.render()
         }
+        if(e.keyCode == 32) {
+            this.ping.spaceOn()
+            this.spaceKey = true
+        }
+    }
+
+    keyupControl(e) {
+        if(e.keyCode == 32) {
+            this.spaceKey = false
+        }
     }
 
     targetMark() {
@@ -193,7 +211,7 @@ export default class Map {
     }
 
     placeSliding(e) {
-        if(e.target.className != 'side-name') {return}
+        if(e.target.className != 'side-name' && e.target.dataset.name!="user") {return}
         if(this.currentPhase==0) {return}
 
         let data = this.mark.val()

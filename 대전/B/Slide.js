@@ -119,12 +119,12 @@ class Slide {
             })
         })
 
-        $('#left-btn').click(()=> {
-            this.slideMoveClick("left")
-        })
-        $('#right-btn').click(()=> {
-            this.slideMoveClick("right")
-        })
+        // $('#left-btn').click(()=> {
+        //     this.slideMoveClick("left")
+        // })
+        // $('#right-btn').click(()=> {
+        //     this.slideMoveClick("right")
+        // })
 
     }
 
@@ -178,12 +178,7 @@ class Slide {
         }
 
         $('#slide-pager > button').click((e)=> {
-            clearInterval(this.slideInterval)
-            // 나중에 여기 수정
-            animation($('.slide-area')[this.index], 1, 'left', '-100%')
-            animation($('.slide-area')[e.target.dataset.idx - 1], 1, 'left', '0%')
-            this.index = e.target.dataset.idx - 1
-            this.slideInterval = setInterval(this.slideCarouselPlay.bind(this), 3000)        
+                
         })
 
     }
@@ -224,30 +219,7 @@ class Slide {
 
     }
 
-    slideMoveClick(type) {
-        if(this.slideLength <= 1) {return}
 
-        let current = 0
-        clearInterval(this.slideInterval)
-
-        if(type == "left") {
-            // 슬라이드 다음게 나옴 (오->왼)
-            current = this.index + 1 < this.slideLength ? this.index + 1 : 0
-            animation($('.slide-area')[this.index], 1, 'left', '-100%')
-            $('.slide-area').css('left', '100%')
-            animation($('.slide-area')[current], 1, 'left', '0%')
-        } else if(type == "right") {
-            // 슬라이드 이전게 나옴 (왼->오)
-            current = this.index - 1 > 0 ? this.index - 1 : this.slideLength - 1
-            animation($('.slide-area')[this.index], 1, 'left', '100%')
-            $('.slide-area').css('left', '-100%')
-            animation($('.slide-area')[current], 1, 'left', '0%')
-        }
-
-        this.index = current
-        this.slideInterval = setInterval(this.slideCarouselPlay.bind(this), 3000)
-    }
-    
 
     slideAdd() {
         if(this.imgData == undefined) {
@@ -266,7 +238,6 @@ class Slide {
 
         getImageFiles(this.imgData)
         
-
         setTimeout(()=> {
             if(!url) {return}
             this.slideReserveList.push({
@@ -275,6 +246,8 @@ class Slide {
                 "title" : title,
                 "subTitle" : subTitle
             })
+
+            console.log(url);
 
             this.drawSlideList()
 

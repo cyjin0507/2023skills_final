@@ -65,7 +65,7 @@ export default class Mark {
             let lat = Math.round(x.percent.lat)
             let long = Math.round(x.percent.long)
             if((lat-4 <= mx && lat + 4 >= mx) &&
-                (long-4 <= my && long + 4 >= my)) {
+                (long-4 <= my && long + 4 >= my) && x.data.name != "user") {
                     this.drawButton(lat, long, x.data)
                     return false
                 }

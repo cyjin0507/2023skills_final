@@ -4,8 +4,13 @@ class Map {
         this.mapImg.src = './imgs/map.png'
         this.mapImg.onload = () => {
             window.scrollTo(0,0)
-            this.init()
-            this.ctx.drawImage(this.mapImg, 0, 0, 700, 700)
+            const play = setInterval(()=> {
+                if(document.documentElement.scrollTop == 0) {
+                    clearInterval(play)
+                    this.init()
+                    this.ctx.drawImage(this.mapImg, 0, 0, 700, 700)
+                }
+            },10)
         }
     }
 
@@ -206,7 +211,7 @@ class Map {
                     <td>${i+1}</td>
                     <td>${dis}</td>
                     <td>${x.total}</td>
-                    <td>${this.time(x.total)}</td>
+                    <td>${this.time(x.total)}분</td>
                 </tr>
             `)
         })

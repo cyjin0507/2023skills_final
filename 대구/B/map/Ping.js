@@ -8,6 +8,7 @@ export default class Ping {
         this.btx = this.canvasCopy.getContext('2d')
 
         this.dragging = false
+        this.spaceKey = false
 
         this.startX = 0
         this.startY = 0
@@ -17,11 +18,13 @@ export default class Ping {
         this.size = 0
 
         this.pos = []
+        this.beforePosX = 0
+        this.beforePosY = 0
     }
 
-    mousedown(e, startX, startY, size) {
+    click(e, startX, startY, size) {
+        let bSize = size
         size = size==0 ? 1 : (size==1 ? 2 : 4)
-
         this.dragging = true
         this.pos.push({
             x: (e.offsetX - startX) / size,
@@ -31,16 +34,24 @@ export default class Ping {
         this.startX = e.offsetX
         this.startY = e.offsetY
 
+        this.savePing(bSize, startX, startY)
         this.btx.clearRect(0,0,800,800)
         this.btx.drawImage(this.ctx.canvas, 0,0)
-
     }
 
-    
-    mouseup(e) {
-        if(!this.dragging) {return}
+    update(size, startX, startY) {
+        size = size==0 ? 1 : (size==1 ? 2 : 4)
+        this.startX = (this.pos[this.pos.length-1].x*size)+startX
+        this.startY = (this.pos[this.pos.length-1].y*size)+startY
 
-        this.draw()
+        this.btx.clearRect(0,0,800,800)
+        this.btx.drawImage(this.ctx.canvas, 0,0)
+    }
+
+
+    spaceOn() {
+        this.beforePosX = this.startX
+        this.beforePosY = this.startY
     }
 
     mousemove(e, size) {
@@ -53,17 +64,20 @@ export default class Ping {
         this.size = size
 
         this.draw()
-
     }
 
     draw() {
         this.ctx.clearRect(0,0,800,800)
         this.ctx.drawImage(this.btx.canvas,0,0)
+        this.ctx.setLineDash([10])
 
         this.toolTip()
 
+        this.ctx.beginPath()
+        console.log(this.startX, this.startY);
         this.ctx.arc(this.startX,this.startY,10,0,Math.PI*2)
         this.ctx.fill()
+        this.ctx.closePath()
 
         this.ctx.beginPath()
         this.ctx.moveTo(this.startX, this.startY)
@@ -75,8 +89,10 @@ export default class Ping {
 
     savePing(size, startX, startY) {
         size = size==0 ? 1 : (size==1 ? 2 : 4)
+        this.ctx.setLineDash([0])
 
         this.pos.forEach(x=> {
+            this.ctx.beginPath()
             this.ctx.arc((x.x*size)+startX,(x.y*size)+startY,10,0,Math.PI*2)
             this.ctx.fill()
             this.ctx.closePath()
@@ -100,9 +116,11 @@ export default class Ping {
         this.dragging = false
 
         let lastPos = this.pos[this.pos.length-1]
+        this.btx.beginPath()
         this.btx.fillStyle = 'blue'
         this.btx.arc((lastPos.x*size)+startX, (lastPos.y*size)+startY, 10, 0, Math.PI*2)
         this.btx.fill()
+        this.btx.closePath()
         this.ctx.drawImage(this.btx.canvas, 0, 0)
         this.toolTip(lastPos.x, lastPos.y)
     }
