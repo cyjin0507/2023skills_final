@@ -21,26 +21,27 @@ export default class Graph {
         this.colorList = []
 
         this.init()
-
     }
 
-    init() {
+    async init() {
         this.maxValue = 100
-
         this.gap = 20
 
+        this.labelKr = (await $.getJSON('/json/attraction.json'))['labels_kr']
         this.drawOutLine()
 
-        
         for(let i=0; i<this.data.length; i++) {
             this.drawChart(i)
         }
+        $('#download').click(this.download.bind(this))
 
     }
+
 
     drawOutLine() {
         for(let i=0; i<=this.count; i++) {
             this.ctx.beginPath()
+            this.ctx.fillStyle = 'black'
             for(let j=0; j<=this.category.length; j++) {
                 const x = (Math.cos(this.radian * j - Math.PI / 2) * (this.chartSize / this.count * i)) + this.center
                 const y = (Math.sin(this.radian * j - Math.PI / 2) * (this.chartSize / this.count * i)) + this.center
@@ -53,11 +54,10 @@ export default class Graph {
                 }
 
                 if(i==this.count && j<this.category.length) {
-                    this.ctx.fillText(this.category[j],x,y)
+                    this.ctx.fillText(this.labelKr[j],x,y)
                 }
 
             }
-
 
             this.ctx.stroke()
             this.ctx.closePath()
@@ -70,44 +70,37 @@ export default class Graph {
 
         this.ctx.beginPath()
         this.ctx.strokeStyle = color
+        this.ctx.fillStyle = color
+        this.ctx.globalAlpha = 0.5
+
         for(let i=0; i<=this.category.length; i++) {
             const value = this.data[index][this.category[i]] || this.data[index][this.category[0]]
             const x = (Math.cos(this.radian * i - Math.PI / 2) * value / this.maxValue * 220) + this.center
             const y = (Math.sin(this.radian * i - Math.PI / 2) * value / this.maxValue * 220) + this.center
 
             if(i==0) {
+                $(`[data-list="${this.data[index].name}"]`).css('background-color', color)
+
                 this.ctx.moveTo(x,y)
             } else {
                 this.ctx.lineTo(x,y)
             }
         }
+        this.ctx.fill()
 
         this.ctx.lineWidth = 3
         this.ctx.stroke()
 
         this.ctx.closePath()
-
-
-        for(let i=0; i<this.data.length; i++) {
-            this.ctx.beginPath()
-            this.ctx.fillStyle = color
-
-            const value = this.data[index][this.category[i]] || this.data[index][this.category[0]]
-            const x = (Math.cos(this.radian * i - Math.PI / 2) * value / this.maxValue * 220) + this.center
-            const y = (Math.sin(this.radian * i - Math.PI / 2) * value / this.maxValue * 220) + this.center
-
-            this.ctx.arc(x,y,4,0,Math.PI*2)
-            this.ctx.fill()
-            this.ctx.closePath()
-
-        }
-
-        this.ctx.textAlign = 'left'
-        this.ctx.moveTo(30,15*(index+1) + 400)
-        this.ctx.lineTo(50,15*(index+1) + 400)
-        this.ctx.stroke()
-        this.ctx.fillText(this.data[index].name, 55, 15*(index+1) + 400)
-
     }
+
+    
+    download() {
+        const aTag = document.createElement('a')
+        aTag.href = this.canvas.toDataURL()
+        aTag.download = 'chart.png'
+        aTag.click()
+    }
+
 
 }

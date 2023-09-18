@@ -18,6 +18,8 @@ export default class SideBar {
         if(!this.sideList.find(x=>x.name==json.name)) {
             this.sideList.push(json)
             this.slideBarDraw()
+        } else {
+            alert("이미 있음")
         }
     }
 
@@ -30,7 +32,7 @@ export default class SideBar {
                     <td>${x.visitant}</td>
                     <td>${x.star}</td>
                     <td><button class="btn btn-danger"data-name="${x.name}">삭제</button></td>
-                </tr>
+                </tr>   
             `)
         })
     }

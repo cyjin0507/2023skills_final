@@ -13,7 +13,11 @@ export default class Chart{
         this.category = ["star", "review", "visitant", "returning_visitor", "parking", "managed"]
         this.graph = new Graph(this.data, this.category)
 
-        this.json = await $.getJSON('/json/attraction.json')
+        this.json = await $.ajax({
+            url : '/json/attraction.json',
+            type : 'get',
+            cache : false
+        })
         this.sidebar = new SideBar()
 
         this.categorySet()
@@ -37,6 +41,11 @@ export default class Chart{
     addEvent() {
         $("#category > div").click(this.changeCategory.bind(this))
         $("#list > div").click(this.changeList.bind(this))
+
+        $('#reload').click(this.reload.bind(this))
+        $('.close').click(()=> {
+            $('#modal').fadeOut()
+        })
     }
 
     changeCategory(e) {
@@ -63,16 +72,24 @@ export default class Chart{
         let index = this.data.indexOf(this.data.find(x=> x.name==e.target.dataset.list))
         if(e.target.className.includes('active')) {
             this.data.splice(index, 1)
+            $(e.target).css({
+                'background-color' : 'white',
+                'color' : 'black'
+            })
             $(e.target).removeClass('active')
+
             this.sidebar.remove(JSON.stringify(findData))
         } else {
             $(e.target).attr('data-json',JSON.stringify(findData))
             this.data.splice(index, 0, this.json['data'].find(x=> x.name==e.target.dataset.list))
-            $(e.target).addClass('active')
             this.sidebar.slideBarAdd(JSON.stringify(findData))
+
+            $(e.target).addClass('active')
+            $(e.target).css({
+                'color' : 'white'
+            })
         }
         this.graph = new Graph(this.data, this.category)
-
     }
     
     mapClick(json) {
@@ -80,7 +97,24 @@ export default class Chart{
         this.graph = new Graph(this.data, this.category)
     }
 
-
-
+    async reload() {
+        this.json = await $.ajax({
+            url : '/json/attraction.json',
+            type : 'get',
+            cache : false
+        })
+        
+        let arr = []
+        this.json['data'].forEach(x=> {
+            this.data.forEach(j=> {
+                if(j.name == x.name) {
+                    arr.push(x)
+                }
+            })
+        })
+        this.data = arr
+        
+        this.graph = new Graph(this.data, this.category)
+    }
 
 }

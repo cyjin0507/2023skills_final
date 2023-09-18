@@ -14,12 +14,13 @@ export default class Map {
 
         this.cameraPos = {x:0, y:0}
 
-        this.frame = 0
+        this.frame = 0 
 
         this.startX = 0
         this.startY = 0
 
         this.spaceKey = false
+        this.backSpaceKey = false
 
         this.ping = new Ping(this.ctx)
         this.pingCheck = false
@@ -35,10 +36,6 @@ export default class Map {
 
         this.addEvent()
         this.render()
-
-        // setInterval(()=> {
-        //     this.render()
-        // },1000)
     }
 
     addEvent() {
@@ -93,7 +90,6 @@ export default class Map {
     mousedown(e) {
         this.isDragging = true
         if(this.pingCheck && !this.spaceKey) {
-            // this.ping.mousedown(e, this.startX, this.startY, this.currentPhase)
             this.ping.click(e, this.startX, this.startY, this.currentPhase)
         }
     }
@@ -176,14 +172,22 @@ export default class Map {
 
     
     keydownControl(e) {
+        console.log(e.keyCode);
+        // esc
         if(e.keyCode == 27) {
             this.ping.close(this.currentPhase, this.startX, this.startY)
             this.pingCheck = false
+            $('#distance-calc-btn').removeClass('active')
         }
+        // 백스페이스
         if(e.keyCode == 8) {
-            this.ping.undo()
+            if(this.backSpaceKey) {return}
+            this.backSpaceKey = true
+            this.ping.undo(this.startX, this.startY)
             this.render()
+            this.ping.savePing(this.currentPhase, this.startX, this.startY)
         }
+        // 스페이스
         if(e.keyCode == 32) {
             this.ping.spaceOn()
             this.spaceKey = true
@@ -193,6 +197,10 @@ export default class Map {
     keyupControl(e) {
         if(e.keyCode == 32) {
             this.spaceKey = false
+        }
+
+        if(e.keyCode == 8) {
+            this.backSpaceKey = false
         }
     }
 
@@ -243,11 +251,12 @@ export default class Map {
         return this.sideBar.val()
     }
 
-    pingOn() {
+    pingOn(e) {
         this.ping.reset()
         this.render()
         this.pingCheck = true
         $('#toolTip').css('display', 'none')
+        $(e.target).addClass('active')
     }
 
 }

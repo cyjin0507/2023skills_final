@@ -48,7 +48,6 @@ export default class Ping {
         this.btx.drawImage(this.ctx.canvas, 0,0)
     }
 
-
     spaceOn() {
         this.beforePosX = this.startX
         this.beforePosY = this.startY
@@ -62,7 +61,7 @@ export default class Ping {
         this.nowY = e.offsetY
 
         this.size = size
-
+    
         this.draw()
     }
 
@@ -74,7 +73,6 @@ export default class Ping {
         this.toolTip()
 
         this.ctx.beginPath()
-        console.log(this.startX, this.startY);
         this.ctx.arc(this.startX,this.startY,10,0,Math.PI*2)
         this.ctx.fill()
         this.ctx.closePath()
@@ -84,7 +82,6 @@ export default class Ping {
         this.ctx.lineTo(this.nowX, this.nowY)
         this.ctx.stroke()
         this.ctx.closePath()
-
     }
 
     savePing(size, startX, startY) {
@@ -97,6 +94,7 @@ export default class Ping {
             this.ctx.fill()
             this.ctx.closePath()
         })
+        console.log("---------");
 
         this.ctx.beginPath()
         this.pos.forEach((x,i)=> {
@@ -109,6 +107,7 @@ export default class Ping {
             this.ctx.stroke()
         })
         this.ctx.closePath()
+        this.btx.drawImage(this.ctx.canvas, 0,0)
     }
 
     close(size, startX, startY) {
@@ -198,9 +197,11 @@ export default class Ping {
         return distance
     }
 
-    undo() {
-        if(this.pos.length > 0) {
+    undo(startX, startY) {
+        if(this.pos.length > 1) {
             this.pos.pop()
+            let bSize = this.size == 1 ? 0 : (this.size == 2 ? 1 : 2)
+            this.update(bSize, startX, startY)
         }
     }
 
