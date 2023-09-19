@@ -9,6 +9,8 @@ class App {
         this.canvas.width = 800
         this.canvas.height = 800
 
+        this.mouseDown = false
+
         this.init()
     }
 
@@ -23,7 +25,7 @@ class App {
         $('.distance-btn').click((e)=> {
             $('.distance-btn').removeClass('active')
             $(e.target).addClass('active')
-            this.map.render(e.target.dataset.distance)
+            this.map.render(e.target.dataset.distance, true)
         })
 
         $('#open-btn').click(()=> {

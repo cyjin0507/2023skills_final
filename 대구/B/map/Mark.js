@@ -43,41 +43,40 @@ export default class Mark {
     }
 
     render() {
-        this.pathList = []
-
         this.markList.forEach(x=> {
-            const path = new Path2D()
-            path.arc(x.percent.lat, x.percent.long,4,0,Math.PI*2)
-            this.pathList.push(path)
-
             this.ctx.beginPath()
             this.ctx.fillStyle = 'blue'
+            this.ctx.arc(x.percent.lat, x.percent.long,4,0,Math.PI*2)
             this.ctx.fillText(x.data.name, x.percent.lat + 10, x.percent.long + 5)
-            this.ctx.fill(path)
+            this.ctx.fill()
             this.ctx.closePath()
         })
     }
 
     addEvent() {
-        this.ctx.canvas.addEventListener('click', this.markToggle.bind(this))
+        this.ctx.canvas.addEventListener('click', this.markToggle)
     }
 
-    markToggle({offsetX, offsetY}){
+    markToggle = (e) => {
+        let mx = e.offsetX
+        let my = e.offsetY
 
         this.markList.forEach((x,i)=> {
-            const path = this.pathList[i]
-            if(this.ctx.isPointInPath(path, offsetX, offsetY)) {
-                this.drawButton(offsetX, offsetY, x.data)
-                return false
-            }
+            let lat = Math.round(x.percent.lat)
+            let long = Math.round(x.percent.long)
+            if((lat-4 <= mx && lat + 4 >= mx) &&
+                (long-4 <= my && long + 4 >= my) && x.data.name != "user") {
+                    this.drawButton(lat, long, x.data)
+                    return false
+                }
         })
 
     }
 
-    drawButton(x, y, data) {
+    drawButton(lat, long, data) {
         $('#btn-zone').css({
-            'left': `${x}px`,
-            'top': `${y - 40}px`,
+            'left': `${lat}px`,
+            'top': `${long - 40}px`,
             'display' : 'block'
         })
         $('#btn-zone > button').attr('data-json', JSON.stringify(data))

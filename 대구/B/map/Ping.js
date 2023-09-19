@@ -12,12 +12,13 @@ export default class Ping {
 
         this.startX = 0
         this.startY = 0
-        this.endX = 0
-        this.endY = 0
     
         this.size = 0
 
         this.pos = []
+
+        this.distance = 0
+        this.distanceArr = []
     }
 
     click(e, startX, startY, size) {
@@ -32,6 +33,8 @@ export default class Ping {
         this.startX = e.offsetX
         this.startY = e.offsetY
 
+        this.distanceArr.push(this.distance)
+
         this.savePing(bSize, startX, startY)
         this.btx.clearRect(0,0,800,800)
         this.btx.drawImage(this.ctx.canvas, 0,0)
@@ -44,11 +47,6 @@ export default class Ping {
 
         this.btx.clearRect(0,0,800,800)
         this.btx.drawImage(this.ctx.canvas, 0,0)
-    }
-
-    spaceOn() {
-        this.beforePosX = this.startX
-        this.beforePosY = this.startY
     }
 
     mousemove(e, size) {
@@ -92,7 +90,6 @@ export default class Ping {
             this.ctx.fill()
             this.ctx.closePath()
         })
-        console.log("---------");
 
         this.ctx.beginPath()
         this.pos.forEach((x,i)=> {
@@ -119,7 +116,8 @@ export default class Ping {
         this.btx.fill()
         this.btx.closePath()
         this.ctx.drawImage(this.btx.canvas, 0, 0)
-        this.toolTip(lastPos.x, lastPos.y)
+    
+        this.toolTip(-50, -50)
     }
 
     reset() {
@@ -139,45 +137,15 @@ export default class Ping {
             display : 'block'
         })
 
-        if(x!=this.nowX) {
-            this.nowX = x
-            this.nowY = y
+        if(x==-50) {
             $('#toolTip').html(`
-                총거리 : ${this.totalDistance()} <br>
-                상대거리 : ${this.totalDistance()}
+                총거리 : ${this.totalDistance()}km
             `)
         } else {
             $('#toolTip').html(`
-            총거리 : ${this.totalDistance()} <br>
-            상대거리 : ${this.recentDistance()}
-        `)
+                상대거리 : ${this.recentDistance()}km
+            `)
         }
-    }
-
-    totalDistance() {
-        let minLat = 36.6208
-        let maxLat = 36.9842
-        let minLong = 36.6208
-        let maxLong = 36.9842
-        let latToKM = (maxLat - minLat) / 0.1 * 11 / this.ctx.canvas.width
-        let longToKM = (maxLong - minLong) / 0.1 * 11 / this.ctx.canvas.height
-
-        let distance = 0
-        if(this.pos.length>1) {
-            for(let i=0; i<this.pos.length-1; i++) {
-                let widthKM = Math.abs(this.pos[i].x*latToKM - this.pos[i+1].x*latToKM) / this.size
-                let heightKM = Math.abs(this.pos[i].y*longToKM - this.pos[i+1].y*longToKM) / this.size
-                distance += Math.sqrt(Math.pow(widthKM,2) + Math.pow(heightKM,2))
-            }   
-        }
-
-
-        let widthKM = Math.abs(this.pos[this.pos.length-1].x*latToKM - this.nowX*latToKM) / this.size
-        let heightKM = Math.abs(this.pos[this.pos.length-1].y*longToKM - this.nowY*longToKM) / this.size
-        distance += Math.sqrt(Math.pow(widthKM,2) + Math.pow(heightKM,2))
-
-        return distance
-
     }
 
     recentDistance() {
@@ -191,8 +159,19 @@ export default class Ping {
         let widthKM = Math.abs(this.pos[this.pos.length-1].x*latToKM - this.nowX*latToKM) / this.size
         let heightKM = Math.abs(this.pos[this.pos.length-1].y*longToKM - this.nowY*longToKM) / this.size
         let distance = Math.sqrt(Math.pow(widthKM,2) + Math.pow(heightKM,2))
+        distance = distance.toFixed(2)
+
+        this.distance = distance
 
         return distance
+    }
+
+    totalDistance() {
+        let total = 0
+        this.distanceArr.forEach(x=> {
+            total += Number(x)
+        })
+        return total
     }
 
     undo(startX, startY) {

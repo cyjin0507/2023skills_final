@@ -47,8 +47,8 @@ export default class Map {
         this.ctx.canvas.addEventListener('mousewheel', (e) => this.mousewheel(e));
 
         document.addEventListener('dblclick', (e) => {
-            this.ping.undo()
-            this.render()
+            this.ping.close()
+            this.pingCheck = false
         });
 
         document.addEventListener('keydown', (e) => this.keydownControl(e))
@@ -65,8 +65,22 @@ export default class Map {
 
     }
 
-    render(size = this.currentPhase) {
+    render(size = this.currentPhase, bool = false) {
         if(size==0) {this.cameraPos.x=0; this.cameraPos.y=0;}
+
+        if(bool) {
+            if(size == 0) {
+                this.cameraPos.x = 0
+                this.cameraPos.y = 0
+            } else if(size == 1) {
+                this.cameraPos.x = -400
+                this.cameraPos.y = -400
+            } else {
+                this.cameraPos.x = -1200
+                this.cameraPos.y = -1200
+            }
+        }
+
         this.currentPhase = size
         this.ctx.clearRect(0,0,800,800)
         phaseImages[size].forEach((obj, idx)=> {
@@ -130,18 +144,18 @@ export default class Map {
     phaseUp(e) {
         const prevPhase = this.currentPhase
         this.currentPhase++
-        this.doZoom(prevPhase)
+        this.doZoom(prevPhase, e.offsetX, e.offsetY)
     }
 
     phaseDown(e) {
         const prevPhase = this.currentPhase
         this.currentPhase--
-        this.doZoom(prevPhase)
+        this.doZoom(prevPhase, e.offsetX, e.offsetY)
     }
 
-    doZoom(prevPhase) {
-        const norX = (this.ctx.canvas.width / 2 + Math.abs(this.cameraPos.x)) / this.PHASE_SIZE[prevPhase]
-        const norY = (this.ctx.canvas.height / 2 + Math.abs(this.cameraPos.y)) / this.PHASE_SIZE[prevPhase]
+    doZoom(prevPhase, x, y) {
+        const norX = (x + Math.abs(this.cameraPos.x)) / this.PHASE_SIZE[prevPhase]
+        const norY = (y + Math.abs(this.cameraPos.y)) / this.PHASE_SIZE[prevPhase]
 
         const newX = norX * this.PHASE_SIZE[this.currentPhase] * -1 + 400
         const newY = norY * this.PHASE_SIZE[this.currentPhase] * -1 + 400

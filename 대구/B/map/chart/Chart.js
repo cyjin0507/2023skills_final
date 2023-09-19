@@ -91,11 +91,6 @@ export default class Chart{
         }
         this.graph = new Graph(this.data, this.category)
     }
-    
-    mapClick(json) {
-        this.data.push(json)
-        this.graph = new Graph(this.data, this.category)
-    }
 
     async reload() {
         this.json = await $.ajax({
@@ -117,4 +112,4 @@ export default class Chart{
         this.graph = new Graph(this.data, this.category)
     }
 
-}   
+}
