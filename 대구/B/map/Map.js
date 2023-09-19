@@ -172,7 +172,6 @@ export default class Map {
 
     
     keydownControl(e) {
-        console.log(e.keyCode);
         // esc
         if(e.keyCode == 27) {
             this.ping.close(this.currentPhase, this.startX, this.startY)
@@ -189,7 +188,6 @@ export default class Map {
         }
         // 스페이스
         if(e.keyCode == 32) {
-            this.ping.spaceOn()
             this.spaceKey = true
         }
     }

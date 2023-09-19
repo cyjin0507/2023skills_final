@@ -18,8 +18,6 @@ export default class Ping {
         this.size = 0
 
         this.pos = []
-        this.beforePosX = 0
-        this.beforePosY = 0
     }
 
     click(e, startX, startY, size) {

@@ -117,4 +117,4 @@ export default class Chart{
         this.graph = new Graph(this.data, this.category)
     }
 
-}
+}   

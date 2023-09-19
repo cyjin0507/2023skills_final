@@ -9,8 +9,6 @@ class App {
         this.canvas.width = 800
         this.canvas.height = 800
 
-        this.mouseDown = false
-
         this.init()
     }
 
