@@ -47,6 +47,10 @@ export default class Map {
         this.ctx.canvas.addEventListener('mousewheel', (e) => this.mousewheel(e));
 
         document.addEventListener('dblclick', (e) => {
+            this.ping.undo(this.startX, this.startY)
+            this.ping.undo(this.startX, this.startY)
+            this.render()
+            this.ping.savePing(this.currentPhase, this.startX, this.startY)
             this.ping.close()
             this.pingCheck = false
         });
@@ -102,6 +106,7 @@ export default class Map {
     }
 
     mousedown(e) {
+        console.log("click");
         this.isDragging = true
         if(this.pingCheck && !this.spaceKey) {
             this.ping.click(e, this.startX, this.startY, this.currentPhase)
@@ -133,7 +138,10 @@ export default class Map {
     }
 
     mousewheel(e) {
-        if(this.pingCheck) {return}
+        if(this.pingCheck) {
+            this.ping.close()
+            this.pingCheck = false
+        }
         if(e.wheelDelta > 0 && this.currentPhase < 2) {
             this.phaseUp(e)
         } else if(e.wheelDelta < 0 && this.currentPhase > 0) {

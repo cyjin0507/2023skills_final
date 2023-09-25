@@ -12,6 +12,9 @@ export default class Ping {
 
         this.startX = 0
         this.startY = 0
+
+        this.topX = 0
+        this.topY = 0
     
         this.size = 0
 
@@ -33,6 +36,9 @@ export default class Ping {
         this.startX = e.offsetX
         this.startY = e.offsetY
 
+        this.topX = startX
+        this.topY = startY
+
         this.distanceArr.push(this.distance)
 
         this.savePing(bSize, startX, startY)
@@ -44,6 +50,9 @@ export default class Ping {
         size = size==0 ? 1 : (size==1 ? 2 : 4)
         this.startX = (this.pos[this.pos.length-1].x*size)+startX
         this.startY = (this.pos[this.pos.length-1].y*size)+startY
+
+        this.topX = startX
+        this.topY = startY
 
         this.btx.clearRect(0,0,800,800)
         this.btx.drawImage(this.ctx.canvas, 0,0)
@@ -155,13 +164,15 @@ export default class Ping {
         let maxLong = 36.9842
         let latToKM = (maxLat - minLat) / 0.1 * 11 / this.ctx.canvas.width
         let longToKM = (maxLong - minLong) / 0.1 * 11 / this.ctx.canvas.height
-
-        let widthKM = Math.abs(this.pos[this.pos.length-1].x*latToKM - this.nowX*latToKM) / this.size
-        let heightKM = Math.abs(this.pos[this.pos.length-1].y*longToKM - this.nowY*longToKM) / this.size
-        let distance = Math.sqrt(Math.pow(widthKM,2) + Math.pow(heightKM,2))
+        console.log(this.startX);
+        let widthKM = Math.abs(((this.pos[this.pos.length-1].x*this.size)+this.topX)*latToKM - this.nowX*latToKM)
+        let heightKM = Math.abs(((this.pos[this.pos.length-1].y*this.size)+this.topY)*longToKM - this.nowY*longToKM)
+        let distance = Math.sqrt(Math.pow(widthKM,2) + Math.pow(heightKM,2)) / this.size
         distance = distance.toFixed(2)
 
         this.distance = distance
+
+        console.log(this.pos);
 
         return distance
     }
@@ -177,6 +188,7 @@ export default class Ping {
     undo(startX, startY) {
         if(this.pos.length > 1) {
             this.pos.pop()
+            this.distanceArr.pop()
             let bSize = this.size == 1 ? 0 : (this.size == 2 ? 1 : 2)
             this.update(bSize, startX, startY)
         }

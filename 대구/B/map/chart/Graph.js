@@ -18,8 +18,6 @@ export default class Graph {
         this.ctx.textAlign = 'center'
         this.count = 5
 
-        this.colorList = []
-
         this.init()
     }
 
