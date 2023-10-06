@@ -1,9 +1,8 @@
 import Map from "./Map.js"
-import Chart from "./chart/Chart.js"
 
 class App {
     constructor() {
-        this.canvas = document.querySelector('#canvas')
+        this.canvas = document.querySelector('canvas')
         this.ctx = this.canvas.getContext('2d')
 
         this.canvas.width = 800
@@ -20,19 +19,8 @@ class App {
     }
 
     addEvent() {
-        $('.distance-btn').click((e)=> {
-            $('.distance-btn').removeClass('active')
-            $(e.target).addClass('active')
-            this.map.render(e.target.dataset.distance, true)
-        })
-
-        $('#open-btn').click(()=> {
-            let sendData = this.map.val()
-            this.chart = new Chart(sendData)
-        })
 
     }
-   
 
 }
 

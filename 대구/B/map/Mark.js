@@ -7,32 +7,34 @@ export default class Mark {
         this.minLong = 126.9741
         this.maxLong = 127.4377
 
-        this.markList = []
-
         this.startX = 0
         this.startY = 0
 
-        this.addEvent()
+        this.markList = []
+        this.pointList = []
 
+        this.addEvent()
     }
 
     draw(size, startX, startY, data) {
-        $('#btn-zone').css('display', 'none')
+        $('#btn-zone').hide()
         size = size==0 ? 1 : (size==1 ? 2 : 4)
 
         this.markList = []
+        this.pointList = []
+
         data.forEach(x=> {
             let minLat = this.minLat * 10000
             let maxLat = this.maxLat * 10000
-            let maxLong = this.maxLong * 10000
             let minLong = this.minLong * 10000
+            let maxLong = this.maxLong * 10000
 
-            let percentLong = (800 - ((x.latitude * 10000 - minLat) / (maxLat - minLat)) * 800) * size
-            let percentLat = (((x.longitude * 10000 - minLong) / (maxLong - minLong)) * 800) * size
+            let percentLat = (800 - ((x.latitude * 10000 - minLat) / (maxLat - minLat) * 800)) * size
+            let percentLong = (800 - ((x.longitude * 10000 - minLong) / (maxLong - minLong) * 800)) * size
 
             this.markList.push({
                 data : x,
-                percent : {lat: percentLat+startX, long: percentLong+startY},
+                percent : {lat:percentLat+startX, long:percentLong+startY}
             })
         })
 
@@ -44,42 +46,38 @@ export default class Mark {
 
     render() {
         this.markList.forEach(x=> {
+            const path = new Path2D()
+            path.arc(x.percent.lat, x.percent.long, 4, 0, Math.PI*2)
+
             this.ctx.beginPath()
-            this.ctx.fillStyle = 'blue'
-            this.ctx.arc(x.percent.lat, x.percent.long,4,0,Math.PI*2)
-            this.ctx.fillText(x.data.name, x.percent.lat + 10, x.percent.long + 5)
-            this.ctx.fill()
+            this.ctx.fillText(x.data.name, x.percent.lat+5, x.percent.long+5)
+            this.ctx.fill(path)
             this.ctx.closePath()
+
+            this.pointList.push(path)
         })
     }
 
     addEvent() {
-        this.ctx.canvas.addEventListener('click', this.markToggle)
+        this.ctx.canvas.addEventListener('click', this.markToggle.bind(this))
     }
 
-    markToggle = (e) => {
-        let mx = e.offsetX
-        let my = e.offsetY
-
+    markToggle({offsetX, offsetY}) {
         this.markList.forEach((x,i)=> {
-            let lat = Math.round(x.percent.lat)
-            let long = Math.round(x.percent.long)
-            if((lat-4 <= mx && lat + 4 >= mx) &&
-                (long-4 <= my && long + 4 >= my) && x.data.name != "user") {
-                    this.drawButton(lat, long, x.data)
-                    return false
-                }
-        })
+            const path = this.pointList[i]
+            if(this.ctx.isPointInPath(path, offsetX, offsetY)) {
+                console.log("rte");
+                $('#btn-zone').css({
+                    display : 'block',
+                    left : `${offsetX+10}px`,
+                    top : `${offsetY+10}px`,
+                })
 
-    }
-
-    drawButton(lat, long, data) {
-        $('#btn-zone').css({
-            'left': `${lat}px`,
-            'top': `${long - 40}px`,
-            'display' : 'block'
+                $('#btn-zone > button').attr('data-json', JSON.stringify(x.data))
+            } else if(i==this.markList.length) {
+                $('#btn-zone').hide()
+            }
         })
-        $('#btn-zone > button').attr('data-json', JSON.stringify(data))
     }
 
     val() {
