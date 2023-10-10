@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./resources/fontawesome-free-6.4.0-web/css/all.min.css">
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"> -->
+    <script src="./js/jquery-3.5.1.js"></script>
+    <script src="./js/shop/App.js" type="module"></script>
+    <link rel="stylesheet" href="./style.css">
+    <title>전남</title>
+</head>
+
+<body>
+
+    <div class="wrapper">
+
+        <header>
+            <a href="./index.html"><img src="./logo.png" id="logo" alt=""></a>
+            <div id="header-main">
+                <nav>
+                    <a href="#">명소 소개</a>
+                    <a href="./tour.html">명소 투어</a>
+                    <a href="./shop.html">명물 구매</a>
+                </nav>
+                <div id="util">
+                    <a href="#">로그인</a>
+                    <a href="#">회원가입</a>
+                    <div>
+                        <select name="" id="">
+                            <option value="">한국어</option>
+                            <option value="">English</option>
+                            <option value="">繁體中文</option>
+                            <option value="">日本語</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <section id="sub-visual">
+            <div class="sub-txt">명물 구매 페이지</div>
+            <img src="./resources/images/제공 이미지/image_02.jpg" alt="">
+        </section>
+
+        <section id="shop">
+            <div class="title">
+                <p>명물 리스트 영역</p>
+                <h3>천안의 <span>맛좋은 명물들</span>을 <br>
+                온라인에서 손쉽게 구매하세요</h3>
+            </div>
+            <div id="shop-main">
+                <div class="goods">
+                    <img src="./image/명물/거봉포도.jpg" alt="">
+                    <div>장바구니 담기</div>
+                </div>
+                <div class="goods">
+                    <img src="./image/명물/거봉포도.jpg" alt="">
+                    <div>장바구니 담기</div>
+                </div>
+                <div class="goods">
+                    <img src="./image/명물/거봉포도.jpg" alt="">
+                    <div>장바구니 담기</div>
+                </div>
+                <div class="goods">
+                    <img src="./image/명물/거봉포도.jpg" alt="">
+                    <div>장바구니 담기</div>
+                </div>
+                <div class="goods">
+                    <img src="./image/명물/거봉포도.jpg" alt="">
+                    <div>장바구니 담기</div>
+                </div>
+            </div>
+        </section>
+        
+        <footer>
+            <div id="footer-nav">
+                <a href="">개인정보처리방침</a>
+                <a href="">저작권정책</a>
+                <a href="">이메일무단수집거부</a>
+                <a href="">전화번호안내</a>
+                <a href="">찾아오시는길</a>
+            </div>
+            <div id="footer-main">
+                <div>
+                    <img src="./logo.png" alt="">
+                    <div>
+                        사업자등록번호 230-99-12351<br>
+                        주소 충청남도 천안시 서북구 번영로 156
+                    </div>
+                </div>
+                <div>
+                    <div id="sns">
+                        <i class="fa-brands fa-facebook"></i>
+                        <i class="fa-brands fa-instagram"></i>
+                        <i class="fa-brands fa-twitter"></i>
+                    </div>
+                    Copyright ⓒ Cheonan Tours All Rights Reserved
+                </div>
+            </div>
+        </footer>
+
+    </div>
+
+    <div id="modal">
+        <div id="modal-inner">
+            <div class="goods-info">
+                <h5 id="goods-name"></h5>
+            </div>
+            <div class="goods-info">
+                <span>명물의 설명</span>
+                <div id="goods-introduce"></div>
+            </div>
+            <div class="goods-info">
+                <span>명물의 포인트</span>
+                <div id="goods-point"></div>
+            </div>
+            <div class="goods-info">
+                <span>명물의 개수</span>
+                <input type="number" min="1" value="1">
+            </div>
+
+            <div id="hodu" style="display: none;">
+                <div class="hodu">
+                    <canvas id="canvas"></canvas> <!-- 피쉬아이 효과를 적용할 캔버스를 생성합니다. -->
+                    <div class="circle"></div>
+                </div>
+                <input type="range" name="range" id="range" value="15" min="15" max="100" >
+            </div>
+
+            <div id="modal-btn">
+                <div id="purchase-btn">구매</div>
+                <div class="close">닫기</div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

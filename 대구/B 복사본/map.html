@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+        integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="./jquery-3.5.1.js"></script>
+    <script type="module" src="./js/App.js"></script>
+        <link rel="stylesheet" href="./resources/bootstrap/css/bootstrap.css">
+        <link rel="stylesheet" href="./style.css">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <div class="wrapper">
+
+        <header>
+            <div id="header">
+                <h5 id="logo"><a href="./index.html">천안투어</a></h5>
+                <div id="header-main">
+                    <nav>
+                        <a href="#">마이페이지</a>
+                        <a href="./map.html">명소알아보기</a>
+                        <a href="./tour.html">셔틀버스투어</a>
+                    </nav>
+                    <div id="util">
+                        <a href="#">로그인</a>
+                        <a href="#">회원가입</a>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <section id="map-section" class="width">
+            <div id="map-control">
+                <div class="title">
+                    <p>명소알아보기</p>
+                    <h3>천안의 다양한 명소를 <br>
+                    지도로 <span>간편하게</span> <br>
+                    알아보세요</h3>
+                </div>
+                <div id="map-btn-group">
+                    <div class="active distance-btn" data-idx="0">5km</div>
+                    <div class="distance-btn" data-idx="1">3km</div>
+                    <div class="distance-btn" data-idx="2">500m</div>
+                </div>
+                <div id="map-btn-group2">
+                    <div id="distanceBtn">거리재기</div>
+                    <div id="user-loc">현위치</div>
+                    <div id="open-btn">즐겨찾기</div>
+                    <div id="targetMarkBtn">추가된 명소 보기</div>
+                    <div id="targetCancelMarkBtn" style="display: none;">전체보기</div>
+                </div>
+                <table id="side-list" class="table mt-3">
+                    <thead class="table-darked">
+                        <tr>
+                            <th>이름</th>
+                            <th>삭제</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                </table>
+            </div>
+            <div id="map-area">
+                <canvas id="map"></canvas>
+                <div id="btn-zone">
+                    <button>즐겨찾기 추가</button>
+                </div>
+                <div class="tooltipEl">
+sdsd
+                </div>
+            </div>
+        </section>
+
+
+
+    </div>
+
+
+    <div id="modal">
+        <div id="modal-inner">
+            <div id="category">
+                <div data-category="star">별점</div>
+                <div data-category="review">리뷰</div>
+                <div data-category="visitant">방문자</div>
+                <div data-category="returning_visitor">재방문자</div>
+                <div data-category="parking">주차대수</div>
+                <div data-category="managed">관리도</div>
+            </div>
+            <div id="list">
+                <div data-list="독립기념관">독립기념관</div>
+                <div data-list="성성호수공원">성성호수공원</div>
+                <div data-list="아라리오조각광장">아라리오조각광장</div>
+                <div data-list="유관순열사 사적지">유관순열사 사적지</div>
+                <div data-list="태조산왕건길과 청동대좌불">태조산왕건길과 청동대좌불</div>
+                <div data-list="천안삼거리공원">천안삼거리공원</div>
+            </div>
+            <canvas id="chart" width="500" height="500"></canvas>
+            <div id="modal-btn">
+                <button id="download" class="btn btn-primary">다운로드</button>
+                <button id="reload" class="btn btn-primary">JSON불러오기</button>
+                <button class="btn btn-danger close">닫기</button>
+            </div>
+        </div>
+    </div>
+
+
+</body>
+
+</html>
