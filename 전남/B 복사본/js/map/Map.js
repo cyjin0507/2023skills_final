@@ -58,19 +58,16 @@ export default class Map {
         this.ctx.lineWidth = 3
         this.ctx.fillStyle = 'red'
 
-        this.ctx.beginPath()
         for(let i=0; i<this.history.length-1; i++) {
+            this.ctx.beginPath()
             const {x:prevX, y:prevY} = datas[this.history[i]]
             const {x:nextX, y:nextY} = datas[this.history[i+1]]
 
-            if(i==0) {
-                this.ctx.moveTo(prevX, prevY)
-            } else {
-                this.ctx.lineTo(nextX, nextY)
-            }
+            this.ctx.moveTo(prevX, prevY)
+            this.ctx.lineTo(nextX, nextY)
+            this.ctx.stroke()
+            this.ctx.closePath()
         }
-        this.ctx.stroke()
-        this.ctx.closePath()
 
         if(this.selectIdx > -1) {
             const {x:prevX, y:prevY} = datas[this.selectIdx]
@@ -99,8 +96,8 @@ export default class Map {
         for(const index in this.history) {
             const {x,y} = datas[this.history[index]]
             this.ctx.font = '14px Arial'
-            this.ctx.textAilgn = 'center'
-            this.ctx.textBaseLine = 'middle'
+            this.ctx.textAlign = 'center'
+            this.ctx.textBaseline = 'middle'
             this.ctx.fillStyle = 'white'
 
             this.ctx.beginPath()
@@ -134,6 +131,7 @@ export default class Map {
         if(findIdx > -1) {
             if(this.history.length != 0 && this.history[this.history.length-1] != this.selectIdx) {
                 alert("오류 1")
+                this.selectIdx = -1
                 return
             }
         }
@@ -159,6 +157,8 @@ export default class Map {
             }
             this.history.push(findIdx)
         }
+
+        console.log(this.history);
 
         this.selectIdx = -1
     }
