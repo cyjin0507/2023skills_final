@@ -1,4 +1,5 @@
-import Sidebar from "../Sidebar"
+import Sidebar from "../Sidebar.js"
+import Chart from "./Chart.js"
 
 let check = true
 
@@ -15,7 +16,6 @@ export default class Graph {
         $('#modal').fadeIn()
 
         this.category = ['star','review','visitant','returning_visitor','parking','managed']
-        this.graph = new Chart(Sidebar.sideList, this.category)
 
         this.json = await $.ajax({
             url : '/json/attraction.json',
@@ -25,6 +25,7 @@ export default class Graph {
 
         this.categorySet()
         this.listSet()
+        this.graph = new Chart(Sidebar.sideList, this.category)
     }
 
     addEvent() {
@@ -34,7 +35,7 @@ export default class Graph {
         $('#reload').click(this.reload.bind(this))
 
         $('.close').click(()=> {
-            $('.modal').fadeOut()
+            $('#modal').fadeOut()
         })
     }
 
@@ -47,7 +48,7 @@ export default class Graph {
     listSet() {
         $('#list > div').removeClass('active')
 
-        this.list.forEach(x=> {
+        Sidebar.sideList.forEach(x=> {
             $(`#list > div[data-list="${x}"]`).addClass('active')
         })
 
@@ -72,7 +73,7 @@ export default class Graph {
     }
 
     changeList(e) {
-        let findData = Sidebar.sideList.find(x=>x.name==e.target.dataset.list)
+        let findData = this.json['data'].find(x=>x.name==e.target.dataset.list)
 
         if(e.target.className.includes('active')) {
             $(e.target).removeClass('active')

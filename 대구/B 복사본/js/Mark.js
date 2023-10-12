@@ -53,6 +53,8 @@ export default class Mark {
             this.ctx.fillText(x.data.name, x.percent.lat + 5, x.percent.long + 5)
             this.ctx.fill(path)
             this.ctx.closePath()
+
+            this.pointList.push(path)
         })
     }
 
@@ -60,9 +62,9 @@ export default class Mark {
         this.ctx.canvas.addEventListener('click', this.markToggle.bind(this))
     }
 
-    markList({offsetX, offsetY}) {
+    markToggle({offsetX, offsetY}) {
         for(const index in this.pointList) {
-            const path = this.pointList(index)
+            const path = this.pointList[index]
             if(this.ctx.isPointInPath(path, offsetX, offsetY)) {
                 $('#btn-zone').css({
                     display : 'block',
@@ -70,10 +72,10 @@ export default class Mark {
                     top : `${offsetY+5}px`,
                 })
 
-                $('#btn-zone > button').attr('data-json', JSON.stringify(x.data))
+                $('#btn-zone > button').attr('data-json', JSON.stringify(this.markList[index].data))
                 break
             } else {
-                $('#btn-zone').hide()
+                // $('#btn-zone').hide()
             }
         }
     }

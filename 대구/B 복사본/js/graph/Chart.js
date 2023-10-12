@@ -44,15 +44,16 @@ export default class Chart {
 
                 if(j==0) {
                     this.ctx.moveTo(x,y)
+                    this.ctx.fillText(this.gap * i,x,y)
                 } else {
-                    this.ctx.moveTo(x,y)
-                    this.ctx.fillStyle(this.gap * i,x,y)
+                    this.ctx.lineTo(x,y)
                 }
 
                 if(i==this.count && j<this.category.length) {
                     this.ctx.fillText(this.labelKr[i],x,y)
                 }
             }
+            this.ctx.stroke()
             this.ctx.closePath()
         }
     }
@@ -71,6 +72,10 @@ export default class Chart {
 
             if(i==0) {
                 this.ctx.moveTo(x,y)
+                $(`#list > div[data-list="${this.data[index].name}"]`).css({
+                    'color' : 'white',
+                    'background-color' : color
+                })
             } else {
                 this.ctx.lineTo(x,y)
             }

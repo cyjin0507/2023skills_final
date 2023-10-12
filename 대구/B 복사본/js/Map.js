@@ -1,6 +1,6 @@
-import Mark from "./Mark"
-import Ping from "./Ping"
-import {LoadImages} from "./LoadImage"
+import Mark from "./Mark.js"
+import Ping from "./Ping.js"
+import {LoadImages} from "./LoadImage.js"
 
 export default class Map {
     constructor(ctx, data) {
@@ -41,6 +41,14 @@ export default class Map {
         this.ctx.canvas.addEventListener('mouseup', (e)=>this.onmouseup(e))
         this.ctx.canvas.addEventListener('mouseleave', (e)=>this.onmouseup(e))
         this.ctx.canvas.addEventListener('mousewheel', (e)=>this.onmousewheel(e))
+    
+        $('#distanceBtn').click(this.pingOn.bind(this))
+        $('#targetMarkBtn').click(this.targetMark.bind(this))
+        $('#targetCancelMarkBtn').click(this.targetCancelMark.bind(this))
+        $('#side-list tbody').click(this.placeSliding.bind(this))
+
+        document.addEventListener('keydown', this.keydownControl.bind(this))
+        document.addEventListener('keyup', this.keyupControl.bind(this))
     }
 
     render(size=this.currentPhase, bool=false) {
@@ -58,7 +66,7 @@ export default class Map {
         this.ctx.clearRect(0,0,800,800)
 
         LoadImages[this.currentPhase].forEach((obj,idx)=> {
-            const img = obj.img
+            const img = obj.image
             const x = obj.x
             const y = obj.y
 
@@ -79,13 +87,13 @@ export default class Map {
     onmousedown(e) {
         this.isDragging = true
 
-        if(this.pingCheck && !this.backSpace) {
+        if(this.pingCheck && !this.spaceKey) {
             this.ping.click(e,this.startX,this.startY,this.currentPhase)
         }
     }
 
     onmousemove(e) {
-        if(this.pingCheck && !this.backSpace) {
+        if(this.pingCheck && !this.spaceKey) {
             this.ping.mousemove(e, this.currentPhase)
             return
         } else if(this.pingCheck) {
@@ -167,13 +175,13 @@ export default class Map {
     }
 
     keydownControl(e) {
-        let key = e.keycode()
+        let key = e.keyCode
         if(key == 27) {
             this.pingCheck = false
             this.ping.close()
         }
 
-        if(key == 32) {
+        if(key == 8) {
             if(this.backSpace) return
             this.backSpace = true
             this.ping.undo(this.startX, this.startY)
@@ -181,17 +189,17 @@ export default class Map {
             this.ping.savePing(this.currentPhase,this.startX,this.startY)
         }
 
-        if(key == 8) {
+        if(key == 32) {
             this.spaceKey = true
         }
     }
 
     keyupControl(e) {
-        let key = e.keycode()
-        if(key == 32) {
+        let key = e.keyCode
+        if(key == 8) {
             this.backSpace = false
         }
-        if(key == 8) {
+        if(key == 32) {
             this.spaceKey = false
         }
     }
@@ -241,5 +249,6 @@ export default class Map {
         this.pingCheck = true
         this.ping.reset()
         this.render()
+        $('#distanceBtn').addClass('active')
     }
 }

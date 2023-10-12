@@ -33,6 +33,7 @@ export default class Ping {
             x : (e.offsetX - startX) / size,
             y : (e.offsetY - startY) / size,
         })
+        console.log(this.pos);
 
         this.startX = e.offsetX
         this.startY = e.offsetY
@@ -52,6 +53,8 @@ export default class Ping {
 
         this.nowX = e.offsetX
         this.nowY = e.offsetY
+
+        this.tooltip()
 
         this.size = size
 
@@ -81,7 +84,7 @@ export default class Ping {
 
         this.pos.forEach(x=> {
             this.ctx.beginPath()
-            this.ctx.arc((x.x*size)+this.startX, (x.y*size)+this.startY,10,0,Math.PI*2)
+            this.ctx.arc((x.x*size)+startX, (x.y*size)+startY,10,0,Math.PI*2)
             this.ctx.fill()
             this.ctx.closePath()
         })
@@ -104,6 +107,11 @@ export default class Ping {
     close(size, startX, startY) {
         size = size==0 ? 1 : (size==1 ? 2 : 4)
         this.dragging = false
+        $('#distanceBtn').removeClass('active')
+
+        if(this.pos.length < 1) {
+            return
+        }
 
         let lastPos = this.pos[this.pos.length-1]
         this.btx.beginPath()
@@ -111,12 +119,26 @@ export default class Ping {
         this.btx.fill()
         this.btx.closePath()
 
+        this.tooltip(-30, -30)
+
         this.ctx.drawImage(this.btx.canvas,0,0)
+    }
+
+    reset() {
+        this.startX = 0
+        this.startY = 0
+        this.topX = 0
+        this.topY = 0
+        this.distance = 0
+        this.pos = []
+        this.distanceArr = []
+        this.size = 0
     }
 
     update(size, startX, startY) {
         size = size==0 ? 1 : (size==1 ? 2 : 4)
         
+        console.log(this.pos);
         this.startX = (this.pos[this.pos.length-1].x * size) + startX
         this.startY = (this.pos[this.pos.length-1].y * size) + startY
 

@@ -15,11 +15,11 @@ export default class Sidebar {
     }
 
     static sideListDraw() {
-        $('#side-list').html('')
+        $('#side-list tbody').html('')
         this.sideList.forEach(x=> {
-            $('#side-list').append(`
+            $('#side-list tbody').append(`
                 <tr>
-                    <td data-name="${x.name}">${x.name}</td>
+                    <td data-name="${x.name}" class="place-name">${x.name}</td>
                     <td data-name="${x.name}" class="btn btn-danger">삭제</td>
                 </tr>
             `)
@@ -30,7 +30,7 @@ export default class Sidebar {
         if(e.target.className != 'btn btn-danger') return
         let index = this.sideList.findIndex(x=>x.name==e.target.dataset.name)
 
-        this.sideList.splice(index)
+        this.sideList.splice(index,1)
         this.sideListDraw()
     }
 
@@ -39,7 +39,7 @@ export default class Sidebar {
 
         let index = this.sideList.findIndex(x=>x.name==json.name)
         
-        this.sideList.splice(index)
+        this.sideList.splice(index,1)
         this.sideListDraw()
     }
 

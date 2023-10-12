@@ -1,5 +1,6 @@
-import Map from "./Map"
-import Sidebar from "./Sidebar"
+import Map from "./Map.js"
+import Sidebar from "./Sidebar.js"
+import Graph from "./graph/Graph.js"
 
 class App {
     constructor() {
@@ -21,12 +22,14 @@ class App {
 
     addEvent() {
         $('.distance-btn').click(e=> {
-            let distance = e.target.dataset.distance
+            $('.distance-btn').removeClass('active')
+            $(e.target).addClass('active')
+            let distance = e.target.dataset.idx
             this.map.render(distance, true)
         })
 
         $('#open-btn').click(()=> {
-
+            new Graph()
         })
 
         $('#btn-zone > button').click(e=> {
@@ -38,4 +41,8 @@ class App {
         })
     }
 
+}
+
+window.onload = () => {
+    new App()
 }
