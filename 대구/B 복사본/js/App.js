@@ -8,39 +8,34 @@ class App {
 
         this.canvas.width = 800
         this.canvas.height = 800
-        
+
         this.init()
     }
 
     async init() {
-        this.data = (await $.getJSON('/json/attraction.json'))['data']
-        this.map = new Map(this.ctx, this.data)
+        this.data = await $.getJSON('/json/attraction.json')
 
+        this.map = new Map(this.ctx, this.data)
         this.addEvent()
     }
 
     addEvent() {
         $('.distance-btn').click(e=> {
-            let distance = e.target.dataset.index
+            let distance = e.target.dataset.distance
             this.map.render(distance, true)
         })
 
         $('#open-btn').click(()=> {
-            new Chart()
+
         })
 
-        $('#side-list tbody').click((e)=> {
-            Sidebar.removeList(e)
-        })
-
-        $('#btn-zone button').click((e)=> {
+        $('#btn-zone > button').click(e=> {
             Sidebar.sidebarAdd(e.target.dataset.json)
         })
 
+        $('#side-list tbody').click(e=> {
+            Sidebar.removeList(e)
+        })
     }
 
-}
-
-window.onload = () => {
-    new App()
 }

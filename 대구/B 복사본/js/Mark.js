@@ -19,11 +19,14 @@ export default class Mark {
     draw(size, startX, startY, data) {
         $('#btn-zone').hide()
 
-        size = size == 0 ? 1 : (size == 1 ? 2 : 4)
+        size = size==0 ? 1 : (size==1 ? 2 : 4)
+        this.markList = []
+        this.pointList = []
+
         data.forEach(x=> {
             let minLat = this.minLat * 10000
-            let maxLat = this.maxLat * 10000
             let minLong = this.minLong * 10000
+            let maxLat = this.maxLat * 10000
             let maxLong = this.maxLong * 10000
 
             let percentLat = (800 - (x.latitude * 10000 - minLat) / (maxLat - minLat) * 800) * size
@@ -42,19 +45,14 @@ export default class Mark {
     }
 
     render() {
-        this.markList = []
-        this.pointList = []
-
-        this.markList.forEach((x)=> {
+        this.markList.forEach(x=> {
             const path = new Path2D()
-            path.arc(x.percent.lat, x.percent.long,4,0,Math.PI*2)
+            path.arc(x.percent.lat, x.percent.long, 4,0,Math.PI*2)
 
             this.ctx.beginPath()
             this.ctx.fillText(x.data.name, x.percent.lat + 5, x.percent.long + 5)
             this.ctx.fill(path)
             this.ctx.closePath()
-
-            this.pointList.push(path)
         })
     }
 
@@ -62,25 +60,25 @@ export default class Mark {
         this.ctx.canvas.addEventListener('click', this.markToggle.bind(this))
     }
 
-    markToggle({offsetX, offsetY}) {
-        this.markList.forEach((x,i)=> {
-            const path = this.pointList[i]
-            if(this.ctx.isPointInPath(path)) {
+    markList({offsetX, offsetY}) {
+        for(const index in this.pointList) {
+            const path = this.pointList(index)
+            if(this.ctx.isPointInPath(path, offsetX, offsetY)) {
                 $('#btn-zone').css({
                     display : 'block',
-                    left : `${offsetX + 10}px`,
-                    top : `${offsetY + 10}px`
+                    left : `${offsetX+5}px`,
+                    top : `${offsetY+5}px`,
                 })
 
-                $('#btn-zone').attr('data-json', JSON.stringify(x.data))
-            } else if(i==this.markList.length) {
+                $('#btn-zone > button').attr('data-json', JSON.stringify(x.data))
+                break
+            } else {
                 $('#btn-zone').hide()
             }
-        })
+        }
     }
 
     val() {
         return this.markList
     }
-
 }

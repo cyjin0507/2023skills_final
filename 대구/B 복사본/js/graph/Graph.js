@@ -1,91 +1,113 @@
+import Sidebar from "../Sidebar"
+
+let check = true
+
 export default class Graph {
-    constructor(data, category) {
-        this.data = data
-        this.category = category
-
-        this.canvas = document.querySelector('#chart')
-        this.ctx = this.canvas.getContext('2d')
-
-        this.ctx.lineWidth = 3
-        this.ctx.strokeStyle = 'black'
-        this.ctx.clearRect(0,0,800,800)
-
-        this.size = 500
-        this.chartSize = 220
-        this.center = this.size / 2
-        this.radian = Math.PI * 2 / this.category.length
-
+    constructor() {
+        if(check) {
+            this.addEvent()
+        }
+        check = false
         this.init()
-
-        document.querySelector('#download').click(this.download.bind(this))
     }
 
     async init() {
-        this.maxValue = 100
-        this.gap = 20
+        $('#modal').fadeIn()
 
-        this.labelKr = (await $.getJSON('/json/attration.jsn'))['labels_kr']
-        this.drawOutLine()
+        this.category = ['star','review','visitant','returning_visitor','parking','managed']
+        this.graph = new Chart(Sidebar.sideList, this.category)
 
-        for(let i=0; i<this.data.length; i++) {
-            this.drawChart(i)
-        }
+        this.json = await $.ajax({
+            url : '/json/attraction.json',
+            method : 'GET',
+            cache : false
+        })
+
+        this.categorySet()
+        this.listSet()
     }
 
-    drawOutLine() {
-        this.ctx.fillStyle = 'black'
-        this.ctx.strokeStyle = 'black'
-        for(let i=0; i<=this.count; i++) {
-            this.ctx.beginPath()
-            for(let j=0; j<=this.category.length; j++) {
-                const x = Math.cos(this.radian * j - Math.PI / 2) * (this.chartSize / this.count * i) + this.center
-                const y = Math.sin(this.radian * j - Math.PI / 2) * (this.chartSize / this.count * i) + this.center
+    addEvent() {
+        $('#list > div').click(this.changeList.bind(this))
+        $('#category > div').click(this.changeCategory.bind(this))
 
-                if(j==0) {
-                    this.ctx.moveTo(x,y)
-                    this.ctx.fillText(this.gap*i,x,y)
-                } else {
-                    this.ctx.lineTo(x,y)
-                }
+        $('#reload').click(this.reload.bind(this))
 
-                if(i==this.count && j<this.category.length) {
-                    this.ctx.fillText(this.labelKr[j], x, y)
-                }
+        $('.close').click(()=> {
+            $('.modal').fadeOut()
+        })
+    }
+
+    categorySet() {
+        this.category.forEach(x=> {
+            $(`#category > div[data-category="${x}"]`).addClass('active')
+        })
+    }
+
+    listSet() {
+        $('#list > div').removeClass('active')
+
+        this.list.forEach(x=> {
+            $(`#list > div[data-list="${x}"]`).addClass('active')
+        })
+
+        $('#list > div:not(.active)').css({
+            'background-color' : 'white',
+            'color' : 'black'
+        })
+    }
+
+    changeCategory(e) {
+        let index = this.category.findIndex(x=>x==e.target.dataset.category)
+
+        if(e.target.className.includes('active')) {
+            e.target.removeClass('active')
+            this.category.splice(index,1)
+        } else {
+            e.target.addClass('active')
+            this.category.splice(index,0,e.target.dataset.category)
+        }
+
+        this.graph = new Chart(Sidebar.sideList, this.category)
+    }
+
+    changeList(e) {
+        let findData = Sidebar.sideList.find(x=>x.name==e.target.dataset.list)
+
+        if(e.target.className.includes('active')) {
+            $(e.target).removeClass('active')
+            $(e.target).css({
+                'background-color' : 'white',
+                'color' : 'black'
+            })
+            Sidebar.remove(JSON.stringify(findData))
+        } else {
+            if(Sidebar.sidebarAdd(JSON.stringify(findData))) {
+                $(e.target).addClass('active')
             }
-            this.ctx.stroke()
-            this.ctx.closePath()
         }
+
+        this.graph = new Chart(Sidebar.sideList, this.category)
     }
 
-    drawChart(index) {
-        let color = '#' + Math.round(Math.random() * 0xffffff).toString(16)
-        this.ctx.fillStlye = color
-        this.ctx.strokeStlye = color
-        this.ctx.globalAlpha = 0.5
+    async reload() {
+        let arr = []
+ 
+        this.json = await $.ajax({
+            url : '/json/attraction.json',
+            method : 'GET',
+            cache : false
+        })
 
-        this.ctx.beginPath()
-        for(let i=0; i<this.category.length; i++) {
-            const value = this.data[index][this.category[i]] || this.data[index][this.category[0]]
-            const x = Math.cos(this.radian * j - Math.PI / 2) * (value / this.maxValue * 220)
-            const y = Math.sin(this.radian * j - Math.PI / 2) * (value / this.maxValue * 220)
+        this.json.forEach(x=> {
+            Sidebar.sideList.forEach(j=> {
+                if(x.name == j.name) {
+                    arr.push(x)
+                }
+            })
+        })
 
-            if(i==0) {
-                this.ctx.moveTo(x,y)
-            } else {
-                this.ctx.lineTo(x,y)
-            }
-        }
-        this.ctx.fill()
-        this.ctx.globalAlpha = 1
-        this.ctx.stroke()
-        this.ctx.closePath()
+        Sidebar.sideList = arr
+        this.graph = new Chart(Sidebar.sideList, this.category)
     }
-
-    download() {
-        const a = document.createElement('a')
-        a.href = this.canvas.toDataURL('image/jpg')
-        a.download = 'chart.png'
-        a.click()
-    }
-
 }

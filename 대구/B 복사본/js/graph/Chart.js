@@ -1,91 +1,84 @@
-import Sidebar from "../Sidebar.js"
-
-let check = true
-
 export default class Chart {
-    constructor() {
-        if(check) {
-            this.addEvent()
-        }
-        check = false
+    constructor(data, category) {
+        this.data = data
+        this.category = category
+
+        this.canvas = document.querySelector('#chart')
+        this.ctx = this.canvas.getContext('2d')
+
+        this.size = 500
+        this.chartSize = 220
+        this.center = this.size / 2
+        this.radian = Math.PI * 2 / this.category.length
+
+        this.ctx.textAlign = 'center'
+        this.ctx.lineWidth = 3
+        this.ctx.clearRect(0,0,this.canvas.width,this.canvas.height)
+
+        this.count = 5
+
         this.init()
     }
 
     async init() {
-        $('#modal').fadeIn()
-        this.category = ["star", "review", "visitant", "returning_visitor", "parking", "managed"]
-        this.graph = new Graph(Sidebar.sideList, this.category)
+        this.maxValue = 100
+        this.gap = 20
 
-        this.json = await $.ajax({
-            url : '/json/attraction.json',
-            method : 'GET',
-            cache : false
-        })
-        
-        this.categorySet()
-        this.listSet()
-    }
+        this.labelKr = (await $.getJSON('/json/attraction.json'))['labels_kr']
+        this.drawOutLine()
 
-    categorySet() {
-        this.category.forEach(x=> {
-            $(`#category > div[data-category="${x}" ]`).addClass('active')
-        })
-    }
-
-    listSet() {
-        $('#list > div').removeClass('active')
-        Sidebar.sideList.forEach(x=> {
-            $(`#list > div[data-list="${x}" ]`).addClass('active')
-        })
-        $('#list > div:not(.active)').css({
-            'background-color' : 'white',
-            'color' : 'black'
-        })
-    }
-
-    addEvent() {
-        $('#category > div').click(this.categoryChange.bind(this))
-        $('#list > div').click(this.listChange.bind(this))
-
-        $('#reload').click(this.reload.bind(this))
-
-        $('.close').click(()=> {
-            $('#modal').fadeOut()
-        })
-    }
-
-    categoryChange(e) {
-        let index = this.category.indexOf(e.target.dataset.category)
-        if(e.target.className.includes('active')) {
-            if(this.category.length <= 3) {
-                alert("more than 3")
-                return
-            }
-            this.category.splice(index,1)
-            $(e.target).removeClass('acvtive')
-        } else {
-            this.category.splice(index,0,e.target.dataet.category)
-            $(e.target).adClass('acvtive')
+        for(let i=0; i<this.data.length; i++) {
+            this.drawChart(i)
         }
-        this.graph = new Graph(Sidebar.sideList, this.category)
     }
 
-    listChange(e) {
-        let findData = this.json['data'].find(x=>x.name==e.target.dataset.list)
-        if(e.target.className.includes('active')) {
-            Sidebar.remove(JSON.stringify(findData))
-            $(e.target).removeClass('active')
-            $(e.target).css({
-                'background-color' : 'white',
-                'color' : 'black'
-            })
-        } else {
-            if(Sidebar.sidebarAdd(JSON.stringify(findData))) {
-                $(e.target).addClass('active')
+    drawOutLine() {
+        this.ctx.fillStyle = 'black'
+        this.ctx.strokeStyle = 'black'
+
+        for(let i=0; i<=this.count; i++) {
+            this.ctx.beginPath()
+            for(let j=0; j<=this.category.length; j++) {
+                const x = Math.cos(this.radian * j - Math.PI / 2) * (this.chartSize / this.count * i) + this.center
+                const y = Math.sin(this.radian * j - Math.PI / 2) * (this.chartSize / this.count * i) + this.center
+
+                if(j==0) {
+                    this.ctx.moveTo(x,y)
+                } else {
+                    this.ctx.moveTo(x,y)
+                    this.ctx.fillStyle(this.gap * i,x,y)
+                }
+
+                if(i==this.count && j<this.category.length) {
+                    this.ctx.fillText(this.labelKr[i],x,y)
+                }
+            }
+            this.ctx.closePath()
+        }
+    }
+
+    drawChart(index) {
+        let color = '#' + Math.round(Math.random() * 0xffffff).toString(16)
+        this.ctx.fillStyle = color
+        this.ctx.strokeStyle = color
+        this.ctx.globalAlpha = 0.5
+
+        this.ctx.beginPath()
+        for(let i=0; i<=this.category.length; i++) {
+            const value = this.data[index][this.category[i]] || this.data[index][this.category[0]]
+            const x = Math.cos(this.radian * i - Math.PI / 2) * (value / this.maxValue * 220) + this.center
+            const y = Math.sin(this.radian * i - Math.PI / 2) * (value / this.maxValue * 220) + this.center
+
+            if(i==0) {
+                this.ctx.moveTo(x,y)
+            } else {
+                this.ctx.lineTo(x,y)
             }
         }
-    
-        this.graph = new Graph(Sidebar.sideList, this.category)
+        this.ctx.fill()
+        this.ctx.globalAlpha = 1
+        this.ctx.stroke()
+        this.ctx.closePath()
     }
 
 }

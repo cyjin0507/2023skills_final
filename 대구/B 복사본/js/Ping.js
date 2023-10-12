@@ -13,23 +13,25 @@ export default class Ping {
         this.topX = 0
         this.topY = 0
 
+        this.size = 0
+
         this.dragging = false
+
+        this.pos = []
 
         this.distance = 0
         this.distanceArr = []
-
-        this.pos = []
-        this.size = 0
     }
 
     click(e, startX, startY, size) {
         $('#btn-zone').hide()
         let bSize = size
-        size = size==0 ? 1 : size==1 ? 2 : 4
+        size = size==0 ? 1 : (size==1 ? 2 : 4)
+        this.dragging = true
 
         this.pos.push({
-            x : (e.offsetX-startX) / size,
-            y : (e.offsetY-startY) / size,
+            x : (e.offsetX - startX) / size,
+            y : (e.offsetY - startY) / size,
         })
 
         this.startX = e.offsetX
@@ -38,13 +40,10 @@ export default class Ping {
         this.topX = startX
         this.topY = startY
 
-        this.dragging = true
-
         this.distanceArr.push(this.distance)
-
-        this.savePing(bSize, startX, startY)
+        this.savePing(bSize,startX,startY)
         this.btx.clearRect(0,0,800,800)
-        this.btx.drawImage(this.ctx.canvas, 0,0)
+        this.btx.drawImage(this.ctx.canvas,0,0)
     }
 
     mousemove(e, size) {
@@ -53,8 +52,6 @@ export default class Ping {
 
         this.nowX = e.offsetX
         this.nowY = e.offsetY
-
-        this.tooltip()
 
         this.size = size
 
@@ -67,20 +64,24 @@ export default class Ping {
         this.ctx.setLineDash([10])
 
         this.ctx.beginPath()
+        this.ctx.arc(this.startX, this.startY,10,0,Math.PI*2)
+        this.ctx.fill()
+        this.ctx.closePath()
+
+        this.ctx.beginPath()
         this.ctx.moveTo(this.startX, this.startY)
         this.ctx.lineTo(this.nowX, this.nowY)
-        this.ctc.stroke()
+        this.ctx.stroke()
         this.ctx.closePath()
     }
 
     savePing(size, startX, startY) {
         size = size==0 ? 1 : (size==1 ? 2 : 4)
-
         this.ctx.setLineDash([0])
 
         this.pos.forEach(x=> {
             this.ctx.beginPath()
-            this.ctx.arc((x.x*size)+startX,(x.y*size)+startY,10,0,Math.PI*2)
+            this.ctx.arc((x.x*size)+this.startX, (x.y*size)+this.startY,10,0,Math.PI*2)
             this.ctx.fill()
             this.ctx.closePath()
         })
@@ -102,23 +103,20 @@ export default class Ping {
 
     close(size, startX, startY) {
         size = size==0 ? 1 : (size==1 ? 2 : 4)
-
         this.dragging = false
 
-        let lastPos = this.pos[this.pos.length]
+        let lastPos = this.pos[this.pos.length-1]
         this.btx.beginPath()
-        this.btx.arc((lastPos.x*size)+startX,(lastPos.y*size)+startY,10,0,Math.PI*2)
+        this.btx.arc((lastPos.x*size)+startX, (lastPos.y*size)+startY,10,0,Math.PI*2)
         this.btx.fill()
         this.btx.closePath()
-
-        this.tooltip(-30, -30)
 
         this.ctx.drawImage(this.btx.canvas,0,0)
     }
 
     update(size, startX, startY) {
         size = size==0 ? 1 : (size==1 ? 2 : 4)
-
+        
         this.startX = (this.pos[this.pos.length-1].x * size) + startX
         this.startY = (this.pos[this.pos.length-1].y * size) + startY
 
@@ -128,30 +126,20 @@ export default class Ping {
         this.btx.drawImage(this.ctx.canvas,0,0)
     }
 
-    reset() {
-        this.startX = 0
-        this.startY = 0
-        this.topX = 0
-        this.topY = 0
-        this.pos = []
-        this.distance = 0
-        this.distanceArr = []
-    }
-
     undo(startX, startY) {
         if(this.pos.length < 1) return
         this.pos.pop()
         this.distanceArr.pop()
 
-        let bSize = this.size == 1 ? 0 : (this.size == 2 ? 1 : 2)
-        this.update(bSize,startX,startY)
+        let bSize = this.size==1 ? 0 : (this.size==2 ? 1 : 2)
+        this.savePing(bSize, startX, startY)
     }
 
     tooltip(x=this.nowX, y=this.nowY) {
         $('.tooltipEl').css({
             display : 'block',
             left : `${x+30}px`,
-            top : `${y+30}px`
+            top : `${y+30}px`,
         })
 
         if(x==-30) {
@@ -160,7 +148,7 @@ export default class Ping {
             `)
         } else {
             $('.tooltipEl').html(`
-                상대거리 : ${this.recentDistance()}km
+                상대 거리 : ${this.recentDistance()}km
             `)
         }
     }
@@ -171,23 +159,21 @@ export default class Ping {
         let minLong = 126.9741
         let maxLong = 127.4377
 
-        let latToKm = maxLat - minLat / 0.1 * 11 / this.ctx.canvas.width
-        let longToKm = maxLong - minLong / 0.1 * 8.9 / this.ctx.canvas.height
+        let latTokm = (maxLat - minLat) / 0.1 * 11 / this.ctx.canvas.width
+        let longTokm = (maxLong - minLong) / 0.1 * 8.9 / this.ctx.canvas.height
 
-        let widthKm = Math.abs(((this.pos[this.pos.length-1].x * this.size)+this.topX)*latToKm - (this.nowX*this.size)+this.topX) / this.size
-        let heightKm = Math.abs(((this.pos[this.pos.length-1].y * this.size)+this.topY)*longToKm - (this.nowY*this.size)+this.topY) / this.size
+        let widthToKm = Math.abs(((this.pos[this.pos.length-1].x * this.size) + this.topX) * latTokm - this.nowX*latTokm) / this.size
+        let heightToKm = Math.abs(((this.pos[this.pos.length-1].y * this.size) + this.topY) * longTokm - this.nowY*longTokm) / this.size
 
-        let distance = Math.sqrt(Math.pow(widthKm,2) + Math.pow(heightKm,2))
+        let distance = Math.sqrt(Math.pow(widthToKm,2) + Math.pow(heightToKm,2))
         distance = distance.toFixed(2)
-
         this.distance = distance
-
         return distance
     }
 
     totalDistance() {
         let total = 0
-        this.distanceArr.push(x=>{
+        this.distanceArr.forEach(x=> {
             total += parseInt(x)
         })
         return total
